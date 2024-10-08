@@ -27,3 +27,5 @@ function Test() {
 }
 
 export default Test
+
+// Testing redux
