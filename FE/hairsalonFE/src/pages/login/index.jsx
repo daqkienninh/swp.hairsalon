@@ -6,9 +6,13 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../config/axios";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/features/userSlice";
 
 function LoginPage() {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Function link to another location
+
+
   const handleLoginGoolge = () => {
     const auth = getAuth();
     signInWithPopup(auth, googleProvider)
@@ -32,22 +36,31 @@ function LoginPage() {
         const credential = GoogleAuthProvider.credentialFromError(error);
       });
   };
+  /*End Handle LoginGoogle ------------------------------------------------------------------ */
+
+  const dispatch = useDispatch(); // Store data to redux
   const handleLogin = async (values) => {
     try {
       const response = await api.post("/api/login", values);
       console.log(response);
       const {role, token} = response.data;
+      dispatch(login(response.data));
       localStorage.setItem("token", token);
-      if (role == 'ADMIN') {
+      if (role == 'CUSTOMER') { // Customize the role
         navigate("/dashboard");
+        toast.success("Login successfully");
       }else {
         navigate("/")
+        toast.success("Login successfully");
       }
-      toast.success("Login successfully");
     } catch (err) {
       toast.error(err.response.data);
     }
   };
+
+  /*End handle Login--------------------------------------------------------------------------- */
+
+
   return (
     <AuthenTemplate>
       <div style={{ height: "100vh" }}>

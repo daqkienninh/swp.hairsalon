@@ -61,8 +61,8 @@ const Dashboard = () => {
               margin: "16px 0",
             }}
           >
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
+            <Breadcrumb.Item>Staff</Breadcrumb.Item>
+            <Breadcrumb.Item>Data</Breadcrumb.Item>
           </Breadcrumb>
           <div
             style={{
