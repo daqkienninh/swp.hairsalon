@@ -15,7 +15,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 public class Customer {
-    @Pattern(regexp = "U\\d{6}")
     @Column(unique = true) // không được trùng
     @Id
             @GeneratedValue(strategy = GenerationType.IDENTITY)

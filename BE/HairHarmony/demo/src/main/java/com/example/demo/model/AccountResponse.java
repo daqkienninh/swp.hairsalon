@@ -11,6 +11,7 @@ public class AccountResponse {
     String phone;
     String image;
     String sex;
+    String role;
     String token;
 
 }
