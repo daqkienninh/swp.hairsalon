@@ -6,7 +6,7 @@ function Footer() {
   <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
     {/* Column 1 */}
     <div>
-      <h3 className="text-lg font-semibold mb-4">More about Orebi Shop</h3>
+      <h3 className="text-lg font-semibold mb-4">More about Harmony</h3>
       <p className="text-sm text-gray-600">
         Lorem ipsum dolor sit amet consectetur adipiscing elit. Enim sint ab ullam.
       </p>

@@ -9,7 +9,7 @@ function Header() {
     <div className='header'>
       <div className="navbar">
         {/* Logo */}
-        <div className="logo">OREBI</div>
+        <div className="logo">HARMONY</div>
 
         {/* Navigation Links */}
         <nav className="nav-links">
