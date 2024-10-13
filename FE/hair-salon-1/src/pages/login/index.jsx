@@ -6,9 +6,13 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../config/axios";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/features/userSlice";
+import Card from "./../../components/button/index";
 
 function LoginPage() {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Function link to another location
+
   const handleLoginGoolge = () => {
     const auth = getAuth();
     signInWithPopup(auth, googleProvider)
@@ -32,22 +36,35 @@ function LoginPage() {
         const credential = GoogleAuthProvider.credentialFromError(error);
       });
   };
+  /*End Handle LoginGoogle ------------------------------------------------------------------ */
+
+  const dispatch = useDispatch(); // Store data to redux
   const handleLogin = async (values) => {
     try {
-      const response = await api.post("login", values);
+      const response = await api.post("/api/login", values);
       console.log(response);
-      const { role } = response.data;
-      if (role == "ADMIN") {
+      const { role, token } = response.data;
+      dispatch(login(response.data));
+      localStorage.setItem("token", token);
+      if (role == "CUSTOMER") {
+        // Customize the role
         navigate("/dashboard");
+        toast.success("Login successfully");
+      } else {
+        navigate("/");
+        toast.success("Login successfully");
       }
-      toast.success("Login successfully");
     } catch (err) {
-      toast.error(err.response.data);
+      toast.error(err.response.data || "Error");
     }
   };
+
+  /*End handle Login--------------------------------------------------------------------------- */
+
   return (
     <AuthenTemplate>
-      <div style={{ height: "100vh" }}>
+      <Card />
+      <div>
         <h2 className="title">Login</h2>
         <h4 className="message">Please login to booking hair salon service.</h4>
         <Form labelCol={{ span: 24 }} onFinish={handleLogin}>
@@ -82,7 +99,7 @@ function LoginPage() {
             <Input.Password className="input" />
           </Form.Item>
           <div>Forget your password? Click here to change it!</div>
-          <button type="primary" htmlType="submit" className="button">
+          <button type="submit" className="button">
             Login
           </button>
           <p className="message">You can log in with another accounts.</p>

@@ -1,16 +1,17 @@
 import React from "react";
 import AuthenTemplate from "../../components/authen-template";
-import { Button, Form, Input } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../../config/axios";
+import { Form, Input } from "antd";
+import Card from "../../components/button";
 
 function RegisterPage() {
   const navigate = useNavigate();
   const handleRegister = async (values) => {
     try {
-      values.role("CUSTOMER");
-      const response = await api.post("register", values);
+      //  values.role("CUSTOMER");
+      const response = await api.post("/api/register", values);
       toast.success("Success register new account");
       navigate("/login");
     } catch (err) {
@@ -19,7 +20,8 @@ function RegisterPage() {
   };
   return (
     <AuthenTemplate>
-      <div style={{ height: "100%" }}>
+      <Card />
+      <div>
         <h2 className="title">Register</h2>
         <h4 className="message">
           Please sign up your information to booking hair salon service.
@@ -53,7 +55,7 @@ function RegisterPage() {
           >
             <Input.Password />
           </Form.Item>
-          <Form.Item
+          {/* <Form.Item
             label="Confirm Password"
             name="confirmPassword"
             dependencies={["password"]}
@@ -73,8 +75,8 @@ function RegisterPage() {
             ]}
           >
             <Input.Password />
-          </Form.Item>
-          <Form.Item label="Full Name" name="fullname">
+          </Form.Item> */}
+          <Form.Item label="Full Name" name="fullName">
             <Input />
           </Form.Item>
           <Form.Item
@@ -90,7 +92,7 @@ function RegisterPage() {
           >
             <Input />
           </Form.Item>
-          <button type="primary" htmlType="submit" className="button">
+          <button type="submit" className="button">
             Register
           </button>
           <div>

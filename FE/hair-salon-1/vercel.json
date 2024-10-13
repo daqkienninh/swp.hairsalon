@@ -1,0 +1,17 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "hair-salon-1/package.json",
+        "use": "@vercel/static-build",
+        "config": { "distDir": "hair-salon-1/dist"  }
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "/hair-salon-1/$1"
+      }
+    ]
+  }
+  
