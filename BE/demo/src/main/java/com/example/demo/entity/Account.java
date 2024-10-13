@@ -94,4 +94,8 @@ public class Account implements UserDetails {
     @OneToMany(mappedBy = "account")
      @JsonIgnore
     List<Stylist> stylists;
+
+    @OneToMany(mappedBy = "account")
+    @JsonIgnore
+    List<Staff> staffs;
 }

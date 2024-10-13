@@ -2,7 +2,6 @@ package com.example.demo.api;
 
 import com.example.demo.entity.Customer;
 import com.example.demo.model.CustomerRequest;
-import com.example.demo.model.CustomerUpdateRequest;
 import com.example.demo.service.CustomerService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -45,7 +44,7 @@ public class CustomerAPI {
 
     // /api/student/{studentId}
     @PutMapping("{customerId}")
-    public ResponseEntity updateCustomer(@PathVariable long customerId, @Valid @RequestBody CustomerUpdateRequest customer) {
+    public ResponseEntity updateCustomer(@PathVariable long customerId, @Valid @RequestBody CustomerRequest customer) {
         Customer updatedCustomer = customerService.update(customerId, customer);
         return ResponseEntity.ok(updatedCustomer);
     }
