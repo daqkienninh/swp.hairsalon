@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import api from '../../config/axios';
 import { toast } from 'react-toastify';
 
-function CRUDTemplate({ columns, formItems, path, title}) {
+function CRUDTemplate({ columns, formItems, path, title }) {
 
     const [data, setData] = useState()
     const [showModal, setShowModal] = useState(false)
@@ -21,17 +21,19 @@ function CRUDTemplate({ columns, formItems, path, title}) {
         }
     }
 
-    useEffect (() => {
+    useEffect(() => {
         fetchData()
     }, [])
 
     // Create or update
     const handleSubmit = async (values) => {
         console.log(values) // print data user send
+
         try {
             setLoading(true)
             // if value already has id => Update
             if (values.id) {
+                console.log(values.id)
                 const response = await api.put(`${path}/${values.id}`, values)
                 toast.success("Successfully Update")
             } else {
@@ -66,20 +68,21 @@ function CRUDTemplate({ columns, formItems, path, title}) {
             title: "Action",
             dataIndex: "id",
             key: "id",
-            render: (id) => (
+            render: (id, value) => (
                 <>
                     <Button
                         type="primary"
-                        onClick = {() => {
-                            setShowModal(true)
+                        onClick={() => {
+                            setShowModal(true);
+                            form.setFieldsValue(value);
                         }}
                     >
                         Edit
                     </Button>
 
                     <Popconfirm
-                        title = "Delete"
-                        description = "Do you really want to delete?"
+                        title="Delete"
+                        description="Do you really want to delete?"
                         onConfirm={() => handleDelete(id)}
                     >
                         <Button type='primary' danger>
@@ -90,26 +93,26 @@ function CRUDTemplate({ columns, formItems, path, title}) {
             )
         }
     ]
-  return (
-    <div>
-        <Button onClick={() => setShowModal(true)}>
-            Create new
-        </Button>
-        <Table columns={tableColums} dataSource={data}/>
+    return (
+        <div>
+            <Button onClick={() => setShowModal(true)}>
+                Create new
+            </Button>
+            <Table columns={tableColums} dataSource={data} />
             <Modal
                 open={showModal}
                 onCancel={() => setShowModal(false)}
                 onOk={() => form.submit()}
-                title = {title}
+                title={title}
                 confirmLoading={loading}
             >
-                <Form form={form} labelCol={{span: 24}} onFinish={handleSubmit}>
+                <Form form={form} labelCol={{ span: 24 }} onFinish={handleSubmit}>
                     {formItems}
                 </Form>
             </Modal>
-        
-    </div>
-  )
+
+        </div>
+    )
 }
 
 export default CRUDTemplate

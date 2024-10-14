@@ -15,7 +15,7 @@ function App() {
   const ProtectRouteAuth = ({ children }) => {
     const user = useSelector((store) => store.user);
     console.log(user);
-    if (user && user?.role === "CUSTOMER") { //Customize the role
+    if (user && user?.role === "STAFF") { //Customize the role
       return children;
     }
     toast.error("Not allow")

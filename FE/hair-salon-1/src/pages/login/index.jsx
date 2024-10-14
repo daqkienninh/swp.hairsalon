@@ -46,7 +46,7 @@ function LoginPage() {
       const {role, token} = response.data;
       dispatch(login(response.data));
       localStorage.setItem("token", token);
-      if (role == 'CUSTOMER') { // Customize the role
+      if (role == 'STAFF') { // Customize the role
         navigate("/dashboard");
         toast.success("Login successfully");
       }else {

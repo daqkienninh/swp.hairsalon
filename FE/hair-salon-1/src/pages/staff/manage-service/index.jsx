@@ -8,6 +8,11 @@ function ManageService() {
 
   const columns = [
     {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
       title: "Name",
       dataIndex: "name",
       key: "name",
@@ -43,12 +48,12 @@ function ManageService() {
 
   return (
     <div>
-        <CRUDTemplate
+      <CRUDTemplate
         columns={columns}
         formItems={formItems}
         path="/api/service"
         title="Service"
-        />
+      />
     </div>
   )
 }
