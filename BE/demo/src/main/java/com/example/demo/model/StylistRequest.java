@@ -37,5 +37,8 @@ public class StylistRequest {
     String email;
 
     Role role;
+    public StylistRequest() {
+        this.role = Role.STYLIST; // Default value
+    }
 
 }

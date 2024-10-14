@@ -2,7 +2,7 @@ package com.example.demo.api;
 
 import com.example.demo.entity.Stylist;
 import com.example.demo.model.StylistRequest;
-import com.example.demo.model.StylistUpdateRequest;
+import com.example.demo.model.StylistResponse;
 import com.example.demo.service.StylistService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -23,7 +23,7 @@ public class StylistAPI
 
     @PostMapping
     public ResponseEntity createStylist(@Valid @RequestBody StylistRequest stylist) {
-        Stylist newStylist = stylistService.createStylist(stylist);
+        StylistResponse newStylist = stylistService.createStylist(stylist);
         return ResponseEntity.ok(newStylist);
     }
 
@@ -49,7 +49,7 @@ public class StylistAPI
 
 
     @PutMapping("{stylistId}")
-    public ResponseEntity updateStylist(@PathVariable long stylistId, @Valid @RequestBody StylistUpdateRequest stylist) {
+    public ResponseEntity updateStylist(@PathVariable long stylistId, @Valid @RequestBody StylistRequest stylist) {
         Stylist updatedStylist = stylistService.updateStylist(stylistId, stylist);
         return ResponseEntity.ok(updatedStylist);
     }

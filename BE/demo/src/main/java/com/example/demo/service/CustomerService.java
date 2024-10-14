@@ -5,7 +5,6 @@ import com.example.demo.entity.Customer;
 import com.example.demo.exception.DuplicateEntity;
 import com.example.demo.exception.EntityNotFoundException;
 import com.example.demo.model.CustomerRequest;
-import com.example.demo.model.CustomerUpdateRequest;
 import com.example.demo.repository.AccountRepository;
 import com.example.demo.repository.CustomerRepository;
 import org.modelmapper.ModelMapper;
@@ -61,7 +60,7 @@ public class CustomerService {
     }
 
     //Update
-    public Customer update(long id, CustomerUpdateRequest customer) {
+    public Customer update(long id, CustomerRequest customer) {
         //bước 1: tìm ra customer cần đc update
         Customer oldCustomer = customerRepository.findCustomerById(id);
 

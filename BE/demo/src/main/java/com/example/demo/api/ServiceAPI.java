@@ -22,8 +22,8 @@ public class ServiceAPI {
 
 
     @PostMapping
-    public ResponseEntity createService (@Valid @RequestBody ServiceRequest service) {
-        ServiceResponse newService = serviceEntityService.createService(service);
+    public ResponseEntity createService (@Valid @RequestBody ServiceRequest serviceRequest) {
+        ServiceResponse newService = serviceEntityService.createService(serviceRequest);
         return ResponseEntity.ok(newService);
     }
 
@@ -42,15 +42,15 @@ public class ServiceAPI {
 
 
     //tìm service bằng name
-    @GetMapping("{serviceName}")
-    public ResponseEntity getServiceByName(String serviceName){
+    @GetMapping("/name:{serviceName}")
+    public ResponseEntity getServiceByName(@PathVariable String serviceName){
         ServiceEntity service  = serviceEntityService.getServiceByName(serviceName);
         return ResponseEntity.ok(service);
     }
 
     //tìm các service có trong type
-    @GetMapping("{serviceType}")
-    public ResponseEntity getServiceByType(String serviceType){
+    @GetMapping("/type:{serviceType}")
+    public ResponseEntity getServiceByType(@PathVariable String serviceType){
         List<ServiceEntity> services = serviceEntityService.getServiceByType(serviceType);
         return ResponseEntity.ok(services);
     }

@@ -1,7 +1,10 @@
 package com.example.demo.model;
 
+import lombok.Data;
+
+@Data
 public class ServiceResponse {
-    String id;
+    long id;
     String name;
     String description;
     String type;
@@ -10,6 +13,5 @@ public class ServiceResponse {
     float price;
     int discount;
     float totalPrice;
-    String token;
 
 }

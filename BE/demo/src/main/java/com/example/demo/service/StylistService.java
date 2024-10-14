@@ -2,10 +2,11 @@ package com.example.demo.service;
 
 import com.example.demo.entity.Account;
 import com.example.demo.entity.Stylist;
+import com.example.demo.entity.enums.Role;
 import com.example.demo.exception.DuplicateEntity;
 import com.example.demo.exception.EntityNotFoundException;
 import com.example.demo.model.StylistRequest;
-import com.example.demo.model.StylistUpdateRequest;
+import com.example.demo.model.StylistResponse;
 import com.example.demo.repository.AccountRepository;
 import com.example.demo.repository.StylistRepository;
 import org.modelmapper.ModelMapper;
@@ -34,27 +35,54 @@ public class StylistService {
     PasswordEncoder passwordEncoder;
 
     //C
-    public Stylist createStylist(StylistRequest stylistRequest) {
+    public StylistResponse createStylist(StylistRequest stylistRequest) {
+        Stylist stylist = modelMapper.map(stylistRequest, Stylist.class);
         try {
-            Stylist stylist = modelMapper.map(stylistRequest, Stylist.class);
-            Account accountRequest = authenticationService.getCurrentAccount();
-            stylist.setAccount(accountRequest);
-            accountRepository.save(accountRequest);
+            // Create a new account for the stylist
+            Account newAccount = createAccountForStylist(stylistRequest); // Refactored function for account creation
+
+            // Set the newly created account to the stylist
+            stylist.setAccount(newAccount);
+
+            // Save the stylist and its associated account
             Stylist newStylist = stylistRepository.save(stylist);
-            return newStylist;
-        }catch(Exception e) {
-            throw new DuplicateEntity("Duplicate! Fail to create!");
+
+            // Map to StylistResponse and include account details
+            StylistResponse response = modelMapper.map(newStylist, StylistResponse.class);
+            response.setImage(newAccount.getImage());
+            response.setSex(newAccount.getSex());
+
+            return response;
+        } catch (Exception e) {
+            throw new DuplicateEntity("Duplicate! Failed to create stylist!");
         }
     }
 
-    //R
+
+        private Account createAccountForStylist(StylistRequest stylistRequest) {
+            Account account = new Account();
+            account.setEmail(stylistRequest.getEmail());
+            account.setPassword(passwordEncoder.encode(stylistRequest.getPassword())); // Encoding password
+            account.setPhone(stylistRequest.getPhone());
+            account.setFullName(stylistRequest.getFullName());
+            account.setRole(Role.STYLIST); // Assuming stylists always have this role
+            account.setImage(stylistRequest.getImage());
+            account.setSex(stylistRequest.getSex());
+
+            // Save and return the created account
+            return accountRepository.save(account);
+        }
+
+
+
+        //R
     public List<Stylist> getAllStylists() {
         List<Stylist> stylists = stylistRepository.findStylistsByIsDeletedFalse();
         return stylists;
     }
 
     //U
-    public Stylist updateStylist(long id, StylistUpdateRequest stylist) {
+    public Stylist updateStylist(long id, StylistRequest stylist) {
         Stylist oldStylist =  stylistRepository.findStylistById(id);
 
         if(oldStylist == null) throw new EntityNotFoundException("Stylist not found!");

@@ -76,13 +76,7 @@ public class AuthenticationService implements UserDetailsService {
                 customer.setFullName(newAccount.getFullName());
                 customer.setAccount(newAccount);
                 customerRepository.save(customer);
-            }else if (newAccount.getRole().equals(Role.STYLIST)) {
-                Stylist stylist = new Stylist();
-                stylist.setFullName(newAccount.getFullName());
-                stylist.setAccount(newAccount);
-                stylistRepository.save(stylist);
             }
-
             //gửi mail về cho người dùng
             EmailDetail emailDetail = new EmailDetail();
             emailDetail.setReceiver(newAccount);

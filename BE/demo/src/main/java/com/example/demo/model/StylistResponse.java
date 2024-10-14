@@ -1,15 +1,14 @@
 package com.example.demo.model;
 
+import lombok.Data;
+
+@Data
 public class StylistResponse {
-    String id;
-    String password;
+    long id;
     String fullName;
-    String email;
-    String phone;
     String description;
-    String role;
     String image;
+    int level;
     String sex;
     String token;
-
 }

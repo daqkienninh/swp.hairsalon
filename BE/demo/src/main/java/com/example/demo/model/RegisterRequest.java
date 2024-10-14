@@ -27,5 +27,8 @@ public class RegisterRequest {
     @Email(message = "Email not valid!")
     String email;
 
-    Role role;
+    Role role ;
+    public RegisterRequest() {
+        this.role = Role.CUSTOMER; // Default value
+    }
 }
