@@ -8,11 +8,6 @@ function ManageService() {
 
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-    },
-    {
       title: "Name",
       dataIndex: "name",
       key: "name",
@@ -21,6 +16,31 @@ function ManageService() {
       title: "Description",
       dataIndex: "description",
       key: "description",
+    },
+    {
+      title: "Type",
+      dataIndex: "type",
+      key: "type",
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+    },
+    {
+      title: "Duration",
+      dataIndex: "duration",
+      key: "duration",
+    },
+    {
+      title: "Discount",
+      dataIndex: "discount",
+      key: "discount",
+    },
+    {
+      title: "Image",
+      dataIndex: "image",
+      key: "image",
     },
   ];
   const formItems = (
@@ -37,6 +57,36 @@ function ManageService() {
             message: "Please input category name!",
           },
         ]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        label="Type"
+        name="type"
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        label="Price"
+        name="price"
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        label="Duration"
+        name="duration"
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        label="Discount"
+        name="discount"
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        label="Image"
+        name="image"
       >
         <Input />
       </Form.Item>

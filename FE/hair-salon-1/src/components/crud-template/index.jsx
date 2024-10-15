@@ -44,7 +44,8 @@ function CRUDTemplate({ columns, formItems, path, title }) {
             form.resetFields() // xoa data vua nhap trong form
             setShowModal(false) // dong modal
         } catch (error) {
-            toast.error("Something went wrong, try again!")
+            console.log(error)
+            toast.error(error.response.data)
         } finally {
             setLoading(false)
         }
@@ -57,7 +58,7 @@ function CRUDTemplate({ columns, formItems, path, title }) {
             toast.success("Delete successfully")
             fetchData()
         } catch (error) {
-            toast.error("Something went wrong.")
+            toast.error(error.response.data)
         }
     }
 

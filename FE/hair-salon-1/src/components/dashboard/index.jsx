@@ -19,6 +19,7 @@ function getItem(label, key, icon, children) {
 }
 const items = [
   getItem("Manage Service", "service", <PieChartOutlined />),
+  getItem("Manage Stylist", "stylist"),
 ];
 const Dashboard = () => {
   const [collapsed, setCollapsed] = useState(false);

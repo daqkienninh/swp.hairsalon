@@ -10,6 +10,7 @@ import Layout from "./components/layout";
 import Test from "./pages/test";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import ManageStylist from "./pages/staff/manage-stylist";
 
 function App() {
   const ProtectRouteAuth = ({ children }) => {
@@ -25,14 +26,14 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "",
-      element: <Layout/>,
+      element: <Layout />,
       children: [
         {
           path: "",
-          element: <HomePage/>
+          element: <HomePage />
         }
       ]
-      
+
     },
     {
       path: "login",
@@ -54,6 +55,10 @@ function App() {
           path: "service",
           element: <ManageService />
         },
+        {
+          path: "stylist",
+          element: <ManageStylist />
+        }
       ]
     },
     {
