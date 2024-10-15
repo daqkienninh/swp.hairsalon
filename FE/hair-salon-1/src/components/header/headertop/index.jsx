@@ -29,17 +29,6 @@ function Header() {
             Journal
           </a>
         </nav>
-
-        {/* Profile & Cart */}
-        <div className='user'>
-        <div className="profile-menu">
-          <FaUser className="profile-icon" />
-        </div>
-        <div className="cart-menu">
-          <FaShoppingCart className="cart-icon" />
-          <span className="cart-count">0</span>
-        </div>
-        </div>
         
       </div>
     </div>

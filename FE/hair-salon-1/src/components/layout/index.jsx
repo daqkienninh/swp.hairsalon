@@ -1,12 +1,15 @@
 import React from 'react'
-import Header from '../header'
 import { Outlet } from 'react-router-dom'
-import Footer from '../footer'
+import Footer from '../footer/footertop'
+import Header from '../header/headertop'
+import HeaderBottom from '../header/headerbottom'
+import FooterBottom from '../footer/footerbottom'
 
 function Layout() {
   return (
     <div>
         <Header/>
+        <HeaderBottom/>
         <div
             className='main-content'
             style={
@@ -19,6 +22,7 @@ function Layout() {
             <Outlet/>
         </div>
         <Footer/>
+        <FooterBottom/>
     </div>
   )
 }

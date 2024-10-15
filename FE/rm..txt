@@ -20,4 +20,6 @@ npm install react-icons --save
 
 npm i
 
+npm i framer-motion
+
 /////////////////////////////////
