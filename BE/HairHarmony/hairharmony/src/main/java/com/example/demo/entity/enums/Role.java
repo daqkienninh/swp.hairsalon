@@ -6,6 +6,6 @@ public enum Role {
     STYLIST,
     STAFF,
     MANAGER,
-    ADMIN
+    ADMINISTRATOR
 
 }

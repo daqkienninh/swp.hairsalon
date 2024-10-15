@@ -26,9 +26,8 @@ public class ValidationHandler {
 
         String message = "";
 
-        // cứ mỗi thuộc tính lỗi => găn biến vào message
+        // cứ mỗi thuộc tính lỗi => gắn biến vào message
         for (FieldError fieldError : exception.getBindingResult().getFieldErrors()) {
-            //Name, studentCode, score
             message +=  fieldError.getDefaultMessage() + "\n";
         }
         return new ResponseEntity(message, HttpStatus.BAD_REQUEST);   // input đầu vào sai, FE check lại

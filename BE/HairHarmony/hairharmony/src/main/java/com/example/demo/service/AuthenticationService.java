@@ -92,7 +92,7 @@ public class AuthenticationService implements UserDetailsService {
             } else if (e.getMessage().contains(account.getEmail())) {
                 throw new DuplicateEntity("Duplicate Email");
             }else{
-                throw new DuplicateEntity("Xem lại Authentication Service");
+                throw new DuplicateEntity("Checking Authentication Service");
             }
         }
     }

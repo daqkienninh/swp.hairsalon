@@ -19,8 +19,6 @@ import java.util.List;
 public class CustomerAPI {
     @Autowired
     CustomerService customerService;
-    // Thêm 1 thằng sinh viên mới
-    // /api/student => POST
 
     @PostMapping
     public ResponseEntity createCustomer(@Valid @RequestBody CustomerRequest customer) {

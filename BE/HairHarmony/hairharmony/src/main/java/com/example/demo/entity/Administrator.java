@@ -1,38 +1,38 @@
 package com.example.demo.entity;
 
+import com.example.demo.entity.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-import org.hibernate.annotations.processing.Pattern;
-
 
 @Data
-@Entity
-@Table(name = "service")
-public class ServiceEntity {
+public class Administrator {
     @Column(unique = true) // không được trùng
-    @Id //khóa chính
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     long id;
-    
-    String name;
 
-    String description;
-    String type;
+    @NotBlank(message = "Name cannot blank!")
+    String fullName;
 
-    @Min(value = 0, message = "Price must be positive")
-    float price;
-    int duration;
-    int discount;
     String image;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    float totalPrice;
+    String sex;
+
+    String description;
+
+    int level;
 
     @JsonIgnore//không bắt nhập thông tin trên swagger
     boolean isDeleted = false;
+
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    Account account;
 }

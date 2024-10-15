@@ -22,8 +22,8 @@ public class StylistAPI
     StylistService stylistService;
 
     @PostMapping
-    public ResponseEntity createStylist(@Valid @RequestBody StylistRequest stylist) {
-        StylistResponse newStylist = stylistService.createStylist(stylist);
+    public ResponseEntity createStylist(@Valid @RequestBody StylistRequest stylistRequest) {
+        StylistResponse newStylist = stylistService.createStylist(stylistRequest);
         return ResponseEntity.ok(newStylist);
     }
 
@@ -49,8 +49,8 @@ public class StylistAPI
 
 
     @PutMapping("{stylistId}")
-    public ResponseEntity updateStylist(@PathVariable long stylistId, @Valid @RequestBody StylistRequest stylist) {
-        Stylist updatedStylist = stylistService.updateStylist(stylistId, stylist);
+    public ResponseEntity updateStylist(@PathVariable long stylistId, @Valid @RequestBody StylistRequest stylistRequest) {
+        Stylist updatedStylist = stylistService.updateStylist(stylistId, stylistRequest);
         return ResponseEntity.ok(updatedStylist);
     }
 
