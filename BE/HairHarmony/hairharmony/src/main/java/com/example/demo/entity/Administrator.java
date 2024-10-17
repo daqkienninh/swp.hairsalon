@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+@Entity
 @Data
 public class Administrator {
     @Column(unique = true) // không được trùng

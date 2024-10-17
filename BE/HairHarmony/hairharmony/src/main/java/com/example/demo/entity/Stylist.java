@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Data
 public class Stylist {
@@ -33,5 +35,18 @@ public class Stylist {
     @ManyToOne
     @JoinColumn(name = "account_id")
     Account account;
+
+//    @OneToMany(mappedBy = "shiftStylist")
+//    @JsonIgnore
+//    List<Shift> shifts;
+
+    @OneToMany(mappedBy = "slotStylist")
+    @JsonIgnore
+    List<Slot> slots;
+
+
+    @OneToMany(mappedBy = "stylist")
+    @JsonIgnore
+    List<AppointmentDetail> appointmentDetails;
 
 }

@@ -98,4 +98,18 @@ public class Account implements UserDetails {
     @OneToMany(mappedBy = "account")
     @JsonIgnore
     List<Staff> staffs;
+
+    @OneToMany(mappedBy = "account")
+    @JsonIgnore
+    List<Manager> managers;
+
+    @OneToMany(mappedBy = "account")
+    @JsonIgnore
+    List<Administrator> administrators;
+
+    @OneToMany(mappedBy = "customer")
+    @JsonIgnore
+    List<Appointment> appointments;
+
+
 }

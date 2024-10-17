@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/service")
@@ -35,7 +36,7 @@ public class ServiceAPI {
 
     //tìm service bằng id
     @GetMapping("{serviceId}")
-    public ResponseEntity<ServiceEntity> getServiceById(@PathVariable Long serviceId) {
+    public ResponseEntity<ServiceEntity> getServiceById(@PathVariable UUID serviceId) {
         ServiceEntity service = serviceEntityService.getServiceById(serviceId);
         return ResponseEntity.ok(service);
     }
@@ -56,13 +57,13 @@ public class ServiceAPI {
     }
 
     @PutMapping("{serviceId}")
-    public ResponseEntity updateService(@PathVariable long serviceId, @Valid @RequestBody ServiceEntity service) {
+    public ResponseEntity updateService(@PathVariable UUID serviceId, @Valid @RequestBody ServiceEntity service) {
         ServiceEntity updatedService = serviceEntityService.updateServiceById(serviceId, service);
         return ResponseEntity.ok(updatedService);
     }
 
     @DeleteMapping("{serviceId}")
-    public ResponseEntity deleteService(@PathVariable long serviceId) {
+    public ResponseEntity deleteService(@PathVariable UUID serviceId) {
         ServiceEntity updatedService = serviceEntityService.deleteServiceById(serviceId);
         return ResponseEntity.ok(updatedService);
     }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.management.ServiceNotFoundException;
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -44,7 +45,7 @@ public class ServiceEntityService {
     }
 
     //Update
-    public ServiceEntity updateServiceById(Long id, ServiceEntity serviceEntity){
+    public ServiceEntity updateServiceById(UUID id, ServiceEntity serviceEntity){
         ServiceEntity oldService = getServiceById(id);
         oldService.setName(serviceEntity.getName());
         oldService.setDescription(serviceEntity.getDescription());
@@ -56,13 +57,13 @@ public class ServiceEntityService {
     }
 
     //Delete
-    public ServiceEntity deleteServiceById(Long id){
+    public ServiceEntity deleteServiceById(UUID id){
         ServiceEntity oldService = getServiceById(id);
         oldService.setDeleted(true);
         return serviceRepository.save(oldService);
     }
 
-    public ServiceEntity getServiceById(Long id){
+    public ServiceEntity getServiceById(UUID id){
         ServiceEntity service = serviceRepository.findServiceById(id);
         if(service == null){
             throw new EntityNotFoundException("Service not found!");

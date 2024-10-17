@@ -19,6 +19,7 @@ import java.util.List;
 public class AdministratorAPI {
     @Autowired
     AdministratorService administratorService;
+
     @PostMapping
     public ResponseEntity createAdministrator(@Valid @RequestBody AdministratorRequest administratorRequest) {
         AdministratorResponse newAdministrator = administratorService.createAdministrator(administratorRequest);
