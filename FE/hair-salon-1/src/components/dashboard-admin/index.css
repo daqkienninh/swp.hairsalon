@@ -1,0 +1,30 @@
+.logo {
+    height: 32px;
+    margin: 16px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.site-layout .site-layout-background {
+    background: #fff;
+}
+
+.ant-layout-sider-children .ant-menu-item-selected {
+    background-color: #1890ff;
+}
+
+.ant-layout-sider-children .ant-menu-item:hover {
+    background-color: #40a9ff;
+}
+
+.ant-layout-sider-children .ant-menu-submenu-title:hover {
+    color: #1890ff;
+}
+
+.ant-layout-header {
+    background: #fff;
+    padding: 0;
+}
+
+.ant-layout-footer {
+    background: #fff;
+}

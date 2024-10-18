@@ -14,12 +14,12 @@ function getItem(label, key, icon, children) {
     key,
     icon,
     children,
-    label: <Link to={`/dashboard/${key}`}>{label}</Link>,
+    label: <Link to={`/staff/${key}`}>{label}</Link>,
   };
 }
 const items = [
   getItem("Manage Service", "service", <PieChartOutlined />),
-  getItem("Manage Stylist", "stylist"),
+  getItem("Manage Appointment", "appointment"),
 ];
 const Dashboard = () => {
   const [collapsed, setCollapsed] = useState(false);

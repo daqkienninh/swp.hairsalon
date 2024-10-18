@@ -49,7 +49,12 @@ function LoginPage() {
       if (role == 'STAFF') { // Customize the role
         navigate("/dashboard");
         toast.success("Login successfully");
-      }else {
+      }
+      if (role == 'ADMIN'){
+        navigate("/admin");
+        toast.success("Login successfully");
+      }
+      else {
         navigate("/")
         toast.success("Login successfully");
       }

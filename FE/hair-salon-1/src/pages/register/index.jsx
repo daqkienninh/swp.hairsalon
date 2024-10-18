@@ -9,12 +9,11 @@ function RegisterPage() {
   const navigate = useNavigate();
   const handleRegister = async (values) => {
     try {
-      values.role("CUSTOMER")
       const response = await api.post("/api/register", values);
       toast.success("Success register new account");
       navigate("/login");
     } catch (err) {
-      toast.error(err.response.data); // trả về lỗi từ back end
+      toast.error(""); // trả về lỗi từ back end
     }
   };
   return (
