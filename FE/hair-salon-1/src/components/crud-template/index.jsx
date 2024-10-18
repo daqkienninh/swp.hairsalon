@@ -27,10 +27,12 @@ function CRUDTemplate({ columns, formItems, path, title }) {
   // Create or update
   const handleSubmit = async (values) => {
     console.log(values); // print data user send
+
     try {
       setLoading(true);
       // if value already has id => Update
       if (values.id) {
+        console.log(values.id);
         const response = await api.put(`${path}/${values.id}`, values);
         toast.success("Successfully Update");
       } else {
@@ -40,8 +42,9 @@ function CRUDTemplate({ columns, formItems, path, title }) {
       fetchData(); // load data again
       form.resetFields(); // xoa data vua nhap trong form
       setShowModal(false); // dong modal
-    } catch (err) {
-      toast.error(err.response.data);
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data);
     } finally {
       setLoading(false);
     }
@@ -53,8 +56,8 @@ function CRUDTemplate({ columns, formItems, path, title }) {
       await api.delete(`${path}/${id}`);
       toast.success("Delete successfully");
       fetchData();
-    } catch (err) {
-      toast.error(err.response.data);
+    } catch (error) {
+      toast.error(error.response.data);
     }
   };
 
@@ -62,20 +65,21 @@ function CRUDTemplate({ columns, formItems, path, title }) {
   const tableColums = [
     ...columns,
     {
-      title: "Action",
+      title: "Manage",
       dataIndex: "id",
       key: "id",
-      render: (id) => (
+      render: (id, value) => (
         <>
           <Button
             type="primary"
             onClick={() => {
               setShowModal(true);
+              form.setFieldsValue(value);
             }}
           >
             Edit
           </Button>
-
+          <br />
           <Popconfirm
             title="Delete"
             description="Do you really want to delete?"

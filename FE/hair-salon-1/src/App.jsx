@@ -11,16 +11,17 @@ import Dashboard from "./components/dashboard";
 import Layout from "./components/layout";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import ManageStylist from "./pages/staff/manage-stylist";
+import ViewCustomer from "./pages/profile/customer/view/index";
+import ConfirmBooking from "./pages/confirmbook/index";
 import Booking from "./pages/book";
-import ProfileCustomer from "./pages/profile/customer/view";
-import ViewCustomer from "./pages/profile/customer/view";
-import UpdateCustomer from "./pages/profile/customer/update";
+import ServicePage from "./pages/services";
 
 function App() {
   const ProtectRouteAuth = ({ children }) => {
     const user = useSelector((store) => store.user);
     console.log(user);
-    if (user && user?.role === "CUSTOMER") {
+    if (user && user?.role === "STAFF") {
       //Customize the role
       return children;
     }
@@ -38,13 +39,17 @@ function App() {
           element: <HomePage />,
         },
         {
+          path: "services",
+          element: <ServicePage />,
+        },
+        {
           path: "booking",
           element: <Booking />,
         },
-        // {
-        //   path: "confirm",
-        //   element: <ConfirmBooking />,
-        // },
+        {
+          path: "confirm-booking",
+          element: <ConfirmBooking />,
+        },
       ],
     },
     {
@@ -67,17 +72,15 @@ function App() {
           path: "service",
           element: <ManageService />,
         },
+        {
+          path: "stylist",
+          element: <ManageStylist />,
+        },
       ],
     },
     {
       path: "customer",
       element: <ViewCustomer />,
-      children: [
-        {
-          path: "customer-update",
-          element: <UpdateCustomer />,
-        },
-      ],
     },
   ]);
   return <RouterProvider router={router} />;

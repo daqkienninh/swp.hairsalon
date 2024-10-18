@@ -27,60 +27,48 @@
   @media (min-width: 768px) {
     .navbar {
       border-right: 2px solid #d1d5db; /* Keeping border-right on md devices */
+      justify-content: center;
     }
   }
   
   /* Logo */
   .logo {
-    font-weight: bold;
-    font-size: 24px;
-    color: #000;
+    font-weight: bolder;
+    font-size: 30px;
+    color: #94B49F;
+    padding-left: 30px; 
+    transition: color 0.3s;
   }
   
   /* Navigation Links */
   .nav-links {
     display: flex;
-    gap: 20px;
+    align-items: center;
+    gap: 25px;
+    padding-right: 50px;
   }
   
   .nav-link {
     text-decoration: none;
-    color: #333;
+    color: #ECB390!important;
     padding: 10px;
     font-size: 16px;
-    transition: color 0.3s;
   }
-  
   .nav-link:hover {
-    color: #007bff;
-    text-decoration: none;
+    color: #ECB390 !important;
   }
   
-  /* Profile & Cart Icons */
-  .user {
-    display: flex;
-    align-items: center;
-    gap: 35px;
-  }
+/* User Profile Icon */
+.user {
+  display: flex;
+  align-items: center; /* Aligns the icon in the center vertically */
+  padding: 10px;
+}
 
-  .cart-menu{
-    display: flex;
-    position: static;
-  }
+.profile-icon {
+  font-size: 20px; /* Adjust the icon size as needed */
+  color: #94B49F;
+}
+
   
-  .profile-icon,
-  .cart-icon {
-    font-size: 20px;
-    color: #333;
-    cursor: pointer;
-  }
-  
-  .cart-count {
-    background-color: red;
-    color: white;
-    border-radius: 50%;
-    padding: 2px 8px;
-    font-size: 11px;
-    margin-left: 8px;
-  }
   

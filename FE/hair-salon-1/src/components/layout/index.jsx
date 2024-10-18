@@ -1,23 +1,29 @@
-import React from "react";
-import Header from "../header";
-import { Link, Outlet } from "react-router-dom";
+import React, { useRef } from "react";
+import { Outlet } from "react-router-dom";
+import Header from "../header/headertop";
 import Footer from "../footer";
-import RegisterPage from "./../../pages/register/index";
 
 function Layout() {
+  const footerRef = useRef(null);
+
+  const scrollToFooter = () => {
+    footerRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div>
-      <Header />
+      <Header scrollToFooter={scrollToFooter} />
       <div
         className="main-content"
         style={{
-          padding: 20,
+          padding: 0,
           minHeight: "100vh",
         }}
       >
         <Outlet />
       </div>
-      <Footer />
+      <Footer ref={footerRef} />
+      {/* <FooterBottom /> */}
     </div>
   );
 }

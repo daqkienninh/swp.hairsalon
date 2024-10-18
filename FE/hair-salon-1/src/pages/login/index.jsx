@@ -8,7 +8,6 @@ import api from "../../config/axios";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/features/userSlice";
-import Card from "./../../components/button/index";
 
 function LoginPage() {
   const navigate = useNavigate(); // Function link to another location
@@ -48,14 +47,14 @@ function LoginPage() {
       localStorage.setItem("token", token);
       if (role == "CUSTOMER") {
         // Customize the role
-        navigate("/dashboard");
-        toast.success("Login successfully");
-      } else {
         navigate("/");
-        toast.success("Login successfully");
+      } else if (role == "STAFF") {
+        navigate("/dashboard");
+      } else if (role == "STYLIST") {
+        navigate("/staff/dashboard");
       }
     } catch (err) {
-      toast.error(err.response.data || "Error");
+      toast.error(err.response.data || "Error login. Please try again!");
     }
   };
 
@@ -63,53 +62,52 @@ function LoginPage() {
 
   return (
     <AuthenTemplate>
-      <Card />
-      <div>
-        <h2 className="title">Login</h2>
-        <h4 className="message">Please login to booking hair salon service.</h4>
+      <div style={{ height: "100vh" }}>
+        <h2 className="title">Đăng nhập</h2>
+        <h4 className="message">
+          Đăng nhập để sử dụng dịch vụ đặt lịch làm tóc.
+        </h4>
         <Form labelCol={{ span: 24 }} onFinish={handleLogin}>
           <Form.Item
-            label="Phone"
+            label="SĐT"
             name="phone"
             className="form-item"
             rule={[
               {
                 required: true,
-                message: "Pleas input your phone number",
+                message: "Hãy nhập SĐT của bạn!",
               },
               {
                 pattern: "^[0-9]{10}$",
-                message: "Phone number must have 9 digits!",
+                message: "SĐT phải có đủ 9 số!",
               },
             ]}
           >
             <Input className="input" />
           </Form.Item>
           <Form.Item
-            label="Password"
+            label="Mật khẩu"
             name="password"
             className="form-item"
             rule={[
               {
                 required: true,
-                message: "Pleas input password",
+                message: "Hãy nhập mật khẩu của bạn!",
               },
             ]}
           >
             <Input.Password className="input" />
           </Form.Item>
-          <div>Forget your password? Click here to change it!</div>
+          <div>Quên mật khẩu?</div>
           <button type="submit" className="button">
-            Login
+            Đăng nhập
           </button>
-          <p className="message">You can log in with another accounts.</p>
+          <p className="message">Đăng nhập với tài khoản Google.</p>
           <button onClick={handleLoginGoolge} className="button-google">
-            Continue with
+            Tiếp tục với
           </button>
           <div>
-            <Link to="/register">
-              Don't have account? Register new account!
-            </Link>
+            <Link to="/register">Không có tài khoản? Hãy đăng kí tại đây.</Link>
           </div>
         </Form>
       </div>
@@ -118,3 +116,5 @@ function LoginPage() {
 }
 
 export default LoginPage;
+
+/**************************************************** */

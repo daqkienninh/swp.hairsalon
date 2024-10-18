@@ -7,12 +7,10 @@ import {
   TimePicker,
   Card,
   Steps,
-  message,
   Progress,
   Tooltip,
 } from "antd";
 import {
-  HomeOutlined,
   ScissorOutlined,
   UserOutlined,
   CalendarOutlined,
@@ -20,19 +18,19 @@ import {
 } from "@ant-design/icons";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import "antd/dist/reset.css";
-import Footer from "../../components/footer";
-import Header from "./../../components/header/index";
+import { useNavigate } from "react-router-dom";
+import "./index.css";
 
 const { Option } = Select;
 const { Step } = Steps;
 
 const Booking = () => {
-  const [services, setServices] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedService, setSelectedService] = useState(null);
   const [selectedStylist, setSelectedStylist] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
+  const navigate = useNavigate();
 
   const handleNext = () => {
     if (currentStep < 4 && canProceed()) {
@@ -47,13 +45,13 @@ const Booking = () => {
   };
 
   const handleSubmit = () => {
-    console.log({
+    const bookingDetails = {
       service: selectedService,
       stylist: selectedStylist,
-      date: selectedDate,
-      time: selectedTime,
-    });
-    message.success("Đặt lịch thành công!");
+      date: selectedDate?.format("DD/MM/YYYY"),
+      time: selectedTime?.format("HH:mm"),
+    };
+    navigate("/confirm-booking", { state: { bookingDetails } });
   };
 
   const canProceed = () => {
@@ -71,14 +69,15 @@ const Booking = () => {
 
   const steps = [
     {
-      title: "Chọn dịch vụ",
-      icon: <ScissorOutlined />,
+      title: "Choose services",
+      icon: <ScissorOutlined style={{ color: "#94B49F" }} />,
       content: (
-        <Form.Item label="Dịch vụ">
+        <Form.Item label="Service">
           <Tooltip title="Select the service you want">
             <Select
-              placeholder="Xem tất cả dịch vụ hấp dẫn"
+              placeholder="Select the service you want"
               onChange={setSelectedService}
+              className="custom-select"
               style={{ width: "100%" }}
             >
               <Option value="cut">Cắt tóc</Option>
@@ -89,14 +88,15 @@ const Booking = () => {
       ),
     },
     {
-      title: "Chọn stylist",
-      icon: <UserOutlined />,
+      title: "Choose stylist ",
+      icon: <UserOutlined style={{ color: "#94B49F" }} />,
       content: (
         <Form.Item label="Stylist">
-          <Tooltip title="Choose your preferred stylist">
+          <Tooltip title="Select the stylish you want">
             <Select
-              placeholder="Chọn stylist"
+              placeholder="Select the stylish you want"
               onChange={setSelectedStylist}
+              className="custom-select"
               style={{ width: "100%" }}
             >
               <Option value="stylist1">Stylist 1</Option>
@@ -107,21 +107,25 @@ const Booking = () => {
       ),
     },
     {
-      title: "Chọn thời gian",
-      icon: <CalendarOutlined />,
+      title: "Choose time",
+      icon: <CalendarOutlined style={{ color: "#94B49F" }} />,
       content: (
-        <Form.Item label="Thời gian">
+        <Form.Item label="Time">
           <Tooltip title="Select your preferred date">
             <DatePicker
-              style={{ width: "100%", marginBottom: 16 }}
-              placeholder="Chọn ngày"
+              style={{
+                width: "100%",
+                marginBottom: 16,
+                borderColor: "#94B49F",
+              }}
+              placeholder="Select date"
               onChange={setSelectedDate}
             />
           </Tooltip>
           <Tooltip title="Select your preferred time">
             <TimePicker
-              style={{ width: "100%" }}
-              placeholder="Chọn giờ"
+              style={{ width: "100%", borderColor: "#94B49F" }}
+              placeholder="Select time"
               onChange={setSelectedTime}
             />
           </Tooltip>
@@ -129,23 +133,24 @@ const Booking = () => {
       ),
     },
     {
-      title: "Xác nhận",
-      icon: <CheckCircleOutlined />,
+      title: "Confirm Date Picker",
+      icon: <CheckCircleOutlined style={{ color: "#94B49F" }} />,
       content: (
         <div>
-          <h3>Thông tin đặt lịch của bạn:</h3>
+          <h3>Your appointment information: </h3>
+          <br />
           <Card>
             <p>
-              <strong>Dịch vụ:</strong> {selectedService}
+              <strong>Service:</strong> {selectedService}
             </p>
             <p>
               <strong>Stylist:</strong> {selectedStylist}
             </p>
             <p>
-              <strong>Ngày:</strong> {selectedDate?.format("DD/MM/YYYY")}
+              <strong>Date:</strong> {selectedDate?.format("DD/MM/YYYY")}
             </p>
             <p>
-              <strong>Giờ:</strong> {selectedTime?.format("HH:mm")}
+              <strong>Time:</strong> {selectedTime?.format("HH:mm")}
             </p>
           </Card>
         </div>
@@ -155,14 +160,22 @@ const Booking = () => {
 
   return (
     <div>
-      <div style={{ maxWidth: 600, margin: "40px auto", padding: "20px" }}>
+      <div style={{ maxWidth: 650, margin: "40px auto", padding: "20px" }}>
         <Card
           bordered={false}
           style={{ boxShadow: "0 4px 8px rgba(0,0,0,0.1)" }}
         >
           <Steps current={currentStep} style={{ marginBottom: 24 }}>
             {steps.map((item) => (
-              <Step key={item.title} title={item.title} icon={item.icon} />
+              <Step
+                key={item.title}
+                title={
+                  <span style={{ fontSize: "13px", color: "#000" }}>
+                    {item.title}
+                  </span>
+                }
+                icon={item.icon}
+              />
             ))}
           </Steps>
           <Progress
@@ -180,25 +193,37 @@ const Booking = () => {
             </SwitchTransition>
           </Form>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            {currentStep > 0 && <Button onClick={handlePrev}>Quay lại</Button>}
-            {currentStep < steps.length - 1 && (
-              <Button
-                type="primary"
-                onClick={handleNext}
-                disabled={!canProceed()}
-              >
-                Tiếp tục
-              </Button>
-            )}
-            {currentStep === steps.length - 1 && (
-              <Button
-                type="primary"
-                onClick={handleSubmit}
-                icon={<CheckCircleOutlined />}
-              >
-                Xác nhận đặt lịch
-              </Button>
-            )}
+            <div>
+              {currentStep > 0 && (
+                <Button
+                  onClick={handlePrev}
+                  style={{ color: "#94B49F", borderColor: "#94B49F" }}
+                >
+                  Back
+                </Button>
+              )}
+            </div>
+            <div style={{ marginLeft: "auto" }}>
+              {currentStep < steps.length - 1 && (
+                <Button
+                  type="primary"
+                  onClick={handleNext}
+                  disabled={!canProceed()}
+                  style={{ backgroundColor: "#94B49F" }}
+                >
+                  Next
+                </Button>
+              )}
+              {currentStep === steps.length - 1 && (
+                <Button
+                  type="primary"
+                  onClick={handleSubmit}
+                  icon={<CheckCircleOutlined />}
+                >
+                  Confirm booking
+                </Button>
+              )}
+            </div>
           </div>
         </Card>
       </div>
