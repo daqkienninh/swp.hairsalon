@@ -8,6 +8,11 @@ function ManageCustomer() {
 
   const columns = [
     {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
       title: "Full Name",
       dataIndex: "fullName",
       key: "fullName",
@@ -15,7 +20,7 @@ function ManageCustomer() {
     {
       title: "Phone",
       dataIndex: "phone",
-      key: "discount",
+      key: "phone",
     },
     {
       title: "Email",
@@ -31,6 +36,11 @@ function ManageCustomer() {
       title: "Image",
       dataIndex: "image",
       key: "image",
+    },
+    {
+      title: "Role",
+      dataIndex: "role",
+      key: "role",
     },
   ];
   const formItems = (
@@ -83,6 +93,13 @@ function ManageCustomer() {
       >
         <Input />
       </Form.Item>
+      <Form.Item
+        label="Role"
+        name="role"
+        hidden
+      >
+        <Input />
+      </Form.Item>
     </>
   );
 
@@ -91,8 +108,9 @@ function ManageCustomer() {
       <CRUDTemplate
         columns={columns}
         formItems={formItems}
-        path="/api/customer"
+        path="/api/account"
         title="Customer"
+        roles="CUSTOMER"
       />
     </div>
   )

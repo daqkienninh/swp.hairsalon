@@ -1,6 +1,6 @@
 .logo {
     height: 32px;
-    margin: 16px;
+    margin: 10px;
     background: rgba(255, 255, 255, 0.3);
 }
 
@@ -27,4 +27,44 @@
 
 .ant-layout-footer {
     background: #fff;
+}
+
+.ant-layout-sider {
+    width: 250px !important;
+    max-width: 250px !important;
+    min-width: 250px !important;
+}
+
+.ant-layout-sider-collapsed {
+    width: 80px !important;
+    max-width: 80px !important;
+    min-width: 80px !important;
+}
+
+.ant-menu-inline,
+.ant-menu-vertical,
+.ant-menu-vertical-left {
+    width: 100%;
+}
+
+.ant-menu-inline,
+.ant-menu-vertical,
+.ant-menu-vertical-left {
+    width: 100%;
+}
+
+.ant-layout-sider-trigger {
+    background: #002140;
+    /* Dark blue background */
+    color: #fff;
+    /* White text */
+    width: 250px !important;
+    /* Set width to 250px for expanded state */
+}
+
+.ant-layout-sider-collapsed .ant-layout-sider-trigger {
+    width: 250px !important;
+    /* Keep width at 250px even when collapsed */
+    position: absolute;
+    /* This should match the collapsed width of the sider */
 }

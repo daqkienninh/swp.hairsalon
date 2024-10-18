@@ -43,15 +43,22 @@ function LoginPage() {
       const response = await api.post("/api/login", values);
       console.log(response);
       const { role, token } = response.data;
+      console.log(role);
       dispatch(login(response.data));
       localStorage.setItem("token", token);
       if (role == "CUSTOMER") {
         // Customize the role
         navigate("/");
+        toast.success("Login successfully");
       } else if (role == "STAFF") {
-        navigate("/dashboard");
+        navigate("/staff");
+        toast.success("Login successfully");
       } else if (role == "STYLIST") {
-        navigate("/staff/dashboard");
+        navigate("/stylist");
+        toast.success("Login successfully");
+      } else if (role == 'ADMIN') {
+        navigate("/admin");
+        toast.success("Login successfully");
       }
     } catch (err) {
       toast.error(err.response.data || "Error login. Please try again!");

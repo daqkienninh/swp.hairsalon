@@ -3,31 +3,37 @@ import {
   Navigate,
   RouterProvider,
 } from "react-router-dom";
-import LoginPage from "./pages/login";
-import RegisterPage from "./pages/register";
-import HomePage from "./pages/homepage";
-import ManageService from "./pages/staff/manage-service";
-import Dashboard from "./components/dashboard";
-import Layout from "./components/layout";
+import React from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import ManageStylist from "./pages/staff/manage-stylist";
-import ViewCustomer from "./pages/profile/customer/view/index";
-import ConfirmBooking from "./pages/confirmbook/index";
+/***************************IMPORT PAGE******************************/
+import Layout from "./components/layout";
+import HomePage from "./pages/homepage";
 import Booking from "./pages/book";
 import ServicePage from "./pages/services";
+import ConfirmBooking from "./pages/confirmbook";
+import LoginPage from "./pages/login";
+import RegisterPage from "./pages/register";
+import ManageService from "./pages/staff/manage-service";
+import ManageAppointment from "./pages/staff/manage-appointment";
+import DashboardAdmin from "./components/dashboard-admin";
+import ManageStylist from "./pages/admin/manage-stylist";
+import ManageCustomer from "./pages/admin/manage-customer";
+import ViewCustomer from "./pages/profile/customer/view";
+import DashboardStaff from "./components/dashboard-staff";
+import ManageStaff from "./pages/admin/manage-staff";
+import ManageManager from "./pages/admin/manage-manager";
 
 function App() {
-  const ProtectRouteAuth = ({ children }) => {
+  const ProtectRouteAuth = ({ children, allowedRoles }) => {
     const user = useSelector((store) => store.user);
     console.log(user);
-    if (user && user?.role === "STAFF") {
-      //Customize the role
+    if (user && allowedRoles.includes(user.role)) { //Customize the role
       return children;
     }
-    toast.error("Not allow");
-    return <Navigate to={"/login"} />;
-  };
+    toast.error("Not allow")
+    return <Navigate to={"/login"} />
+  }
 
   const router = createBrowserRouter([
     {
@@ -61,22 +67,47 @@ function App() {
       element: <RegisterPage />,
     },
     {
-      path: "dashboard",
+      path: "staff",
       element: (
-        <ProtectRouteAuth>
-          <Dashboard />
+        <ProtectRouteAuth allowedRoles={["STAFF"]}>
+          <DashboardStaff />
         </ProtectRouteAuth>
       ),
       children: [
         {
           path: "service",
-          element: <ManageService />,
+          element: <ManageService />
         },
         {
-          path: "stylist",
-          element: <ManageStylist />,
+          path: "appointment",
+          element: <ManageAppointment />
+        }
+      ]
+    },
+    {
+      path: "admin",
+      element: (
+        <ProtectRouteAuth allowedRoles={["ADMIN"]}>
+          <DashboardAdmin />
+        </ProtectRouteAuth>
+      ),
+      children: [
+        {
+          path: "managestylist",
+          element: <ManageStylist />
         },
-      ],
+        {
+          path: "managecustomer",
+          element: <ManageCustomer />
+        },
+        {
+          path: "managestaff",
+          element: <ManageStaff />
+        }, {
+          path: "managemanager",
+          element: <ManageManager />
+        }
+      ]
     },
     {
       path: "customer",

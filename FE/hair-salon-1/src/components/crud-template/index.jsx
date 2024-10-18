@@ -3,18 +3,24 @@ import React, { useEffect, useState } from "react";
 import api from "../../config/axios";
 import { toast } from "react-toastify";
 
-function CRUDTemplate({ columns, formItems, path, title }) {
+function CRUDTemplate({ columns, formItems, path, title, roles }) {
   const [data, setData] = useState();
   const [showModal, setShowModal] = useState(false);
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
 
+
   // Get data
   const fetchData = async () => {
     try {
       const response = await api.get(path);
-      setData(response.data);
-      console.log(response.data);
+      let filteredData = response.data;
+      console.log(filteredData)
+      if(roles) {
+        filteredData = response.data.filter(account => account.role === roles);
+      }
+      setData(filteredData)
+      console.log("Filtered data:", filteredData)
     } catch (error) {
       toast.error(error.response.data);
     }
@@ -70,7 +76,7 @@ function CRUDTemplate({ columns, formItems, path, title }) {
       key: "id",
       render: (id, value) => (
         <>
-          <Button
+          {/* <Button
             type="primary"
             onClick={() => {
               setShowModal(true);
@@ -78,7 +84,7 @@ function CRUDTemplate({ columns, formItems, path, title }) {
             }}
           >
             Edit
-          </Button>
+          </Button> */}
           <br />
           <Popconfirm
             title="Delete"

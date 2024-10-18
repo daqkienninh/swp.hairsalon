@@ -19,10 +19,16 @@ const DashboardAdmin = () => {
                 <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
                     <SubMenu icon={<ShopOutlined />} title="Manage Account">
                         <Menu.Item icon={<ToolOutlined />}>
-                            <Link to="/admin/stylist">Manage Stylist</Link>
+                            <Link to="/admin/managestylist">Manage Stylist</Link>
                         </Menu.Item>
                         <Menu.Item icon={<ToolOutlined />}>
-                            <Link to="/admin/customer">Manage Customer</Link>
+                            <Link to="/admin/managecustomer">Manage Customer</Link>
+                        </Menu.Item>
+                        <Menu.Item icon={<ToolOutlined />}>
+                            <Link to="/admin/managestaff">Manage Staff</Link>
+                        </Menu.Item>
+                        <Menu.Item icon={<ToolOutlined />}>
+                            <Link to="/admin/managemanager">Manage Manager</Link>
                         </Menu.Item>
                     </SubMenu>
                     {/* Add more main menu items here */}
@@ -35,7 +41,7 @@ const DashboardAdmin = () => {
                         <Outlet />
                     </div>
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>Admin Dashboard ©2023 Created by Your Company</Footer>
+                <Footer style={{ textAlign: 'center' }}>Admin Dashboard ©2024 Created by HairHarmony</Footer>
             </Layout>
         </Layout>
     );

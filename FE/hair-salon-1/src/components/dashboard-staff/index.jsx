@@ -21,7 +21,7 @@ const items = [
   getItem("Manage Service", "service", <PieChartOutlined />),
   getItem("Manage Appointment", "appointment"),
 ];
-const Dashboard = () => {
+const DashboardStaff = () => {
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -87,4 +87,4 @@ const Dashboard = () => {
     </Layout>
   );
 };
-export default Dashboard;
+export default DashboardStaff;

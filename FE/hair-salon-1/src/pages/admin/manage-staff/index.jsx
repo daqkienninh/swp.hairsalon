@@ -4,7 +4,7 @@ import { Form, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 
-function ManageStylist() {
+function ManageStaff() {
     const columns = [
         {
             title: "ID",
@@ -56,7 +56,7 @@ function ManageStylist() {
                 rules={[
                     {
                         required: true,
-                        message: "Please input Customer's name!",
+                        message: "Please input Staff's name!",
                     },
                 ]}
             >
@@ -101,17 +101,15 @@ function ManageStylist() {
             </Form.Item>
         </>
     );
-    return (
-        <div>
-            <CRUDTemplate
-                columns={columns}
-                formItems={formItems}
-                path="/api/account"
-                title="Stylist"
-                roles="STYLIST"
-            />
-        </div>
-    )
+  return (
+      <div><CRUDTemplate
+          columns={columns}
+          formItems={formItems}
+          path="/api/account"
+          title="Staff"
+          roles="STAFF"
+      /></div>
+  )
 }
 
-export default ManageStylist
+export default ManageStaff
