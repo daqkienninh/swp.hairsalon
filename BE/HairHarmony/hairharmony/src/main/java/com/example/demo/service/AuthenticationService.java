@@ -3,7 +3,6 @@ package com.example.demo.service;
 import com.example.demo.config.SecurityConfig;
 import com.example.demo.entity.Account;
 import com.example.demo.entity.Customer;
-import com.example.demo.entity.Stylist;
 import com.example.demo.entity.enums.Role;
 import com.example.demo.exception.DuplicateEntity;
 import com.example.demo.exception.EntityNotFoundException;

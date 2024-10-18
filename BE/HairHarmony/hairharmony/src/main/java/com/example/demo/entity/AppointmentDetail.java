@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -19,7 +20,9 @@ public class AppointmentDetail {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     UUID id;
 
-    LocalDateTime dateTime;
+    LocalDateTime startTime;
+
+    LocalDateTime endTime;
 
     float price;
 
@@ -40,4 +43,8 @@ public class AppointmentDetail {
     @ManyToOne
     @JoinColumn(name = "stylist_id")
     Stylist stylist;
+
+    @OneToMany(mappedBy = "appointmentDetail")
+    @JsonIgnore
+    List<Slot> slots;
 }

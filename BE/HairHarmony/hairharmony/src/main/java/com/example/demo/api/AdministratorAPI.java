@@ -17,6 +17,7 @@ import java.util.List;
 @CrossOrigin("*")
 @SecurityRequirement(name = "api")
 public class AdministratorAPI {
+
     @Autowired
     AdministratorService administratorService;
 

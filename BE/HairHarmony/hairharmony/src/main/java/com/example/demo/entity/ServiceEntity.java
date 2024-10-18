@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.hibernate.annotations.processing.Pattern;
 
@@ -29,6 +30,7 @@ public class ServiceEntity {
 
     @Min(value = 0, message = "Price must be positive")
     float price;
+
     int duration;
     int discount;
     String image;

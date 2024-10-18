@@ -19,8 +19,6 @@ public class Slot {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     long id;
 
-    DayOfWeek dayOfWeek;
-
     LocalDateTime startTime;
 
     LocalDateTime endTime;
@@ -33,4 +31,8 @@ public class Slot {
     @ManyToOne
     @JoinColumn(name = "stylist_id")
     Stylist slotStylist;
+
+    @ManyToOne
+    @JoinColumn(name = "appointment_id")
+    AppointmentDetail appointmentDetail;
 }

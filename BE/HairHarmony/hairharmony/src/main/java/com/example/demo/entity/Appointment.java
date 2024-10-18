@@ -1,11 +1,14 @@
 package com.example.demo.entity;
 
+import com.example.demo.entity.enums.AppointmentStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +27,8 @@ public class Appointment {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     float totalPrice;
 
+    AppointmentStatus status;
+
     @JsonIgnore
     boolean isDeleted = false;
 
@@ -32,8 +37,7 @@ public class Appointment {
     @JsonIgnore
     Account customer;
 
-    @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     List<AppointmentDetail> appointmentDetails;
-
 
 }
