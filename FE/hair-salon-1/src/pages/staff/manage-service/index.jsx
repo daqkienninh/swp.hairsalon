@@ -1,21 +1,25 @@
-import React, { useEffect, useState } from 'react'
-import api from '../../../config/axios'
-import { Button, Form, Input, Modal, Table } from 'antd'
-import { toast } from 'react-toastify'
-import CRUDTemplate from '../../../components/crud-template';
+import React, { useEffect, useState } from "react";
+import api from "../../../config/axios";
+import { Button, Form, Input, Modal, Table } from "antd";
+import { toast } from "react-toastify";
+import CRUDTemplate from "../../../components/crud-template";
 
 function ManageService() {
-
   const columns = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Image",
+      dataIndex: "image",
+      key: "image",
+    },
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
-    },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
     },
     {
       title: "Type",
@@ -23,14 +27,19 @@ function ManageService() {
       key: "type",
     },
     {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
-    },
-    {
       title: "Duration",
       dataIndex: "duration",
       key: "duration",
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
     },
     {
       title: "Discount",
@@ -38,9 +47,9 @@ function ManageService() {
       key: "discount",
     },
     {
-      title: "Image",
-      dataIndex: "image",
-      key: "image",
+      title: "Total",
+      dataIndex: "totalPrice",
+      key: "totalPrice",
     },
   ];
   const formItems = (
@@ -60,38 +69,23 @@ function ManageService() {
       >
         <Input />
       </Form.Item>
-      <Form.Item
-        label="Type"
-        name="type"
-      >
+      <Form.Item label="Image" name="image">
         <Input />
       </Form.Item>
-      <Form.Item
-        label="Price"
-        name="price"
-      >
+      <Form.Item label="Type" name="type">
         <Input />
       </Form.Item>
-      <Form.Item
-        label="Duration"
-        name="duration"
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        label="Discount"
-        name="discount"
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        label="Image"
-        name="image"
-      >
+      <Form.Item label="Duration" name="duration">
         <Input />
       </Form.Item>
       <Form.Item label="Description" name="description">
         <Input.TextArea />
+      </Form.Item>
+      <Form.Item label="Price" name="price">
+        <Input />
+      </Form.Item>
+      <Form.Item label="Discount" name="discount">
+        <Input />
       </Form.Item>
     </>
   );
@@ -105,7 +99,7 @@ function ManageService() {
         title="Service"
       />
     </div>
-  )
+  );
 }
 
-export default ManageService
+export default ManageService;

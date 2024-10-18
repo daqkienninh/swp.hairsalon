@@ -1,51 +1,57 @@
-import React from "react";
 import AuthenTemplate from "../../components/authen-template";
-import { Button, Form, Input } from "antd";
+import { Form, Input } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../../config/axios";
+import { useState } from "react";
 
 function RegisterPage() {
+  const [loading, setLoading] = useState(false); // set loading
+
   const navigate = useNavigate();
   const handleRegister = async (values) => {
     try {
+      // values.role("CUSTOMER");
+      setLoading(true); // set loading, khi vừa submit thì form sẽ loading để không thể xảy ra spam
       const response = await api.post("/api/register", values);
-      toast.success("Success register new account");
+      console.log(response.data);
       navigate("/login");
     } catch (err) {
-      toast.error(""); // trả về lỗi từ back end
+      toast.error("Không thể đăng kí tài khoản! Hãy thử lại."); // trả về lỗi từ back end
+    } finally {
+      setLoading(false); // sau khi tất cả xong finally thì sẽ dừng loading
     }
   };
   return (
     <AuthenTemplate>
-      <div style={{ height: "100%" }}>
-        <h2 className="title">Register</h2>
+      <div>
+        <h2 className="title">Đăng kí</h2>
         <h4 className="message">
-          Please sign up your information to booking hair salon service.
+          Hãy đăng kí thông tin của bạn để sử dụng dịch vụ đặt lịch.
         </h4>
         <Form labelCol={{ span: 24 }} onFinish={handleRegister}>
           <Form.Item
-            label="Phone"
+            label="Số điện thoại"
             name="phone"
             rules={[
-              { required: true, message: "Please input your phone number!" },
+              { required: true, message: "Hãy nhập SĐT của bạn!" },
               {
                 pattern: "^[0-9]{10}$",
-                message: "Phone number must have 9 digits!",
+                message: "SĐT phải có 9 số!",
               },
             ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            label="Password"
+            label="Mật khẩu"
             name="password"
             rules={[
-              { required: true, message: "Please input your password!" },
+              { required: true, message: "Hãy nhập mật khẩu!" },
               {
                 min: 8,
                 max: 16,
-                message: "Password must be at least 8 characters long!",
+                message: "Mật khẩu phải dài từ 8 đến 16 kí tự!",
               },
             ]}
             hasFeedback
@@ -73,27 +79,32 @@ function RegisterPage() {
           >
             <Input.Password />
           </Form.Item>
-          <Form.Item label="Full Name" name="fullName">
+          <Form.Item label="Họ và Tên" name="fullName">
             <Input />
           </Form.Item>
           <Form.Item
-            label="Email"
+            label="Email của bạn"
             name="email"
             rules={[
-              { required: true, message: "Please input your email!" },
+              { required: true, message: "Hãy nhập Email của bạn!" },
               {
                 type: "email",
-                message: "Please input a valid email address!",
+                message: "Hãy nhập Email hợp lệ!",
               },
             ]}
           >
             <Input />
           </Form.Item>
-          <button type="primary" htmlType="submit" className="button">
-            Register
+          <button
+            type="submit"
+            className="button"
+            disabled={loading}
+            style={{ cursor: loading ? "not-allowed" : "pointer" }}
+          >
+            {loading ? "Registering..." : "Đăng kí"}
           </button>
           <div>
-            <Link to="/login">Already have account? Go to login page.</Link>
+            <Link to="/login">Bạn đã có tài khoản? Đăng nhập tại đây.</Link>
           </div>
         </Form>
       </div>

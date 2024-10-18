@@ -1,20 +1,25 @@
 html, body{
     overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Montserra', sans-serif;
 }
 /* Main template container */
 .authen-template {
     display: flex;
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     background-color: #ffffff;
+    position: relative;
 }
 
 /* Image container styling */
 .authen-template_image {
-    flex: 1;
+    flex: 1; 
     background-image: url('/src/assets/images/backgr.jpeg');
     background-size: cover;
-    background-position: left;
+    background-position: center;
     background-repeat: no-repeat;
 }
 
@@ -22,99 +27,137 @@ html, body{
 .authen-template_form {
     flex: 1;
     max-width: 500px;
-    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 20px 70px 30px;
-    border-top-right-radius: 12px;
-    border-bottom-right-radius: 12px;
+    padding: 40px;
     text-align: center;
 }
 
 /*Title and message styles*/
 .title{
-    font-size: 50px;
-    color: #579BB1; 
-    margin-top: 5px;
-    margin-bottom: 5px;
+    font-size: 2.5rem;
+    color: #ECB390; 
+    margin: 0.5rem 0;
+    font-family:'Montserra', sans-serif;
 }
+
 .message{
-    font-size: 10px;
+    font-size: 0.8rem;
     color: rgba(0, 0, 0, 0.8); 
-    margin-bottom: 5px;
-    margin-top: 5px;
+    margin: 0.5rem 0;
     font-weight: normal;
+    font-family:'Montserra', sans-serif;
 }
 
 /* Input field styles */
 .input {
     width: 100%;
-    padding: 8px;
+    padding: 0.8rem;
     border: 1px solid #ddd;
     border-radius: 8px;
-    font-size: 18px;
+    font-size: 1rem;
+    font-family: 'Montserra', sans-serif;
 }
 /* Button styling */
 .button {
     width: 50%;
-    padding: 10px;
-    background-color: #579BB1;
+    padding: 0.8rem;
+    background-color: #94B49F;
     color: #fff;
     border: none;
     border-radius: 8px;
-    font-size: 18px;
+    font-size: 1rem;
     cursor: pointer;
-    margin-top: 10px;
-    margin-bottom: 10px;      
+    margin: 0.5rem 0;     
     transition: background-color 0.3s ease;
+    font-family: 'Poppins', sans-serif;
 }
 
 .button:hover {
-    background-color: #92C7CF;
+    background-color: #CEE5D0;
 }
+
+.button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
 .button-google {
     width: 50%;
-    padding: 10px;
+    padding: 0.8rem;
     background-color: #fff;
     color: #000;
-    border: 2px solid #92C7CF;
+    border: 2px solid #94B49F;
     border-radius: 8px;
-    font-size: 18px;
+    font-size: 1;
     cursor: pointer;
-    margin-top: 10px;      
+    margin: 0.5rem 0;     
     transition: background-color 0.3s ease;
+    font-family: 'Poppins', sans-serif;
 }
-/* .button-google:hover {
-    background-color: #92C7CF;
-} */
+ .button-google:hover {
+    background-color: #CEE5D0;
+} 
 .button-google::after{
     content: url('/src/assets/images/search.png');
-    margin-left: 5px;
+    margin-left: 7px;
+    vertical-align: middle;
 }
 /* Link styling */
  .authen-template_form a {
     text-decoration: none;
-    color: #92C7CF;
-    margin-top: 23px;
+    color: #ECB390;
+    margin-top: 1rem;
     display: block;
     text-align: center;
 } 
 .authen-template_form a:hover {
-    color: #579BB1;
+    color: #DA8359;
 } 
+
+.home-icon {
+    position: absolute;
+    top: 10px; /* Adjust this value to fine-tune */
+    right: 10px; /* Adjust this value to fine-tune */
+    font-size: 1.7rem;
+    color: #94b49f; /* Matching the design */
+    padding: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+  
+  .home-icon:hover {
+    transform: scale(1.1);
+    color: #7a937f; /* Darker color when hovered */
+  }
+  
+  .home-icon svg {
+    vertical-align: middle;
+  }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .authen-template {
         flex-direction: column;
     }
+
     .authen-template_image {
-        height: 200px;
-        background-position: top;
+        height: 30vh;
     }
+
     .authen-template_form {
         max-width: 100%;
-        border-radius: 0;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 2rem;
+    }
+
+    .button, .button-google {
+        width: 100%;
     }
 }

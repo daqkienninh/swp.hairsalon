@@ -16,11 +16,11 @@ export const store = configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
-            serializableCheck: {
-                // Ignore specific paths or actions that contain non-serializable values
-                ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
-                ignoredPaths: ['register', 'rehydrate'], // or any path in state/actions that might hold functions or non-serializable data
-            },
+          serializableCheck: {
+            // Ignore specific paths or actions that contain non-serializable values
+            ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+            ignoredPaths: ['register', 'rehydrate'], // or any path in state/actions that might hold functions or non-serializable data
+          },
         }),
 });
 export const persistor = persistStore(store);

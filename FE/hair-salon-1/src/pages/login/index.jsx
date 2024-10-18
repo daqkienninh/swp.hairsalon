@@ -12,7 +12,6 @@ import { login } from "../../redux/features/userSlice";
 function LoginPage() {
   const navigate = useNavigate(); // Function link to another location
 
-
   const handleLoginGoolge = () => {
     const auth = getAuth();
     signInWithPopup(auth, googleProvider)
@@ -43,77 +42,72 @@ function LoginPage() {
     try {
       const response = await api.post("/api/login", values);
       console.log(response);
-      const {role, token} = response.data;
+      const { role, token } = response.data;
       dispatch(login(response.data));
       localStorage.setItem("token", token);
-      if (role == 'STAFF') { // Customize the role
+      if (role == "CUSTOMER") {
+        // Customize the role
+        navigate("/");
+      } else if (role == "STAFF") {
         navigate("/dashboard");
-        toast.success("Login successfully");
-      }
-      if (role == 'ADMIN'){
-        navigate("/admin");
-        toast.success("Login successfully");
-      }
-      else {
-        navigate("/")
-        toast.success("Login successfully");
+      } else if (role == "STYLIST") {
+        navigate("/staff/dashboard");
       }
     } catch (err) {
-      toast.error(err.response.data);
+      toast.error(err.response.data || "Error login. Please try again!");
     }
   };
 
   /*End handle Login--------------------------------------------------------------------------- */
 
-
   return (
     <AuthenTemplate>
       <div style={{ height: "100vh" }}>
-        <h2 className="title">Login</h2>
-        <h4 className="message">Please login to booking hair salon service.</h4>
+        <h2 className="title">Đăng nhập</h2>
+        <h4 className="message">
+          Đăng nhập để sử dụng dịch vụ đặt lịch làm tóc.
+        </h4>
         <Form labelCol={{ span: 24 }} onFinish={handleLogin}>
           <Form.Item
-            label="Phone"
+            label="SĐT"
             name="phone"
             className="form-item"
             rule={[
               {
                 required: true,
-                message: "Pleas input your phone number",
+                message: "Hãy nhập SĐT của bạn!",
               },
               {
                 pattern: "^[0-9]{10}$",
-                message: "Phone number must have 9 digits!",
+                message: "SĐT phải có đủ 9 số!",
               },
             ]}
           >
             <Input className="input" />
           </Form.Item>
           <Form.Item
-            label="Password"
+            label="Mật khẩu"
             name="password"
             className="form-item"
             rule={[
               {
                 required: true,
-                message: "Pleas input password",
+                message: "Hãy nhập mật khẩu của bạn!",
               },
             ]}
           >
             <Input.Password className="input" />
           </Form.Item>
-          <div>Forget your password? Click here to change it!</div>
-          <button type="primary" htmlType="submit" className="button">
-            Login
+          <div>Quên mật khẩu?</div>
+          <button type="submit" className="button">
+            Đăng nhập
           </button>
-          <p className="message">You can log in with another accounts.</p>
+          <p className="message">Đăng nhập với tài khoản Google.</p>
           <button onClick={handleLoginGoolge} className="button-google">
-            Continue with
+            Tiếp tục với
           </button>
           <div>
-            <Link to="/register">
-              Don't have account? Register new account!
-            </Link>
+            <Link to="/register">Không có tài khoản? Hãy đăng kí tại đây.</Link>
           </div>
         </Form>
       </div>

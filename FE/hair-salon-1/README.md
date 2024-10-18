@@ -1,8 +1,37 @@
-# React + Vite
+npm install redux-persist
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+npm install @reduxjs/toolkit
 
-Currently, two official plugins are available:
+npm install -D tailwindcss
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+npm i react-toastify
+
+npm i antd
+
+npm i react-router-dom
+
+npm i axios
+
+npm i firebase
+
+npm install react-icons --save
+
+npm i
+
+npm i framer-motion
+
+- npm install react-transition-group
+
+- npm install styled-components
+
+- npm install -g vercel
+
+- npm install mdb-react-ui-kit
+
+- npm i @fortawesome/fontawesome-free
+
+- npm i lucide-react
+
+- npm i sass
+
+npm i redux-persist @reduxjs/toolkit -D tailwindcss react-toastify antd react-router-dom axios firebase react-icons framer-motion react-transition-group styled-components mdb-react-ui-kit @fortawesome/fontawesome-free lucide-react sass

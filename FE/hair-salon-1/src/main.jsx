@@ -7,8 +7,7 @@ import { ToastContainer } from "react-toastify";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./redux/store.js";
-import './index.css';
-
+import "./index.css";
 
 createRoot(document.getElementById("root")).render(
   <>
@@ -17,6 +16,6 @@ createRoot(document.getElementById("root")).render(
         <App />
         <ToastContainer />
       </PersistGate>
-    </Provider>,
+    </Provider>
   </>
 );

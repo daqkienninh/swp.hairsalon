@@ -1,30 +1,33 @@
-import { useState } from "react";
-import React from "react";
-import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
 import HomePage from "./pages/homepage";
 import ManageService from "./pages/staff/manage-service";
+import Dashboard from "./components/dashboard";
 import Layout from "./components/layout";
-import Test from "./pages/test";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import ManageStylist from "./pages/admin/manage-stylist";
-import DashboardAdmin from "./components/dashboard-admin";
-import DashboardStaff from "./components/dashboard-staff";
-import ManageAppointment from "./pages/staff/manage-appointment";
-import ManageCustomer from "./pages/admin/manage-customer";
+import ManageStylist from "./pages/staff/manage-stylist";
+import ViewCustomer from "./pages/profile/customer/view/index";
+import ConfirmBooking from "./pages/confirmbook/index";
+import Booking from "./pages/book";
+import ServicePage from "./pages/services";
 
 function App() {
-  const ProtectRouteAuth = ({ children, allowedRoles }) => {
+  const ProtectRouteAuth = ({ children }) => {
     const user = useSelector((store) => store.user);
     console.log(user);
-    if (user && allowedRoles.includes(user.role)) { //Customize the role
+    if (user && user?.role === "STAFF") {
+      //Customize the role
       return children;
     }
-    toast.error("Not allow")
-    return <Navigate to={"/login"} />
-  }
+    toast.error("Not allow");
+    return <Navigate to={"/login"} />;
+  };
 
   const router = createBrowserRouter([
     {
@@ -33,10 +36,21 @@ function App() {
       children: [
         {
           path: "",
-          element: <HomePage />
-        }
-      ]
-
+          element: <HomePage />,
+        },
+        {
+          path: "services",
+          element: <ServicePage />,
+        },
+        {
+          path: "booking",
+          element: <Booking />,
+        },
+        {
+          path: "confirm-booking",
+          element: <ConfirmBooking />,
+        },
+      ],
     },
     {
       path: "login",
@@ -47,44 +61,26 @@ function App() {
       element: <RegisterPage />,
     },
     {
-      path: "staff",
+      path: "dashboard",
       element: (
-        <ProtectRouteAuth allowedRoles={["STAFF"]}>
-          <DashboardStaff />
+        <ProtectRouteAuth>
+          <Dashboard />
         </ProtectRouteAuth>
       ),
       children: [
         {
           path: "service",
-          element: <ManageService />
+          element: <ManageService />,
         },
-        {
-          path: "appointment",
-          element: <ManageAppointment />
-        }
-      ]
-    },
-    {
-      path: "admin",
-      element: (
-        <ProtectRouteAuth allowedRoles={["ADMIN"]}>
-          <DashboardAdmin />
-        </ProtectRouteAuth>
-      ),
-      children: [
         {
           path: "stylist",
-          element: <ManageStylist />
+          element: <ManageStylist />,
         },
-        {
-          path: "customer",
-          element: <ManageCustomer />
-        }
-      ]
+      ],
     },
     {
-      path: "test",
-      element: <Test />,
+      path: "customer",
+      element: <ViewCustomer />,
     },
   ]);
   return <RouterProvider router={router} />;
