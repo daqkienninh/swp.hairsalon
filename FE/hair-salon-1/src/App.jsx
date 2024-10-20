@@ -1,6 +1,7 @@
 import {
   createBrowserRouter,
   Navigate,
+  Route,
   RouterProvider,
 } from "react-router-dom";
 import LoginPage from "./pages/login";
@@ -16,6 +17,8 @@ import ViewCustomer from "./pages/profile/customer/view/index";
 import ConfirmBooking from "./pages/confirmbook/index";
 import Booking from "./pages/book";
 import ServicePage from "./pages/services";
+import ServiceDetail from "./components/service-detail";
+import ServiceDetailPage from "./pages/ServiceDetail";
 
 function App() {
   const ProtectRouteAuth = ({ children }) => {
@@ -37,6 +40,10 @@ function App() {
         {
           path: "",
           element: <HomePage />,
+        },
+        {
+          path: "/service-detail/:id",
+          element: <ServiceDetailPage />,
         },
         {
           path: "services",

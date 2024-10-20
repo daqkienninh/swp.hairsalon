@@ -1,28 +1,56 @@
 import React from "react";
-import { Card, Button } from "antd";
-import "./index.css";
+import { Card, Typography, Tag } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const { Meta } = Card;
+const { Text } = Typography;
 
-const ServiceCard = ({ title, duration, description, images }) => {
+function ServiceCard({
+  id,
+  name,
+  description,
+  type,
+  price,
+  duration,
+  discount,
+  image,
+}) {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`/service-detail/${id}`);
+  };
+
   return (
     <Card
       hoverable
-      cover={<img alt="example" src={images[0]} />}
-      className="service-card"
+      cover={
+        <img
+          alt={name}
+          src={image}
+          style={{ height: 200, objectFit: "cover" }}
+        />
+      }
+      actions={[
+        <Text strong>{`$${price.toFixed(2)}`}</Text>,
+        <Text>{`${duration} min`}</Text>,
+      ]}
+      onClick={handleCardClick}
     >
       <Meta
-        title={title}
+        title={name}
         description={
-          <div>
-            <p>{description}</p>
-            <p>{duration} Phút</p>
-          </div>
+          <>
+            <Text>{description}</Text>
+            <div style={{ marginTop: "0.5rem" }}>
+              <Tag color="blue">{type}</Tag>
+              {discount > 0 && <Tag color="red">{`${discount}% OFF`}</Tag>}
+            </div>
+          </>
         }
       />
-      <Button type="link">Tìm hiểu thêm</Button>
     </Card>
   );
-};
+}
 
 export default ServiceCard;
