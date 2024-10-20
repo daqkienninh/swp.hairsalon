@@ -47,7 +47,7 @@ function ManageManager() {
             <Form.Item name="id" hidden>
                 <Input />
             </Form.Item>
-            <Form.Item name="password" hidden>
+            <Form.Item label="Pasword" name="password" hidden>
                 <Input />
             </Form.Item>
             <FormItem
@@ -111,6 +111,7 @@ function ManageManager() {
                 path="/api/account"
                 title="Manager"
                 roles="MANAGER"
+                puts="/api/manager"
             />
         </div>
     )

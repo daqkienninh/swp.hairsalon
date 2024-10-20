@@ -23,6 +23,9 @@ import ViewCustomer from "./pages/profile/customer/view";
 import DashboardStaff from "./components/dashboard-staff";
 import ManageStaff from "./pages/admin/manage-staff";
 import ManageManager from "./pages/admin/manage-manager";
+import DashboardLayout from "./components/layout/dashboardlayout";
+import Payment from "./pages/profile/customer/payment";
+import SuccessPage from "./pages/profile/customer/success";
 
 function App() {
   const ProtectRouteAuth = ({ children, allowedRoles }) => {
@@ -75,6 +78,10 @@ function App() {
       ),
       children: [
         {
+          path: "",
+          element: <DashboardLayout/>
+        },
+        {
           path: "service",
           element: <ManageService />
         },
@@ -87,7 +94,7 @@ function App() {
     {
       path: "admin",
       element: (
-        <ProtectRouteAuth allowedRoles={["ADMIN"]}>
+        <ProtectRouteAuth allowedRoles={["ADMINISTRATOR"]}>
           <DashboardAdmin />
         </ProtectRouteAuth>
       ),
@@ -112,6 +119,14 @@ function App() {
     {
       path: "customer",
       element: <ViewCustomer />,
+    },
+    {
+      path: "success",
+      element: <SuccessPage />,
+    },
+    {
+      path: "test",
+      element: <Payment />,
     },
   ]);
   return <RouterProvider router={router} />;

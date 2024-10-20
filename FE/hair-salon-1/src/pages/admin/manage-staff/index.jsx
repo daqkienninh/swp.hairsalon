@@ -47,7 +47,7 @@ function ManageStaff() {
             <Form.Item name="id" hidden>
                 <Input />
             </Form.Item>
-            <Form.Item name="password" hidden>
+            <Form.Item label="Password" name="password">
                 <Input />
             </Form.Item>
             <FormItem
@@ -106,8 +106,9 @@ function ManageStaff() {
           columns={columns}
           formItems={formItems}
           path="/api/account"
-          title="Staff"
+          title="Manage Staff"
           roles="STAFF"
+          puts="/api/staff"
       /></div>
   )
 }

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import api from "../../config/axios";
 import { toast } from "react-toastify";
 
-function CRUDTemplate({ columns, formItems, path, title, roles }) {
+function CRUDTemplate({ columns, formItems, path, title, roles, puts }) {
   const [data, setData] = useState();
   const [showModal, setShowModal] = useState(false);
   const [form] = Form.useForm();
@@ -39,10 +39,10 @@ function CRUDTemplate({ columns, formItems, path, title, roles }) {
       // if value already has id => Update
       if (values.id) {
         console.log(values.id);
-        const response = await api.put(`${path}/${values.id}`, values);
+        const response = await api.put(`${puts}/${values.id}`, values);
         toast.success("Successfully Update");
       } else {
-        const response = await api.post(path, values);
+        const response = await api.post(puts, values);
         toast.success("Successfully Create");
       }
       fetchData(); // load data again
@@ -101,8 +101,9 @@ function CRUDTemplate({ columns, formItems, path, title, roles }) {
   ];
   return (
     <div>
-      <Button onClick={() => setShowModal(true)}>Create new</Button>
-      <Table columns={tableColums} dataSource={data} />
+      <h1>{title}</h1> <br />
+      <Button onClick={() => setShowModal(true)}>Create new</Button> <br />
+      <Table columns={tableColums} dataSource={data}/>
       <Modal
         open={showModal}
         onCancel={() => setShowModal(false)}

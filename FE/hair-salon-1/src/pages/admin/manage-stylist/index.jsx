@@ -47,7 +47,7 @@ function ManageStylist() {
             <Form.Item name="id" hidden>
                 <Input />
             </Form.Item>
-            <Form.Item name="password" hidden>
+            <Form.Item label="Password" name="password">
                 <Input />
             </Form.Item>
             <FormItem
@@ -109,6 +109,7 @@ function ManageStylist() {
                 path="/api/account"
                 title="Stylist"
                 roles="STYLIST"
+                puts="/api/stylist"
             />
         </div>
     )

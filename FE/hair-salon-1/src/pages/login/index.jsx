@@ -56,7 +56,7 @@ function LoginPage() {
       } else if (role == "STYLIST") {
         navigate("/stylist");
         toast.success("Login successfully");
-      } else if (role == 'ADMIN') {
+      } else if (role == 'ADMINISTRATOR') {
         navigate("/admin");
         toast.success("Login successfully");
       }
