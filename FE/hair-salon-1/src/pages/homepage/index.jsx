@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 function HomePage() {
   const [services, setServices] = useState([]);
-  
+
   const fetchServices = async () => {
     try {
       const response = await api.get("/api/service");

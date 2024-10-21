@@ -57,13 +57,17 @@ const Booking = () => {
           {
             serviceId: values.service,
             stylistId: values.stylist,
-            startTime: values.dateTime.format(),
+            startTime: values.dateTime.format("YYYY-MM-DDTHH:mm:ss"), // Changed format here
             note: values.note,
           },
         ],
       };
 
-      await api.post("/api/appointment", appointmentData);
+      console.log("Appointment data:", appointmentData);
+
+      const response = await api.post("/api/appointment", appointmentData);
+      console.log("API response:", response);
+
       message.success("Booking successful!");
 
       // Find the selected service and stylist names
@@ -72,9 +76,9 @@ const Booking = () => {
       )?.name;
       const selectedStylist = stylists.find(
         (s) => s.id === values.stylist
-      )?.name;
+      )?.fullName;
 
-      navigate("/booking-confirmation", {
+      navigate("/confirm-booking", {
         state: {
           bookingDetails: {
             service: selectedService,
@@ -86,7 +90,16 @@ const Booking = () => {
       });
     } catch (error) {
       console.error("Error submitting booking:", error);
-      message.error("Booking failed. Please try again.");
+      if (error.response) {
+        console.error("Response data:", error.response.data);
+        console.error("Response status:", error.response.status);
+        console.error("Response headers:", error.response.headers);
+      } else if (error.request) {
+        console.error("No response received:", error.request);
+      } else {
+        console.error("Error message:", error.message);
+      }
+      message.error(`Booking failed: ${error.response?.data || error.message}`);
     }
   };
 
@@ -128,7 +141,7 @@ const Booking = () => {
             >
               {stylists.map((stylist) => (
                 <Option key={stylist.id} value={stylist.id}>
-                  {stylist.name}
+                  {stylist.fullName}
                 </Option>
               ))}
             </Select>
