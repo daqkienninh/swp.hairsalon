@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Button, Spin } from "antd";
+import { Row, Col, Spin, Typography } from "antd";
 import ServiceCard from "../../components/service-template";
 import api from "./../../config/axios";
+import HeaderBottom from "../../components/header/headerbottom";
+
+const { Title } = Typography;
 
 function ServicePage() {
   const [services, setServices] = useState([]);
@@ -11,9 +14,8 @@ function ServicePage() {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await api.get("/api/service"); // Replace with your API endpoint
-        const data = await response.json();
-        setServices(data);
+        const response = await api.get("/api/service");
+        setServices(response.data); // Assuming the response data is an array of services
       } catch (error) {
         console.error("Error fetching services:", error);
       } finally {
@@ -25,27 +27,43 @@ function ServicePage() {
   }, []);
 
   if (loading) {
-    return <Spin size="large" />;
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <Spin size="large" />
+      </div>
+    );
   }
 
   return (
     <div className="container">
-      <h2>CẮT TÓC</h2>
-      <p>
-        Trải nghiệm cắt tóc phong cách dành riêng cho bạn, vừa tiện lợi vừa thư
-        giãn tại đây
-      </p>
-      <Row gutter={[16, 16]}>
-        {services.map((service, index) => (
-          <Col key={index} xs={24} sm={12} lg={8}>
-            <ServiceCard {...service} />
-          </Col>
-        ))}
-      </Row>
-      <div className="button-container">
-        <Button type="primary" size="large">
-          ĐẶT LỊCH NGAY
-        </Button>
+      <HeaderBottom />
+      <div style={{ padding: "2rem" }}>
+        <Title level={2} style={{ textAlign: "center", marginBottom: "2rem" }}>
+          Tất cả dịch vụ
+        </Title>
+        <Row gutter={[16, 16]}>
+          {services.map((service) => (
+            <Col xs={24} sm={12} md={8} lg={6} key={service.id}>
+              <ServiceCard
+                id={service.id}
+                name={service.name}
+                description={service.description}
+                type={service.type}
+                price={service.price}
+                duration={service.duration}
+                discount={service.discount}
+                image={service.image}
+              />
+            </Col>
+          ))}
+        </Row>
       </div>
     </div>
   );

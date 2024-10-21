@@ -1,10 +1,13 @@
 import React from "react";
 import { CheckCircle, Calendar, Clock, Scissors, User } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Button } from "antd";
+import moment from "moment";
 
 function ConfirmBooking() {
   const location = useLocation();
+  const navigate = useNavigate();
   const bookingDetails = location.state?.bookingDetails || {};
 
   const containerVariants = {
@@ -15,6 +18,10 @@ function ConfirmBooking() {
   const itemVariants = {
     hidden: { opacity: 0, x: -10 },
     visible: { opacity: 1, x: 0 },
+  };
+
+  const handleBackToHome = () => {
+    navigate("/");
   };
 
   return (
@@ -50,24 +57,37 @@ function ConfirmBooking() {
           />
           <BookingDetail
             icon={<Calendar className="h-4 w-4 text-green-500" />}
-            label="Date"
-            value={bookingDetails.date}
+            label="Date and Time"
+            value={moment(bookingDetails.dateTime).format(
+              "MMMM D, YYYY h:mm A"
+            )}
           />
-          <BookingDetail
-            icon={<Clock className="h-4 w-4 text-green-500" />}
-            label="Time"
-            value={bookingDetails.time}
-          />
+          {bookingDetails.note && (
+            <BookingDetail
+              icon={<Clock className="h-4 w-4 text-green-500" />}
+              label="Additional Notes"
+              value={bookingDetails.note}
+            />
+          )}
         </motion.div>
 
         <motion.p
           className="text-center text-xs text-gray-500 mt-4"
           variants={itemVariants}
         >
-          {/* A confirmation email has been sent. */}
           You can see your appointment in history.
           <br /> See you soon!
         </motion.p>
+
+        <motion.div variants={itemVariants} className="mt-6">
+          <Button
+            type="primary"
+            onClick={handleBackToHome}
+            style={{ width: "100%" }}
+          >
+            Back to Home
+          </Button>
+        </motion.div>
       </div>
     </motion.div>
   );

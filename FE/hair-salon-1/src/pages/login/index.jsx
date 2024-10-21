@@ -76,7 +76,7 @@ function LoginPage() {
         </h4>
         <Form labelCol={{ span: 24 }} onFinish={handleLogin}>
           <Form.Item
-            label="SĐT"
+            label="Số điện thoại"
             name="phone"
             className="form-item"
             rule={[

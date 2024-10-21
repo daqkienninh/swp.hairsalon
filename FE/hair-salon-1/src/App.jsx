@@ -1,6 +1,7 @@
 import {
   createBrowserRouter,
   Navigate,
+  Route,
   RouterProvider,
 } from "react-router-dom";
 import React from "react";
@@ -26,6 +27,8 @@ import ManageManager from "./pages/admin/manage-manager";
 import DashboardLayout from "./components/layout/dashboardlayout";
 import Payment from "./pages/profile/customer/payment";
 import SuccessPage from "./pages/profile/customer/success";
+import ServiceDetail from "./components/service-detail";
+import ServiceDetailPage from "./pages/ServiceDetail";
 
 function App() {
   const ProtectRouteAuth = ({ children, allowedRoles }) => {
@@ -46,6 +49,10 @@ function App() {
         {
           path: "",
           element: <HomePage />,
+        },
+        {
+          path: "/service-detail/:id",
+          element: <ServiceDetailPage />,
         },
         {
           path: "services",

@@ -13,7 +13,7 @@ import {
 import api from "../../config/axios";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../redux/features/userSlice";
+import { logout, updateUser } from "../../redux/features/userSlice";
 import { useNavigate } from "react-router-dom";
 import { GrHomeRounded } from "react-icons/gr";
 //import { updateUser } from "../../redux/userSlice"; // Assuming you have this action in your userSlice
@@ -39,28 +39,20 @@ export default function ProfileTemplate() {
       reader.onerror = (error) => reject(error);
     });
 
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate("/"); // Navigate to the homepage after logout
-  };
-
-  const [editMode, setEditMode] = useState({
-    fullName: false,
-    email: false,
-    phone: false,
-    sex: false,
-  });
-
+  const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     fullName: user.fullName,
     email: user.email,
     phone: user.phone,
     sex: user.sex,
     image: user.image,
+    image: user.avatarUrl,
+    password: user.password,
   });
 
-  const handleEdit = (field) => {
-    setEditMode({ ...editMode, [field]: true });
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
   };
 
   const handleChange = (e) => {
@@ -68,15 +60,13 @@ export default function ProfileTemplate() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleUpdate = async (field) => {
+  const handleUpdate = async () => {
     try {
-      const response = await api.put(`/users/${user.id}`, {
-        [field]: formData[field],
-      });
+      const response = await api.put(`/api/customer/${user.id}`, formData);
       if (response.status === 200) {
-        dispatch(updateUser({ [field]: formData[field] }));
-        setEditMode({ ...editMode, [field]: false });
-        toast.success(`${field} updated successfully`);
+        dispatch(updateUser(formData));
+        setIsEditing(false);
+        toast.success("Profile updated successfully");
       }
     } catch (error) {
       console.error("Error updating user info:", error);
@@ -144,53 +134,78 @@ export default function ProfileTemplate() {
   const handleChangeImage = ({ fileList: newFileList }) => setFileList(newFileList);
 
   const renderField = (field, label) => (
+  const renderSexField = () => (
     <MDBRow className="mb-4">
       <MDBCol sm="3">
-        <MDBCardText>{label}</MDBCardText>
+        <MDBCardText
+          style={{ textAlign: "left", marginLeft: "40px", fontWeight: "bold" }}
+        >
+          Giới tính
+        </MDBCardText>
       </MDBCol>
-      <MDBCol sm="7">
-        {editMode[field] ? (
-          <MDBInput
-            type="text"
-            name={field}
-            value={formData[field]}
+      <MDBCol sm="9">
+        {isEditing ? (
+          <select
+            name="sex"
+            value={formData.sex}
             onChange={handleChange}
-          />
-        ) : (
-          <MDBCardText className="text-muted">{user[field]}</MDBCardText>
-        )}
-      </MDBCol>
-      <MDBCol sm="2">
-        {editMode[field] ? (
-          <MDBBtn
-            rounded
-            size="sm"
-            onClick={() => handleUpdate(field)}
-            style={{
-              backgroundColor: "#94B49F",
-              color: "white",
-              borderColor: "#94B49F",
-            }}
+            className="form-select"
           >
-            Save
-          </MDBBtn>
+            <option value=""></option>
+            <option value="Nam">Nam</option>
+            <option value="Nữ">Nữ</option>
+            <option value="Khác">Khác</option>
+          </select>
         ) : (
-          <MDBBtn
-            rounded
-            size="sm"
-            onClick={() => handleEdit(field)}
-            style={{
-              backgroundColor: "#94B49F",
-              color: "white",
-              borderColor: "#94B49F",
-            }}
+          <MDBCardText
+            className="text-muted"
+            style={{ textAlign: "left", marginLeft: "100px" }}
           >
-            Edit
-          </MDBBtn>
+            {user.sex}
+          </MDBCardText>
         )}
       </MDBCol>
     </MDBRow>
   );
+
+  const renderField = (field, label) => {
+    if (field === "sex") {
+      return renderSexField();
+    }
+
+    return (
+      <MDBRow className="mb-4">
+        <MDBCol sm="3">
+          <MDBCardText
+            style={{
+              textAlign: "left",
+              marginLeft: "40px",
+              fontWeight: "bold",
+            }}
+          >
+            {label}
+          </MDBCardText>
+        </MDBCol>
+        <MDBCol sm="9">
+          {isEditing ? (
+            <MDBInput
+              type={field === "password" ? "password" : "text"}
+              name={field}
+              value={formData[field]}
+              onChange={handleChange}
+            />
+          ) : (
+            <MDBCardText
+              className="text-muted"
+              style={{ textAlign: "left", marginLeft: "100px" }}
+            >
+              {field === "password" ? "********" : user[field]}
+            </MDBCardText>
+          )}
+        </MDBCol>
+      </MDBRow>
+    );
+  };
 
   return (
     <div>
@@ -209,7 +224,10 @@ export default function ProfileTemplate() {
         />
       </div>
       <section style={{ backgroundColor: "#f4f5f7", minHeight: "100vh" }}>
-        <MDBContainer className="py-5">
+        <MDBContainer
+          style={{ maxWidth: "950px", margin: "0 auto" }}
+          className="py-5"
+        >
           <MDBRow className="justify-content-center">
             <MDBCol lg="8">
               <MDBCard className="mb-4 shadow-sm">
@@ -281,16 +299,42 @@ export default function ProfileTemplate() {
                     </div>
                   </div>
                   <div className="text-center mb-4">
-                    <h4 className="mb-1">{user.fullName}</h4>
+                    {/* <h4 className="mb-1">{user.fullName}</h4> */}
+                    <MDBBtn
+                      onClick={() => setIsEditing(!isEditing)}
+                      style={{
+                        backgroundColor: "#94B49F",
+                        color: "white",
+                        borderColor: "#94B49F",
+                      }}
+                    >
+                      {isEditing ? "Cancel" : "Update"}
+                    </MDBBtn>
                   </div>
                   <hr className="my-4" />
-                  {renderField("fullName", "Full Name")}
+                  {renderField("fullName", "Họ và Tên")}
                   <hr className="my-4" />
                   {renderField("email", "Email")}
                   <hr className="my-4" />
-                  {renderField("phone", "Phone")}
+                  {renderField("phone", "SĐT")}
                   <hr className="my-4" />
-                  {renderField("sex", "Gender")}
+                  {renderField("sex", "Giới tính")}
+                  <hr className="my-4" />
+                  {renderField("password", "Mật khẩu")}
+                  {isEditing && (
+                    <div className="text-center mt-4">
+                      <MDBBtn
+                        onClick={handleUpdate}
+                        style={{
+                          backgroundColor: "#7a937f",
+                          color: "white",
+                          borderColor: "#7a937f",
+                        }}
+                      >
+                        Save Changes
+                      </MDBBtn>
+                    </div>
+                  )}
                 </MDBCardBody>
               </MDBCard>
             </MDBCol>
