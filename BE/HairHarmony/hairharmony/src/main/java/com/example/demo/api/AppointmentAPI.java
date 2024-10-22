@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/appointment")
@@ -32,6 +33,18 @@ public class AppointmentAPI {
     public ResponseEntity createAppointment(@RequestBody AppointmentRequest appointmentRequest) {
         Appointment appointment = appointmentService.createAppointment(appointmentRequest);
         return ResponseEntity.ok(appointment);
+    }
+
+    @PostMapping("payment")
+    public ResponseEntity createPayment(@RequestBody AppointmentRequest appointmentRequest) throws Exception {
+        String vnPayURL = appointmentService.createUrl(appointmentRequest);
+        return ResponseEntity.ok(vnPayURL);
+    }
+
+    @PostMapping("transaction")
+    public ResponseEntity createTransaction(@RequestParam UUID appointmentID) throws Exception {
+         appointmentService.createTransactions(appointmentID);
+        return ResponseEntity.ok("Successful transaction!");
     }
 
     @GetMapping

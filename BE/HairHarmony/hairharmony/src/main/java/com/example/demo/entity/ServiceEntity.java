@@ -44,4 +44,9 @@ public class ServiceEntity {
     @OneToMany(mappedBy = "serviceEntity")
     @JsonIgnore
     List<AppointmentDetail> appointmentDetails;
+
+//    @ManyToOne
+//    @JsonIgnore
+//    @JoinColumn(name = "owner_id")
+//    Account account;
 }

@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,6 +17,9 @@ public class AppointmentStatusService {
 
     @Autowired
     AppointmentRepository appointmentRepository;
+
+    @Autowired
+    AppointmentService appointmentService;
 
     @Scheduled(fixedRate = 60000) // Runs every minute
     public void updateAppointmentStatuses() {
@@ -45,7 +49,9 @@ public class AppointmentStatusService {
             }
 
             appointmentRepository.save(appointment);
+            appointmentService.updateSlotStatus(appointment);
         }
     }
+
 
 }

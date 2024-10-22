@@ -49,6 +49,7 @@ public class ServiceEntityService {
         ServiceEntity oldService = getServiceById(id);
         oldService.setName(serviceEntity.getName());
         oldService.setDescription(serviceEntity.getDescription());
+        oldService.setImage(serviceEntity.getImage());
         oldService.setPrice(serviceEntity.getPrice());
         oldService.setDuration(serviceEntity.getDuration());
         oldService.setDiscount(serviceEntity.getDiscount());

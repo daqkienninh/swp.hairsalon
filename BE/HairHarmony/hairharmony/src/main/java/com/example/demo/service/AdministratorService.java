@@ -22,8 +22,8 @@ public class AdministratorService {
     @Autowired
     AdministratorRepository administratorRepository;
 
-    @Autowired
     @Lazy
+    @Autowired
     ModelMapper modelMapper;
 
     @Autowired
@@ -36,7 +36,7 @@ public class AdministratorService {
     PasswordEncoder passwordEncoder;
 
     //C
-    public AdministratorResponse createAdministrator(AdministratorRequest administratorRequest) {
+    public AdministratorResponse createAdministrator (AdministratorRequest administratorRequest) {
         Administrator administrator = modelMapper.map(administratorRequest, Administrator.class);
         try {
             // Create a new account for the administrator
@@ -57,6 +57,7 @@ public class AdministratorService {
         } catch (Exception e) {
             throw new DuplicateEntity("Duplicate! Failed to create administrator!");
         }
+
     }
 
     private Account createAccountForAdministrator(AdministratorRequest administratorRequest) {
@@ -111,6 +112,4 @@ public class AdministratorService {
         oldAdministrator.setDeleted(true);
         return administratorRepository.save(oldAdministrator);
     }
-
-
 }
