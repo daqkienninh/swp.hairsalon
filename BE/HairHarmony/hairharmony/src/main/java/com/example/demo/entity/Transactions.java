@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -13,7 +14,6 @@ public class Transactions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
-
 
     @ManyToOne
     @JoinColumn(name = "from_id")
@@ -25,6 +25,8 @@ public class Transactions {
 
     @ManyToOne
     @JoinColumn(name = "payment_id")
+    @JsonIgnore
+    @ToString.Exclude
     Payment payment;
 
     @Enumerated(EnumType.STRING)

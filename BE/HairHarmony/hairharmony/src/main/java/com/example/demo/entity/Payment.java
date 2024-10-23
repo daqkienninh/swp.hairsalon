@@ -12,8 +12,8 @@ import lombok.ToString;
 import java.util.Date;
 import java.util.Set;
 
-@Entity
 @Data
+@Entity
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +27,7 @@ public class Payment {
     @OneToOne
     @JoinColumn(name = "appointment_id")
     @ToString.Exclude
+    @JsonManagedReference
     Appointment appointments;
 
     @OneToMany(mappedBy = "payment", cascade = CascadeType.ALL)

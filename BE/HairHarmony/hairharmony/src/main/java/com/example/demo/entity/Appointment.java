@@ -1,15 +1,13 @@
 package com.example.demo.entity;
 
 import com.example.demo.entity.enums.AppointmentStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -19,6 +17,8 @@ import java.util.UUID;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Appointment {
     @Column(unique = true)
     @Id
@@ -44,12 +44,12 @@ public class Appointment {
     Account customer;
 
     @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonIgnore
-            @ToString.Exclude
+    @ToString.Exclude
     List<AppointmentDetail> appointmentDetails;
 
     @OneToOne(mappedBy = "appointments")
     @ToString.Exclude
+    @JsonBackReference
     Payment payment;
 
 }

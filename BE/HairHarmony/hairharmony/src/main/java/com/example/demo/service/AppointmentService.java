@@ -173,24 +173,9 @@ public class AppointmentService {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new EntityNotFoundException("Appointment not found!"));
 
-        // Set the status to DONE
         appointment.setStatus(AppointmentStatus.DONE);
         appointmentRepository.save(appointment);
 
-//        // Process cash transactions if payment method is CASH
-////        if (appointment.getPayment().getPayment_method() == PaymentEnums.CASH) {
-//            Payment payment = paymentRepository.findByAppointment(appointment);
-//            if (payment == null) {
-//                payment = new Payment();
-//                payment.setAppointments(appointment);
-//                payment.setCreateAt(new Date());
-//                payment.setPayment_method(PaymentEnums.CASH);
-//                paymentRepository.save(payment);
-//            }
-//            processBankingTransactions(appointment, payment); // Reusing the transaction creation logic
-////        }
-
-        // Update the slot status based on the appointment details
         updateSlotStatus(appointment);
     }
 

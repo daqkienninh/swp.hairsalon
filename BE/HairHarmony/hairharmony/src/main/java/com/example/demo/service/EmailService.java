@@ -23,7 +23,7 @@ public class EmailService {
         try {
             Context context = new Context();
             context.setVariable("name",emailDetail.getReceiver().getEmail());
-            context.setVariable("button","Go to home page");
+            context.setVariable("button","Đến HairHarmony");
             context.setVariable("link",emailDetail.getLink());
             String template = templateEngine.process("welcome-template", context);
 
@@ -40,7 +40,7 @@ public class EmailService {
             //Send email
             javaMailSender.send(mimeMessage);
         }catch(MessagingException e) {
-            System.out.println("ERROR SENT EMAIL!!!");
+            System.out.println("GỬI EMAIL BỊ LỖI!!!");
         }
     }
 }

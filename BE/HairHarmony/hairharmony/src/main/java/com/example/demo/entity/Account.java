@@ -117,8 +117,8 @@ public class Account implements UserDetails {
     @OneToMany(mappedBy = "to")
     Set<Transactions> transactionsTo;
 
-//    @OneToMany(mappedBy = "account")
-//    Set<ServiceEntity> serivces;
+    @OneToMany(mappedBy = "stylist")
+    Set<Feedback> stylist_feedbacks;
 
 
 }

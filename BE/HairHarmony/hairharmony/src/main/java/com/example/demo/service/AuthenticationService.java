@@ -79,7 +79,7 @@ public class AuthenticationService implements UserDetailsService {
             //gửi mail về cho người dùng
             EmailDetail emailDetail = new EmailDetail();
             emailDetail.setReceiver(newAccount);
-            emailDetail.setSubject("Welcome "+ newAccount.getFullName() +" to HairHarmony! ");
+            emailDetail.setSubject("Chào mừng "+ newAccount.getFullName() +" đên với HairHarmony! ");
             emailDetail.setLink("https://www.google.com/");
             emailService.sendEmail(emailDetail);
 
@@ -87,11 +87,11 @@ public class AuthenticationService implements UserDetailsService {
         } catch (Exception e) {
             e.printStackTrace();
             if (e.getMessage().contains(account.getPhone())) {
-                throw new DuplicateEntity("Duplicate Phone");
+                throw new DuplicateEntity("Trùng số điện thoại!");
             } else if (e.getMessage().contains(account.getEmail())) {
-                throw new DuplicateEntity("Duplicate Email");
+                throw new DuplicateEntity("Trùng email!");
             }else{
-                throw new DuplicateEntity("Checking Authentication Service");
+                throw new DuplicateEntity("Kiểm tra lại Authentication Service!");
             }
         }
     }
@@ -109,7 +109,7 @@ public class AuthenticationService implements UserDetailsService {
             accountResponse.setToken(tokenService.generateToken(account));
             return accountResponse;
         }catch(Exception e) {
-            throw new EntityNotFoundException("Username or password failed!");
+            throw new EntityNotFoundException("Tài khoản hoặc mật khẩu bị sai!");
         }
     }
 
@@ -154,11 +154,11 @@ public class AuthenticationService implements UserDetailsService {
         Account account = accountRepository.findAccountByEmail(forgotPasswordRequest.getEmail());
 
         if(account==null){
-            throw new EntityNotFoundException("Account not found");
+            throw new EntityNotFoundException("Không tìm thấy tài khoản!");
         }else {
             EmailDetail emailDetail = new EmailDetail();
             emailDetail.setReceiver(account);
-            emailDetail.setSubject("Reset Password");
+            emailDetail.setSubject("Đặt lại mật khẩu");
             emailDetail.setLink("https://www.google.com/?token=" + tokenService.generateToken(account));
             emailService.sendEmail(emailDetail);
         }

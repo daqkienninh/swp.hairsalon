@@ -54,7 +54,7 @@ public class StylistService {
 
             return response;
         } catch (Exception e) {
-            throw new DuplicateEntity("Duplicate! Failed to create stylist!");
+            throw new DuplicateEntity("Bị trùng! Không thể tạo thợ!");
         }
     }
 
@@ -85,7 +85,7 @@ public class StylistService {
     public Stylist updateStylist(long id, StylistRequest stylist) {
         Stylist oldStylist =  stylistRepository.findStylistById(id);
 
-        if(oldStylist == null) throw new EntityNotFoundException("Stylist not found!");
+        if(oldStylist == null) throw new EntityNotFoundException("Không tìm thấy thợ!");
 
         oldStylist.setFullName(stylist.getFullName());
         oldStylist.setDescription(stylist.getDescription());
@@ -115,13 +115,13 @@ public class StylistService {
 
     public Stylist getStylistById(long id) {
         Stylist stylist = stylistRepository.findStylistById(id);
-        if(stylist == null) throw new EntityNotFoundException("Stylist not found!");
+        if(stylist == null) throw new EntityNotFoundException("Không tìm thấy thợ!");
         return stylist;
     }
 
     public List<Stylist> getStylistsByLevel(int level){
         List<Stylist> stylists = stylistRepository.findStylistsByLevel(level);
-        if(stylists == null) throw new EntityNotFoundException("No stylists can be found in this level!");
+        if(stylists == null) throw new EntityNotFoundException("Không tìm thấy thợ ở cấp độ này!");
         return stylists;
     }
 }
