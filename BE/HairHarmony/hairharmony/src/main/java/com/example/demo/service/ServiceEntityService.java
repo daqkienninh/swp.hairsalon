@@ -34,7 +34,7 @@ public class ServiceEntityService {
             ServiceEntity service = serviceRepository.save(newService);
             return modelMapper.map(service, ServiceResponse.class);
         }catch (Exception e){
-            throw new DuplicateEntity("Duplicate service! Fail to create!");
+            throw new DuplicateEntity("Bị trùng! Không thể tạo thêm dịch vụ!");
         }
     }
 
@@ -67,7 +67,7 @@ public class ServiceEntityService {
     public ServiceEntity getServiceById(UUID id){
         ServiceEntity service = serviceRepository.findServiceById(id);
         if(service == null){
-            throw new EntityNotFoundException("Service not found!");
+            throw new EntityNotFoundException("Không tìm thấy dịch vụ!");
         }
         return service;
     }
@@ -75,7 +75,7 @@ public class ServiceEntityService {
     public ServiceEntity getServiceByName(String name) {
         ServiceEntity service = serviceRepository.findServiceByName(name);
         if(service == null){
-            throw new EntityNotFoundException("Service not found!");
+            throw new EntityNotFoundException("Không tìm thấy dịch vụ!");
         }
         return service;
     }
@@ -83,7 +83,7 @@ public class ServiceEntityService {
     public List<ServiceEntity> getServiceByType(String type){
         List<ServiceEntity> serviceEntities = serviceRepository.findServiceByType(type);
         if(serviceEntities == null){
-            throw new EntityNotFoundException("No service can be found in this type!");
+            throw new EntityNotFoundException("Không tìm thấy dịch vụ nào ở loại này!");
         }
         return serviceEntities;
     }

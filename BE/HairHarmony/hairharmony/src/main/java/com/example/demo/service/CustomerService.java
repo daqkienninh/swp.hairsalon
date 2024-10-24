@@ -49,7 +49,7 @@ public class CustomerService {
             Customer newCustomer = customerRepository.save(customer);
             return newCustomer;//trả về 1 thằng mới
         }catch (Exception e){
-            throw new DuplicateEntity("Duplicate! Fail to create!");
+            throw new DuplicateEntity("Bị trùng! Không thể tạo thêm khách hàng!");
         }
     }
 
@@ -64,7 +64,7 @@ public class CustomerService {
         //bước 1: tìm ra customer cần đc update
         Customer oldCustomer = customerRepository.findCustomerById(id);
 
-        if(oldCustomer == null) throw new EntityNotFoundException("Customer not found!");
+        if(oldCustomer == null) throw new EntityNotFoundException("Không tìm thấy khách hàng!");
         // => có tồn tại
 
         //bước 2: cập nhật thông tin của nó
@@ -98,7 +98,7 @@ public class CustomerService {
 
     public Customer getCustomerById(long id) {
         Customer oldCustomer = customerRepository.findCustomerById(id);
-        if(oldCustomer == null) throw new EntityNotFoundException("Customer not found");
+        if(oldCustomer == null) throw new EntityNotFoundException("Không tìm thấy khách hàng!");
         //if user.status == "BLOCK" ==> throw new EntityNotFoundException("Customer not found");
         return oldCustomer;
     }

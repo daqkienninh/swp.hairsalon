@@ -57,7 +57,7 @@ public class StaffService {
 
             return response;
         } catch (Exception e) {
-            throw new DuplicateEntity("Duplicate! Failed to create staff!");
+            throw new DuplicateEntity("Bị trùng! Không thể tạo thêm nhân viên!");
         }
     }
 
@@ -85,7 +85,7 @@ public class StaffService {
     public Staff updateStaff(long id, StaffRequest staff) {
         Staff oldStaff = staffRepository.findStaffById(id);
 
-        if (oldStaff == null) throw new EntityNotFoundException("Staff not found!");
+        if (oldStaff == null) throw new EntityNotFoundException("Không tìm thấy nhân viên!");
 
         oldStaff.setFullName(staff.getFullName());
         oldStaff.setImage(staff.getImage());
@@ -114,7 +114,7 @@ public class StaffService {
 
     public Staff getStaffById(long id) {
         Staff staff = staffRepository.findStaffById(id);
-        if (staff == null) throw new EntityNotFoundException("Staff not found!");
+        if (staff == null) throw new EntityNotFoundException("Không tìm thấy nhân viên!");
         return staff;
     }
 

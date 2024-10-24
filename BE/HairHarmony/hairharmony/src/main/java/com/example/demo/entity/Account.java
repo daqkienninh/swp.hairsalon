@@ -16,9 +16,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Getter
 @Setter
@@ -54,6 +52,9 @@ public class Account implements UserDetails {
     String image;
 
     String sex;
+
+    @JsonIgnore
+    float balance = 0;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -108,8 +109,16 @@ public class Account implements UserDetails {
     List<Administrator> administrators;
 
     @OneToMany(mappedBy = "customer")
-    @JsonIgnore
     List<Appointment> appointments;
+
+    @OneToMany(mappedBy = "from")
+    Set<Transactions> transactionsFrom;
+
+    @OneToMany(mappedBy = "to")
+    Set<Transactions> transactionsTo;
+
+    @OneToMany(mappedBy = "stylist")
+    Set<Feedback> stylist_feedbacks;
 
 
 }

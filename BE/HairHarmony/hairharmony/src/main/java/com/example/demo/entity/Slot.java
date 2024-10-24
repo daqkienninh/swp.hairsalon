@@ -23,6 +23,7 @@ public class Slot {
 
     LocalDateTime endTime;
 
+    @Enumerated(EnumType.STRING)
     StylistStatus stylistStatus;
 
     @JsonIgnore

@@ -12,6 +12,7 @@ public class AccountResponse {
     String role;
     String image;
     String sex;
+    float balance;
     String token;
 
 }

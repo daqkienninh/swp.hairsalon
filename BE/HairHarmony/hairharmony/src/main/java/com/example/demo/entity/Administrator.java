@@ -1,13 +1,9 @@
 package com.example.demo.entity;
 
-import com.example.demo.entity.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Entity
@@ -32,6 +28,7 @@ public class Administrator {
 
     @JsonIgnore//không bắt nhập thông tin trên swagger
     boolean isDeleted = false;
+
 
     @ManyToOne
     @JoinColumn(name = "account_id")

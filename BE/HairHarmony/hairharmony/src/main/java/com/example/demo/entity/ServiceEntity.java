@@ -10,6 +10,7 @@ import lombok.Data;
 import org.hibernate.annotations.processing.Pattern;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 
@@ -44,4 +45,8 @@ public class ServiceEntity {
     @OneToMany(mappedBy = "serviceEntity")
     @JsonIgnore
     List<AppointmentDetail> appointmentDetails;
+
+    @OneToMany(mappedBy = "service")
+    @JsonIgnore
+    Set<Feedback> service_feedbacks;
 }

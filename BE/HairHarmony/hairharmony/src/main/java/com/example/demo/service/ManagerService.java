@@ -53,7 +53,7 @@ public class ManagerService {
 
             return response;
         } catch (Exception e) {
-            throw new DuplicateEntity("Duplicate! Failed to create manager!");
+            throw new DuplicateEntity("Bị trùng! Không thể tạo thêm quản lí!");
         }
     }
 
@@ -80,7 +80,7 @@ public class ManagerService {
     public Manager getManagerById(long id) {
         Manager manager = managerRepository.findManagersById(id);
         if (manager == null) {
-            throw new EntityNotFoundException("Manager not found!");
+            throw new EntityNotFoundException("Không thấy quản lí!");
         }
         return manager;
     }
