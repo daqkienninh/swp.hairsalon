@@ -24,6 +24,8 @@ const Booking = () => {
   const [form] = Form.useForm();
   const [services, setServices] = useState([]);
   const [stylists, setStylists] = useState([]);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
+  const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -74,7 +76,7 @@ const Booking = () => {
         (s) => s.id === values.stylist
       )?.name;
 
-      navigate("/booking-confirmation", {
+      navigate("/", {
         state: {
           bookingDetails: {
             service: selectedService,
@@ -90,13 +92,50 @@ const Booking = () => {
     }
   };
 
+  const handlePaymentMethodChange = (value) => {
+    setSelectedPaymentMethod(value);
+  };
+  
+  const handlePaymentConfirmation = async () => {
+    if (!selectedPaymentMethod) {
+      toast.error("Please select a payment method");
+      return;
+    }
+
+    const appointment = appointments.find(app => app.id === selectedAppointmentId);
+    if (!appointment) {
+      toast.error("Appointment not found");
+      return;
+    }
+
+    if (selectedPaymentMethod === 'vnpay') {
+      try {
+        const response = await api.post("/api/payment/create_payment_url", {
+          amount: appointment.totalPrice,
+          appointmentId: selectedAppointmentId,
+        });
+
+        if (response.data && response.data.paymentUrl) {
+          window.location.href = response.data.paymentUrl;
+        } else {
+          throw new Error("Failed to generate payment URL");
+        }
+      } catch (error) {
+        console.error("Error initiating VNPay payment:", error);
+        toast.error(error.message || "Failed to initiate VNPay payment");
+      }
+    } else if (selectedPaymentMethod === 'card') {
+      navigate(`/card-payment/${selectedAppointmentId}`);
+    }
+  };
+
   return (
     <div style={{ maxWidth: 800, margin: "40px auto", padding: "20px" }}>
       <Card title="Book Your Appointment" bordered={false}>
         <Form
           form={form}
           name="booking"
-          onFinish={onFinish}
+          onFinish={handlePaymentConfirmation}
           layout="vertical"
           requiredMark={false}
         >
@@ -157,8 +196,22 @@ const Booking = () => {
             />
           </Form.Item>
 
+          <Form.Item
+            label="Payment"
+            rules={[{ required: true, message: "Please select a payment method" }]}
+          >
+            <Select
+              placeholder="Select a payment method"
+              suffixIcon={<UserOutlined />}
+              onChange={handlePaymentMethodChange}
+            >
+              <Option value="vnpay">VNPay</Option>
+              <Option value="card">Card Payment</Option>
+            </Select>
+          </Form.Item>
+
           <Form.Item>
-            <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
+            <Button type="primary" htmlType="submit" style={{ width: "100%" }} onClick={onFinish}>
               Book Appointment
             </Button>
           </Form.Item>

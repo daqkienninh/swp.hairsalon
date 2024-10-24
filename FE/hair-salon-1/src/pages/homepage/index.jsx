@@ -78,7 +78,7 @@ const Service = ({ service }) => {
       <div className="max-w-80 max-h-80 relative overflow-y-hidden ">
         <div>
           <img
-            src="src/assets/images/spfFour.webp"
+            src={service.image}
             alt={service.name}
             className="w-full h-full"
           />

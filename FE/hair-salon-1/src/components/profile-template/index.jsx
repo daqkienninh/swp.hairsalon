@@ -133,7 +133,7 @@ export default function ProfileTemplate() {
   };
   const handleChangeImage = ({ fileList: newFileList }) => setFileList(newFileList);
 
-  const renderField = (field, label) => (
+  
   const renderSexField = () => (
     <MDBRow className="mb-4">
       <MDBCol sm="3">
