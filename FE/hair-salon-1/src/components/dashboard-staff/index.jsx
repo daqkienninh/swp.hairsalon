@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
-import { Layout, Menu, theme } from 'antd';
-import { Link, Outlet } from 'react-router-dom';
+import { Flex, Layout, Menu, theme } from 'antd';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { FaUser } from "react-icons/fa";
+import { motion } from "framer-motion";
+import { MDBBtn } from "mdb-react-ui-kit";
+import { logout } from '../../redux/features/userSlice';
 const { Header, Content, Footer, Sider } = Layout;
 function getItem(label, key, icon, children) {
   return {
@@ -16,6 +21,9 @@ const items = [
   getItem("Manage Appointment", "appointment"),
 ];
 const DashboardStaff = () => {
+  const user = useSelector((store) => store.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -43,7 +51,20 @@ const DashboardStaff = () => {
             padding: 0,
             background: colorBgContainer,
           }}
-        />
+          className="flex items-center justify-between px-4"
+        >
+          <div class="flex items-center justify-start rtl:justify-end ">
+            <a href="/staff" class="flex ms-2 md:me-24 mt-2.5">
+              <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap ">{user.fullName}</span>
+            </a>
+          </div>
+          <div className="text-xl mr-10"
+          >
+            <div onClick={() => navigate("/viewstaff")} className="flex">
+              <FaUser />
+            </div>
+          </div>
+        </Header>
         <Content
           style={{
             margin: '24px 16px 0',
@@ -65,7 +86,7 @@ const DashboardStaff = () => {
             textAlign: 'center',
           }}
         >
-          Ant Design ©{new Date().getFullYear()} Created by Ant UED
+          Hair Harmony ©{new Date().getFullYear()} Created by Ant UED
         </Footer>
       </Layout>
     </Layout>

@@ -5,9 +5,10 @@ import { toast } from "react-toastify";
 import { PlusOutlined } from "@ant-design/icons";
 import FormItem from "antd/es/form/FormItem";
 
-function CRUDTemplate({ columns, formItems, path, title }) {
+function CRUDTemplate({ columns, formItems, formItemsUpdate, path, title }) {
   const [data, setData] = useState();
   const [showModal, setShowModal] = useState(false);
+  const [showModalupdate, setShowModalupdate] = useState(false);
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [fileList, setFileList] = useState([]);
@@ -66,6 +67,7 @@ function CRUDTemplate({ columns, formItems, path, title }) {
       fetchData(); // load data again
       form.resetFields(); // xoa data vua nhap trong form
       setShowModal(false); // dong modal
+      setShowModalupdate(false);
     } catch (error) {
       console.log(error);
       toast.error(error.response.data);
@@ -103,16 +105,21 @@ function CRUDTemplate({ columns, formItems, path, title }) {
       key: "id",
       render: (id, value) => (
         <>
-          <Button
-            type="primary"
-            onClick={() => {
-              setShowModal(true);
-              form.setFieldsValue(value);
-            }}
-          >
-            Edit
-          </Button>
+          {path !== "/api/account" && (
+            <Button
+              type="primary"
+              onClick={() => {
+                setShowModalupdate(true);
+                form.setFieldsValue(value);
+              }}
+            >
+              Edit
+            </Button>
+          )
+          }
           <br />
+          {path !=="/api/account" && (
+
           <Popconfirm
             title="Delete"
             description="Do you really want to delete?"
@@ -122,6 +129,7 @@ function CRUDTemplate({ columns, formItems, path, title }) {
               Delete
             </Button>
           </Popconfirm>
+          )}
         </>
       ),
     },
@@ -166,6 +174,32 @@ function CRUDTemplate({ columns, formItems, path, title }) {
       >
         <Form form={form} labelCol={{ span: 24 }} onFinish={handleSubmit}>
           {formItems}
+          <FormItem
+            label="Image"
+            name="image"
+          >
+            <Upload
+              listType="picture-card"
+              fileList={fileList}
+              onPreview={handlePreview}
+              onChange={handleChange}
+              beforeUpload={() => false} // Prevent auto upload
+            >
+              {fileList.length >= 1 ? null : uploadButton}
+            </Upload>
+          </FormItem>
+        </Form>
+      </Modal>
+
+      <Modal
+        open={showModalupdate}
+        onCancel={() => setShowModalupdate(false)}
+        onOk={() => form.submit()}
+        title={title}
+        confirmLoading={loading}
+      >
+        <Form form={form} labelCol={{ span: 24 }} onFinish={handleSubmit}>
+          {formItemsUpdate}
           <FormItem
             label="Image"
             name="image"

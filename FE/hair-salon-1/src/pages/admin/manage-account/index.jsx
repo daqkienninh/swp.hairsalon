@@ -21,70 +21,26 @@ function ManageAccount() {
             key: "phone",
         },
         {
+            title: "Email",
+            dataIndex: "email",
+            key: "email",
+        },
+        {
             title: "Sex",
             dataIndex: "sex",
             key: "sex",
         },
+        {
+            title: "Role",
+            dataIndex: "role",
+            key: "role",
+        },
 
     ];
-    const formItems = (
-        <>
-            <Form.Item name="id" hidden>
-                <Input />
-            </Form.Item>
-
-            <FormItem
-                label="Full Name"
-                name="fullName"
-                rules={[
-                    {
-                        required: true,
-                        message: "Please input Customer's name!",
-                    },
-                ]}
-            >
-                <Input />
-            </FormItem>
-            <FormItem
-                label="Email"
-                name="email"
-                rules={[
-                    {
-                        required: true,
-                        message: "Please input Email!",
-                    },
-                ]}
-            >
-                <Input />
-            </FormItem>
-            <FormItem
-                label="Phone"
-                name="phone"
-                rules={[
-                    {
-                        required: true,
-                        message: "Please input Phone!",
-                    },
-                ]}
-            >
-                <Input />
-            </FormItem>
-            <Form.Item name="password" label="Password">
-                <Input />
-            </Form.Item>
-            <Form.Item
-                label="Sex"
-                name="sex"
-            >
-                <Input />
-            </Form.Item>
-        </>
-    );
   return (
       <div>
           <CRUDTemplate
               columns={columns}
-              formItems={formItems}
               path="/api/account"
               title="Account"
           />

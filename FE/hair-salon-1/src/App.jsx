@@ -31,6 +31,8 @@ import ManageAccount from "./pages/admin/manage-account";
 import HistoryBooking from "./pages/history/index";
 import RequireAuth from "./config/auth";
 import ServiceDetail from "./pages/servicedetail";
+import ViewStaff from "./pages/profile/staff/view";
+import ViewAdmin from "./pages/profile/admin/view";
 function App() {
   const ProtectRouteAuth = ({ children, allowedRoles }) => {
     const user = useSelector((store) => store.user);
@@ -171,6 +173,14 @@ function App() {
     {
       path: "customer",
       element: <ViewCustomer />,
+    },
+    {
+      path: "viewstaff",
+      element: <ViewStaff />,
+    },
+    {
+      path: "viewadmin",
+      element: <ViewAdmin />,
     },
     {
       path: "success",

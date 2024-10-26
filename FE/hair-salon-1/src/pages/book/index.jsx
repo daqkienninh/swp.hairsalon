@@ -17,7 +17,6 @@ const Booking = () => {
   const [services, setServices] = useState([]);
   const [stylists, setStylists] = useState([]);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
-  const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -21,7 +21,7 @@ import { Button, Form, Modal, Upload } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import FormItem from "antd/es/form/FormItem";
 
-export default function ProfileTemplate() {
+export default function ProfileTemplate({path}) {
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -219,7 +219,7 @@ export default function ProfileTemplate() {
       >
         <GrHomeRounded
           size={30}
-          onClick={() => navigate("/")}
+          onClick={() => navigate(`${path}`)}
           style={{ cursor: "pointer" }}
         />
       </div>

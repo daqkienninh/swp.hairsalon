@@ -6,7 +6,9 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 function ViewCustomer() {
 
   return (
-    <ProfileTemplate>
+    <ProfileTemplate
+     path="/"
+    >
 
     </ProfileTemplate>
   );

@@ -73,11 +73,48 @@ function ManageStylist() {
             </Form.Item>
         </>
     );
+
+    const formItemsUpdate = (
+        <>
+            <Form.Item name="id" hidden>
+                <Input />
+            </Form.Item>
+
+            <FormItem
+                label="Full Name"
+                name="fullName"
+                rules={[
+                    {
+                        required: true,
+                        message: "Please input Customer's name!",
+                    },
+                ]}
+            >
+                <Input />
+            </FormItem>
+            <FormItem
+                label="Email"
+                name="email"
+            >
+                <Input />
+            </FormItem>
+            <FormItem
+                label="Phone"
+                name="phone"
+            >
+                <Input />
+            </FormItem>
+            <Form.Item name="password" label="Password">
+                <Input />
+            </Form.Item>
+        </>
+    );
     return (
         <div>
             <CRUDTemplate
                 columns={columns}
                 formItems={formItems}
+                formItemsUpdate={formItemsUpdate}
                 path="/api/stylist"
                 title="Stylist"
             />
