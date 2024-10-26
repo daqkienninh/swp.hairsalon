@@ -16,19 +16,19 @@ function ManageStylist() {
             key: "fullName",
         },
         {
-            title: "Phone",
-            dataIndex: "phone",
-            key: "phone",
-        },
-        {
             title: "Sex",
             dataIndex: "sex",
             key: "sex",
         },
         {
-            title: "Image",
-            dataIndex: "image",
-            key: "image",
+            title: "Description",
+            dataIndex: "description",
+            key: "description",
+        },
+        {
+            title: "Level",
+            dataIndex: "level",
+            key: "level",
         },
         
     ];
