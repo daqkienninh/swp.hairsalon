@@ -2,7 +2,6 @@ import React from 'react'
 import CRUDTemplate from '../../../components/crud-template';
 import { Form, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
-import TextArea from 'antd/es/input/TextArea';
 
 function ManageManager() {
     const columns = [
@@ -47,11 +46,7 @@ function ManageManager() {
             <Form.Item name="id" hidden>
                 <Input />
             </Form.Item>
-<<<<<<<< HEAD:FE/hair-salon-1/src/pages/admin/manage-manager/index.jsx
             <Form.Item label="Pasword" name="password" hidden>
-========
-            <Form.Item label="Password" name="password">
->>>>>>>> origin/fe-trang:FE/hair-salon-1/src/pages/admin/manage-stylist/index.jsx
                 <Input />
             </Form.Item>
             <FormItem
@@ -60,11 +55,7 @@ function ManageManager() {
                 rules={[
                     {
                         required: true,
-<<<<<<<< HEAD:FE/hair-salon-1/src/pages/admin/manage-manager/index.jsx
                         message: "Please input Manager's name!",
-========
-                        message: "Please input Customer's name!",
->>>>>>>> origin/fe-trang:FE/hair-salon-1/src/pages/admin/manage-stylist/index.jsx
                     },
                 ]}
             >
@@ -103,10 +94,7 @@ function ManageManager() {
             <Form.Item
                 label="Role"
                 name="role"
-<<<<<<<< HEAD:FE/hair-salon-1/src/pages/admin/manage-manager/index.jsx
                 initialValue="MANAGER"
-========
->>>>>>>> origin/fe-trang:FE/hair-salon-1/src/pages/admin/manage-stylist/index.jsx
                 hidden
             >
                 <Input />
@@ -119,15 +107,8 @@ function ManageManager() {
             <CRUDTemplate
                 columns={columns}
                 formItems={formItems}
-<<<<<<<< HEAD:FE/hair-salon-1/src/pages/admin/manage-manager/index.jsx
                 path="/api/manager"
                 title="Manager"
-========
-                path="/api/account"
-                title="Stylist"
-                roles="STYLIST"
-                puts="/api/stylist"
->>>>>>>> origin/fe-trang:FE/hair-salon-1/src/pages/admin/manage-stylist/index.jsx
             />
         </div>
     )

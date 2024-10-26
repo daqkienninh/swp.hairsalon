@@ -26,25 +26,22 @@ import ManageManager from "./pages/admin/manage-manager";
 import DashboardLayout from "./components/layout/dashboardlayout";
 import Payment from "./pages/profile/customer/payment";
 import SuccessPage from "./pages/profile/customer/success";
-import ServiceDetail from "./components/service-detail";
-import ServiceDetailPage from "./pages/ServiceDetail";
 import Fail from "./pages/profile/customer/fail";
 import ManageAccount from "./pages/admin/manage-account";
-
 import HistoryBooking from "./pages/history/index";
-import ServiceDetail from "./pages/servicedetail";
 import RequireAuth from "./config/auth";
+import ServiceDetail from "./pages/servicedetail";
 function App() {
   const ProtectRouteAuth = ({ children, allowedRoles }) => {
     const user = useSelector((store) => store.user);
     const token = localStorage.getItem("token");
     console.log(user);
-    if (user && allowedRoles.includes(user.role)) { //Customize the role
-      return children;
-    }
-    toast.error("Not allow")
-    return <Navigate to={"/login"} />
-  }
+    // if (user && allowedRoles.includes(user.role)) { //Customize the role
+    //   return children;
+    // }
+    // toast.error("Not allow")
+    // return <Navigate to={"/login"} />
+
     // Kiểm tra cả token và user
     if (!token) {
       // Lưu current path vào localStorage để sau khi login redirect lại
@@ -55,10 +52,10 @@ function App() {
     if (user && allowedRoles.includes(user.role)) {
       return children;
     }
-    toast.error("Bạn không có quyền truy cập trang này!");
-    return <Navigate to="/" />;
+      return <Navigate to="/" />;
+    
+      
   };
-
   const router = createBrowserRouter([
     {
       path: "",
@@ -120,7 +117,7 @@ function App() {
       children: [
         {
           path: "",
-          element: <DashboardLayout/>
+          element: <DashboardLayout />
         },
         {
           path: "service",
@@ -151,7 +148,7 @@ function App() {
         {
           path: "managestaff",
           element: <ManageStaff />
-        }, 
+        },
         {
           path: "managemanager",
           element: <ManageManager />
@@ -161,45 +158,16 @@ function App() {
           element: <ManageAccount />
         }
       ]
-    }{
-          element: <DashboardLayout />,
-        },
-        {
-          path: "service",
-          element: <ManageService />,
-        },
-        {
-          path: "appointment",
-          element: <ManageAppointment />,
-        },
-      ],
-    
-    {
-      path: "admin",
-      element: (
-        <ProtectRouteAuth allowedRoles={["ADMINISTRATOR"]}>
-          <DashboardAdmin />
-        </ProtectRouteAuth>
-      ),
-      children: [
-        {
-          path: "managestylist",
-          element: <ManageStylist />,
-        },
-        {
-          path: "managecustomer",
-          element: <ManageCustomer />,
-        },
-        {
-          path: "managestaff",
-          element: <ManageStaff />,
-        },
-        {
-          path: "managemanager",
-          element: <ManageManager />,
-        },
-      ],
     },
+    {
+      path: "service",
+      element: <ManageService />,
+    },
+    {
+      path: "appointment",
+      element: <ManageAppointment />,
+    },
+
     {
       path: "customer",
       element: <ViewCustomer />,
@@ -218,6 +186,8 @@ function App() {
     },
   ]);
   return <RouterProvider router={router} />;
-}
+};
+
+
 
 export default App;
