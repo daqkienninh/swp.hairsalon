@@ -1,34 +1,48 @@
 import { Button, Result } from 'antd'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import useGetParams from '../../../hooks/useGetParams'
 import api from '../../../config/axios';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function SuccessPage() {
 
     const params = useGetParams();
-    const orderID = params(""); // get AppointmentID
-    console.log(orderID);
-    const vnp_TranCode = params("")//transaction status
+    const appointmentID = params("appointmentID"); // get AppointmentID
+    console.log(appointmentID);
+    const vnp_TranCode = params("vnp_TmnCode")//transaction status
+    console.log(vnp_TranCode);
+    const vnp_TransactionStatus = params("vnp_TransactionStatus")
+    console.log(vnp_TransactionStatus);
+    const nav = useNavigate();
 
     const postOrderID = async() =>{
         try{
 
-            const response = await api.post(``) // post transaction
+            const response = await api.post(`/api/appointment/transaction?appointmentID=${appointmentID}`) // post transaction
+            toast.success("Successfully");
+            console.log(response.data);
         }catch (err){
             console.log(err)
         }
     }
 
     useEffect(() => {
-        if(vnp_TranCode === ""){
+        if(vnp_TransactionStatus === "00"){
             postOrderID();
+            toast.success("");
         } else {
             // chuyen qua trang thanh toan that bai
+            nav("/Fail");
+            console.log("Fail")
         }
     },[])
+
+    
   return (
     <div>
           <Result
+
               status="success"
               title="Successfully Purchased Cloud Server ECS!"
               subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."

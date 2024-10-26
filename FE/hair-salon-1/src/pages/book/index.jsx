@@ -17,6 +17,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import api from "../../config/axios";
+import { toast } from "react-toastify";
 
 const { Option } = Select;
 
@@ -52,80 +53,48 @@ const Booking = () => {
     }
   };
 
-  const onFinish = async (values) => {
-    try {
-      const appointmentData = {
-        details: [
-          {
-            serviceId: values.service,
-            stylistId: values.stylist,
-            startTime: values.dateTime.format(),
-            note: values.note,
-          },
-        ],
-      };
-
-      await api.post("/api/appointment", appointmentData);
-      message.success("Booking successful!");
-
-      // Find the selected service and stylist names
-      const selectedService = services.find(
-        (s) => s.id === values.service
-      )?.name;
-      const selectedStylist = stylists.find(
-        (s) => s.id === values.stylist
-      )?.name;
-
-      navigate("/", {
-        state: {
-          bookingDetails: {
-            service: selectedService,
-            stylist: selectedStylist,
-            dateTime: values.dateTime,
-            note: values.note,
-          },
-        },
-      });
-    } catch (error) {
-      console.error("Error submitting booking:", error);
-      message.error("Booking failed. Please try again.");
-    }
-  };
 
   const handlePaymentMethodChange = (value) => {
     setSelectedPaymentMethod(value);
   };
   
-  const handlePaymentConfirmation = async () => {
+  const handlePaymentConfirmation = async (values) => {
     if (!selectedPaymentMethod) {
       toast.error("Please select a payment method");
       return;
     }
 
-    const appointment = appointments.find(app => app.id === selectedAppointmentId);
-    if (!appointment) {
-      toast.error("Appointment not found");
-      return;
-    }
+    console.log(selectedPaymentMethod)
+    console.log(values)
+    const appointmentData = {
+      details: [
+        {
+          serviceId: values.service,
+          stylistId: values.stylist,
+          startTime: values.dateTime.format("YYYY-MM-DDTHH:mm:ss"
+          ),
+          note: values.note,
+        },
+      ],
+    };
+    console.log(appointmentData)
 
     if (selectedPaymentMethod === 'vnpay') {
       try {
-        const response = await api.post("/api/payment/create_payment_url", {
-          amount: appointment.totalPrice,
-          appointmentId: selectedAppointmentId,
-        });
 
-        if (response.data && response.data.paymentUrl) {
-          window.location.href = response.data.paymentUrl;
-        } else {
-          throw new Error("Failed to generate payment URL");
-        }
+        const response = await api.post("/api/appointment/payment", appointmentData);
+        console.log(response);
+        window.open(response.data)
+        navigate("/")
       } catch (error) {
-        console.error("Error initiating VNPay payment:", error);
-        toast.error(error.message || "Failed to initiate VNPay payment");
+        console.error("Error initiating VNPay payment:", error.response?.data || error.message);
+
+        toast.error(error.response?.data);
       }
     } else if (selectedPaymentMethod === 'card') {
-      navigate(`/card-payment/${selectedAppointmentId}`);
+      const response = await api.post("/api/appointment", appointmentData);
+      console.log(response);
+      navigate("/confirm-booking")
     }
   };
 
@@ -211,7 +180,7 @@ const Booking = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" style={{ width: "100%" }} onClick={onFinish}>
+            <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
               Book Appointment
             </Button>
           </Form.Item>

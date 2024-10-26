@@ -2,7 +2,6 @@ import React from 'react'
 import CRUDTemplate from '../../../components/crud-template';
 import { Form, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
-import TextArea from 'antd/es/input/TextArea';
 
 function ManageStylist() {
     const columns = [
@@ -22,11 +21,6 @@ function ManageStylist() {
             key: "phone",
         },
         {
-            title: "Email",
-            dataIndex: "email",
-            key: "email",
-        },
-        {
             title: "Sex",
             dataIndex: "sex",
             key: "sex",
@@ -36,20 +30,14 @@ function ManageStylist() {
             dataIndex: "image",
             key: "image",
         },
-        {
-            title: "Role",
-            dataIndex: "role",
-            key: "role",
-        },
+        
     ];
     const formItems = (
         <>
             <Form.Item name="id" hidden>
                 <Input />
             </Form.Item>
-            <Form.Item label="Password" name="password">
-                <Input />
-            </Form.Item>
+            
             <FormItem
                 label="Full Name"
                 name="fullName"
@@ -74,28 +62,24 @@ function ManageStylist() {
             >
                 <Input />
             </FormItem>
-            <Form.Item
-                label="Image"
-                name="image"
+            <FormItem
+                label="Phone"
+                name="phone"
+                rules={[
+                    {
+                        required: true,
+                        message: "Please input Phone!",
+                    },
+                ]}
             >
+                <Input />
+            </FormItem>
+            <Form.Item name="password" label="Password">
                 <Input />
             </Form.Item>
             <Form.Item
                 label="Sex"
                 name="sex"
-            >
-                <Input />
-            </Form.Item>
-            <Form.Item
-                label="Phone"
-                name="phone"
-            >
-                <Input />
-            </Form.Item>
-            <Form.Item
-                label="Role"
-                name="role"
-                hidden
             >
                 <Input />
             </Form.Item>
@@ -106,10 +90,8 @@ function ManageStylist() {
             <CRUDTemplate
                 columns={columns}
                 formItems={formItems}
-                path="/api/account"
+                path="/api/stylist"
                 title="Stylist"
-                roles="STYLIST"
-                puts="/api/stylist"
             />
         </div>
     )

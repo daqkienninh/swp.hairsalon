@@ -29,6 +29,8 @@ import Payment from "./pages/profile/customer/payment";
 import SuccessPage from "./pages/profile/customer/success";
 import ServiceDetail from "./components/service-detail";
 import ServiceDetailPage from "./pages/ServiceDetail";
+import Fail from "./pages/profile/customer/fail";
+import ManageAccount from "./pages/admin/manage-account";
 
 function App() {
   const ProtectRouteAuth = ({ children, allowedRoles }) => {
@@ -117,9 +119,14 @@ function App() {
         {
           path: "managestaff",
           element: <ManageStaff />
-        }, {
+        }, 
+        {
           path: "managemanager",
           element: <ManageManager />
+        },
+        {
+          path: "manageaccount",
+          element: <ManageAccount />
         }
       ]
     },
@@ -130,6 +137,10 @@ function App() {
     {
       path: "success",
       element: <SuccessPage />,
+    },
+    {
+      path: "fail",
+      element: <Fail />,
     },
     {
       path: "test",

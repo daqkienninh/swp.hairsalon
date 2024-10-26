@@ -2,9 +2,8 @@ import React from 'react'
 import CRUDTemplate from '../../../components/crud-template';
 import { Form, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
-import TextArea from 'antd/es/input/TextArea';
 
-function ManageManager() {
+function ManageAccount() {
     const columns = [
         {
             title: "ID",
@@ -22,41 +21,25 @@ function ManageManager() {
             key: "phone",
         },
         {
-            title: "Email",
-            dataIndex: "email",
-            key: "email",
-        },
-        {
             title: "Sex",
             dataIndex: "sex",
             key: "sex",
         },
-        {
-            title: "Image",
-            dataIndex: "image",
-            key: "image",
-        },
-        {
-            title: "Role",
-            dataIndex: "role",
-            key: "role",
-        },
+
     ];
     const formItems = (
         <>
             <Form.Item name="id" hidden>
                 <Input />
             </Form.Item>
-            <Form.Item label="Pasword" name="password" hidden>
-                <Input />
-            </Form.Item>
+
             <FormItem
                 label="Full Name"
                 name="fullName"
                 rules={[
                     {
                         required: true,
-                        message: "Please input Manager's name!",
+                        message: "Please input Customer's name!",
                     },
                 ]}
             >
@@ -74,10 +57,19 @@ function ManageManager() {
             >
                 <Input />
             </FormItem>
-            <Form.Item
-                label="Image"
-                name="image"
+            <FormItem
+                label="Phone"
+                name="phone"
+                rules={[
+                    {
+                        required: true,
+                        message: "Please input Phone!",
+                    },
+                ]}
             >
+                <Input />
+            </FormItem>
+            <Form.Item name="password" label="Password">
                 <Input />
             </Form.Item>
             <Form.Item
@@ -86,33 +78,18 @@ function ManageManager() {
             >
                 <Input />
             </Form.Item>
-            <Form.Item
-                label="Phone"
-                name="phone"
-            >
-                <Input />
-            </Form.Item>
-            <Form.Item
-                label="Role"
-                name="role"
-                initialValue="MANAGER"
-                hidden
-            >
-                <Input />
-            </Form.Item>
         </>
     );
-
-    return (
-        <div>
-            <CRUDTemplate
-                columns={columns}
-                formItems={formItems}
-                path="/api/manager"
-                title="Manager"
-            />
-        </div>
-    )
+  return (
+      <div>
+          <CRUDTemplate
+              columns={columns}
+              formItems={formItems}
+              path="/api/account"
+              title="Account"
+          />
+      </div>
+  )
 }
 
-export default ManageManager
+export default ManageAccount

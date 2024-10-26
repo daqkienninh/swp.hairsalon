@@ -105,10 +105,8 @@ function ManageStaff() {
       <div><CRUDTemplate
           columns={columns}
           formItems={formItems}
-          path="/api/account"
+          path="/api/staff"
           title="Manage Staff"
-          roles="STAFF"
-          puts="/api/staff"
       /></div>
   )
 }

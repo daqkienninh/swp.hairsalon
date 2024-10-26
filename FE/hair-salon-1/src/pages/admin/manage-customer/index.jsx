@@ -108,9 +108,8 @@ function ManageCustomer() {
       <CRUDTemplate
         columns={columns}
         formItems={formItems}
-        path="/api/account"
+        path="/api/customer"
         title="Customer"
-        roles="CUSTOMER"
       />
     </div>
   )
