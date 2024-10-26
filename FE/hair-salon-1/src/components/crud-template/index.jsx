@@ -3,18 +3,24 @@ import React, { useEffect, useState } from "react";
 import api from "../../config/axios";
 import { toast } from "react-toastify";
 
-function CRUDTemplate({ columns, formItems, path, title }) {
+function CRUDTemplate({ columns, formItems, path, title, roles, puts }) {
   const [data, setData] = useState();
   const [showModal, setShowModal] = useState(false);
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
 
+
   // Get data
   const fetchData = async () => {
     try {
       const response = await api.get(path);
-      setData(response.data);
-      console.log(response.data);
+      let filteredData = response.data;
+      console.log(filteredData)
+      if(roles) {
+        filteredData = response.data.filter(account => account.role === roles);
+      }
+      setData(filteredData)
+      console.log("Filtered data:", filteredData)
     } catch (error) {
       toast.error(error.response.data);
     }
@@ -33,10 +39,10 @@ function CRUDTemplate({ columns, formItems, path, title }) {
       // if value already has id => Update
       if (values.id) {
         console.log(values.id);
-        const response = await api.put(`${path}/${values.id}`, values);
+        const response = await api.put(`${puts}/${values.id}`, values);
         toast.success("Successfully Update");
       } else {
-        const response = await api.post(path, values);
+        const response = await api.post(puts, values);
         toast.success("Successfully Create");
       }
       fetchData(); // load data again
@@ -70,7 +76,7 @@ function CRUDTemplate({ columns, formItems, path, title }) {
       key: "id",
       render: (id, value) => (
         <>
-          <Button
+          {/* <Button
             type="primary"
             onClick={() => {
               setShowModal(true);
@@ -78,7 +84,7 @@ function CRUDTemplate({ columns, formItems, path, title }) {
             }}
           >
             Edit
-          </Button>
+          </Button> */}
           <br />
           <Popconfirm
             title="Delete"
@@ -95,8 +101,9 @@ function CRUDTemplate({ columns, formItems, path, title }) {
   ];
   return (
     <div>
-      <Button onClick={() => setShowModal(true)}>Create new</Button>
-      <Table columns={tableColums} dataSource={data} />
+      <h1>{title}</h1> <br />
+      <Button onClick={() => setShowModal(true)}>Create new</Button> <br />
+      <Table columns={tableColums} dataSource={data}/>
       <Modal
         open={showModal}
         onCancel={() => setShowModal(false)}

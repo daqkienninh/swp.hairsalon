@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Spin } from "antd";
+import { message, Spin } from "antd";
 import api from "../../config/axios";
-const ServiceDetailPage = () => {
+
+const ServiceDetail = () => {
   const [service, setService] = useState(null);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
@@ -35,15 +36,32 @@ const ServiceDetailPage = () => {
     return <div className="text-center text-2xl mt-10">Service not found</div>;
   }
 
+  const handleBooking = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      message.error("Vui lòng đăng nhập để tiếp tục.");
+    } else {
+      // Kiểm tra token còn hạn hay không
+      const tokenExpiration = localStorage.getItem("tokenExpiration");
+      if (tokenExpiration && new Date(tokenExpiration) < new Date()) {
+        navigate("/login");
+        message.error("Token đã hết hạn, vui lòng đăng nhập lại.");
+      } else {
+        navigate("/booking", { state: { serviceId: service.id, token } });
+      }
+    }
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
-      <h1 className="text-3xl font-bold mb-6 text-center text-[#94B49F]">
+      <h1 className="text-3xl font-bold mb-6 text-center text-[#1A4D2E]">
         {service.name}
       </h1>
       <div className="flex flex-col md:flex-row gap-8">
         <div className="md:w-1/2">
           <img
-            src="src/assets/images/spfFour.webp"
+            src={`/assets/images/${service.image}`}
             alt={service.name}
             className="w-full h-auto rounded-lg shadow-md"
           />
@@ -76,18 +94,16 @@ const ServiceDetailPage = () => {
               Tổng giá: {service.totalPrice.toLocaleString()}đ
             </p>
           </div>
-          <button
-            className="mt-6 bg-[#94B49F] hover:bg-[#CEE5D0] text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
-            onClick={() =>
-              navigate("/booking", { state: { serviceId: service.id } })
-            }
-          >
-            Đặt lịch ngay
-          </button>
+            <button
+              className="mt-6 bg-[#94B49F] hover:bg-[#CEE5D0] text-[#163020] font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+              onClick={handleBooking}
+            >
+              Đặt lịch ngay
+            </button>
         </div>
       </div>
     </div>
   );
 };
 
-export default ServiceDetailPage;
+export default ServiceDetail;

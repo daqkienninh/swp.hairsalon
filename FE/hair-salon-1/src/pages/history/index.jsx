@@ -24,28 +24,22 @@ const { RangePicker } = DatePicker;
 const { Title, Text } = Typography;
 
 function HistoryBooking() {
+  // State variables
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
   const [dateRange, setDateRange] = useState(null);
 
+  // Fetch bookings when filter or dateRange changes
   useEffect(() => {
     fetchBookings();
   }, [filter, dateRange]);
 
+  // Function to fetch bookings from the API
   const fetchBookings = async () => {
     setLoading(true);
     try {
-      let url = "/api/appointment/customer";
-      if (filter !== "all") {
-        url += `?status=${filter}`;
-      }
-      if (dateRange) {
-        const [start, end] = dateRange;
-        url += `${filter !== "all" ? "&" : "?"}startDate=${start.format(
-          "YYYY-MM-DD"
-        )}&endDate=${end.format("YYYY-MM-DD")}`;
-      }
+      const url = buildApiUrl();
       const response = await api.get(url);
       setBookings(response.data);
     } catch (error) {
@@ -55,6 +49,22 @@ function HistoryBooking() {
     }
   };
 
+  // Helper function to build the API URL based on filters
+  const buildApiUrl = () => {
+    let url = "/api/appointment/customer";
+    if (filter !== "all") {
+      url += `?status=${filter}`;
+    }
+    if (dateRange) {
+      const [start, end] = dateRange;
+      url += `${filter !== "all" ? "&" : "?"}startDate=${start.format(
+        "YYYY-MM-DD"
+      )}&endDate=${end.format("YYYY-MM-DD")}`;
+    }
+    return url;
+  };
+
+  // Table columns configuration
   const columns = [
     {
       title: "Service",
@@ -111,27 +121,17 @@ function HistoryBooking() {
     },
   ];
 
+  // Helper function to get status color
   const getStatusColor = (status) => {
-    switch (status.toLowerCase()) {
-      case "confirmed":
-        return "green";
-      case "cancelled":
-        return "red";
-      case "completed":
-        return "blue";
-      default:
-        return "default";
-    }
+    const colors = { confirmed: "green", cancelled: "red", completed: "blue" };
+    return colors[status.toLowerCase()] || "default";
   };
 
-  const handleFilterChange = (value) => {
-    setFilter(value);
-  };
+  // Event handlers
+  const handleFilterChange = (value) => setFilter(value);
+  const handleDateRangeChange = (dates) => setDateRange(dates);
 
-  const handleDateRangeChange = (dates) => {
-    setDateRange(dates);
-  };
-
+  // Render function
   return (
     <Card style={{ margin: "20px" }}>
       <Title level={2}>Booking History</Title>
@@ -158,13 +158,7 @@ function HistoryBooking() {
             style={{ backgroundColor: "white" }}
           />
         ) : (
-          <Empty
-            description={
-              <span>
-                No bookings found. Try adjusting your filters or date range.
-              </span>
-            }
-          />
+          <Empty description="No bookings found. Try adjusting your filters or date range." />
         )}
       </Spin>
     </Card>

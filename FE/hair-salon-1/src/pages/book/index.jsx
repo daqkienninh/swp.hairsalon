@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Form,
-  Button,
-  Select,
-  DatePicker,
-  TimePicker,
-  Card,
-  Input,
-  message,
-} from "antd";
+import { Form, Button, Select, DatePicker, Card, Input, message } from "antd";
 import {
   ScissorOutlined,
   UserOutlined,
@@ -53,59 +44,46 @@ const Booking = () => {
   const onFinish = async (values) => {
     try {
       const appointmentData = {
-        details: [
-          {
-            serviceId: values.service,
-            stylistId: values.stylist,
-            startTime: values.dateTime.format("YYYY-MM-DDTHH:mm:ss"), // Changed format here
-            note: values.note,
-          },
-        ],
+        details: values.services.map((serviceId) => ({
+          serviceId,
+          stylistId: values.stylist,
+          // Format the dateTime to match LocalDateTime (yyyy-MM-dd'T'HH:mm:ss)
+          startTime: values.dateTime.format("YYYY-MM-DDTHH:mm:ss"),
+          note: values.note || "", // Add default empty string if no note is provided
+        })),
       };
 
-      console.log("Appointment data:", appointmentData);
+      console.log("Appointment Data:", appointmentData); // Log appointment data for debugging
 
-      const response = await api.post("/api/appointment", appointmentData);
-      console.log("API response:", response);
-
-      message.success("Booking successful!");
-
-      // Find the selected service and stylist names
-      const selectedService = services.find(
-        (s) => s.id === values.service
-      )?.name;
-      const selectedStylist = stylists.find(
-        (s) => s.id === values.stylist
-      )?.fullName;
+      await api.post("/api/appointment", appointmentData);
+      message.success("Đặt lịch thành công.");
 
       navigate("/confirm-booking", {
         state: {
           bookingDetails: {
-            service: selectedService,
-            stylist: selectedStylist,
+            services: values.services,
+            stylist: values.stylist,
             dateTime: values.dateTime,
             note: values.note,
           },
         },
       });
     } catch (error) {
-      console.error("Error submitting booking:", error);
-      if (error.response) {
-        console.error("Response data:", error.response.data);
-        console.error("Response status:", error.response.status);
-        console.error("Response headers:", error.response.headers);
-      } else if (error.request) {
-        console.error("No response received:", error.request);
-      } else {
-        console.error("Error message:", error.message);
-      }
-      message.error(`Booking failed: ${error.response?.data || error.message}`);
+      console.error("Error submitting booking:", error.response?.data); // Log the full error response
+      message.error(error.response?.data);
     }
   };
 
   return (
-    <div style={{ maxWidth: 800, margin: "40px auto", padding: "20px" }}>
-      <Card title="Book Your Appointment" bordered={false}>
+    <div
+      style={{
+        maxWidth: 800,
+        margin: "40px auto",
+        padding: "20px",
+        color: "#1A4D2E",
+      }}
+    >
+      <Card title="Đặt lịch hẹn tại đây" bordered={false}>
         <Form
           form={form}
           name="booking"
@@ -114,13 +92,19 @@ const Booking = () => {
           requiredMark={false}
         >
           <Form.Item
-            name="service"
-            label="Service"
-            rules={[{ required: true, message: "Please select a service" }]}
+            name="services" // Updated to 'services' to match your array
+            label="Dịch vụ"
+            rules={[
+              {
+                required: true,
+                message: "Chọn 1 hoặc nhiều dịch vụ",
+              },
+            ]}
           >
             <Select
-              placeholder="Select a service"
+              placeholder="Bạn có thể chọn một hay nhiều dịch vụ."
               suffixIcon={<ScissorOutlined />}
+              mode="multiple" // Allows multiple selections
             >
               {services.map((service) => (
                 <Option key={service.id} value={service.id}>
@@ -133,10 +117,15 @@ const Booking = () => {
           <Form.Item
             name="stylist"
             label="Stylist"
-            rules={[{ required: true, message: "Please select a stylist" }]}
+            rules={[
+              {
+                required: true,
+                message: "Chọn stylist",
+              },
+            ]}
           >
             <Select
-              placeholder="Select a stylist"
+              placeholder="Nếu bạn không biết nên chọn ai, bạn có thể chọn ngẫu nhiên."
               suffixIcon={<UserOutlined />}
             >
               {stylists.map((stylist) => (
@@ -149,8 +138,13 @@ const Booking = () => {
 
           <Form.Item
             name="dateTime"
-            label="Date and Time"
-            rules={[{ required: true, message: "Please select date and time" }]}
+            label="Thời gian"
+            rules={[
+              {
+                required: true,
+                message: "Chọn thời gian",
+              },
+            ]}
           >
             <DatePicker
               showTime
@@ -160,20 +154,34 @@ const Booking = () => {
               }
               style={{ width: "100%" }}
               suffixIcon={<CalendarOutlined />}
+              placeholder="Bạn có thể chọn bất kỳ thời gian nào trong khung giờ 8AM-20PM."
             />
           </Form.Item>
 
-          <Form.Item name="note" label="Additional Notes">
-            <Input.TextArea
-              rows={4}
-              placeholder="Any special requests or notes?"
-            />
+          <Form.Item name="note" label="Ghi chú">
+            <Input.TextArea rows={4} placeholder="Ghi chú cho cửa hàng" />
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
-              Book Appointment
-            </Button>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                style={{
+                  width: "40%",
+                  height: "50%",
+                  backgroundColor: "#94B49F",
+                  borderColor: "#94B49F",
+                  color: "#163020",
+                  borderRadius: "5px",
+                  fontSize: "20px",
+                  cursor: "pointer",
+                  transition: "background-color 0.3s ease",
+                }}
+              >
+                Đặt lịch hẹn
+              </Button>
+            </div>
           </Form.Item>
         </Form>
       </Card>

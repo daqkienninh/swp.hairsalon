@@ -42,19 +42,28 @@ function LoginPage() {
     try {
       const response = await api.post("/api/login", values);
       console.log(response);
-      const { role, token } = response.data;
+      const { role, token, tokenExpiration } = response.data;
+      console.log(role);
       dispatch(login(response.data));
       localStorage.setItem("token", token);
-      if (role == "CUSTOMER") {
-        // Customize the role
-        navigate("/");
-      } else if (role == "STAFF") {
-        navigate("/dashboard");
-      } else if (role == "STYLIST") {
-        navigate("/staff/dashboard");
+      localStorage.setItem("tokenExpiration", tokenExpiration);
+      // Lấy đường dẫn redirect từ localStorage
+      const redirectPath = sessionStorage.getItem("redirectPath") || "/";
+      sessionStorage.removeItem("redirectPath"); // Xóa sau khi đã sử dụng
+      if (role === "CUSTOMER") {
+        navigate(redirectPath);
+      } else if (role === "STAFF") {
+        navigate("/staff");
+        toast.success("Đăng nhập thành công!");
+      } else if (role === "STYLIST") {
+        navigate("/stylist");
+        toast.success("Đăng nhập thành công!");
+      } else if (role === "ADMINISTRATOR") {
+        navigate("/admin");
+        toast.success("Đăng nhập thành công!");
       }
     } catch (err) {
-      toast.error(err.response.data || "Error login. Please try again!");
+      toast.error(err.response.data || "Lỗi đăng nhập, xin hãy thử lại!");
     }
   };
 
@@ -98,7 +107,6 @@ function LoginPage() {
           >
             <Input.Password className="input" />
           </Form.Item>
-          <div>Quên mật khẩu?</div>
           <button type="submit" className="button">
             Đăng nhập
           </button>

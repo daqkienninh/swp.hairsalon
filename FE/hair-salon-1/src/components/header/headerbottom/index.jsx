@@ -1,30 +1,43 @@
-import { Button, Flex, Input } from "antd";
+import { Button, Flex, Input, message } from "antd";
 import React, { useState } from "react";
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function HeaderBottom() {
   const [show, setShow] = useState(false);
-
+  const navigate = useNavigate();
   const categories = [
     { name: "Cho nữ", icon: "👩" },
     { name: "Cho nam", icon: "👨" },
     { name: "Spa và Relax", icon: "💆" },
   ];
 
+  const handleBooking = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      localStorage.setItem("redirectPath", window.location.pathname);
+      toast.error("Vui lòng đăng nhập để tiếp tục!");
+      navigate("/login");
+      return;
+    }
+    // Nếu đã đăng nhập thì chuyển đến trang booking
+    navigate("/booking");
+  };
+
   return (
-    <div className="w-full bg-[#FCF8E8] relative">
+    <div className="w-full bg-[#C4DAD2] relative">
       <div className="max-w-container mx-auto">
         <Flex className="flex-col lg:flex-row items-center justify-between w-full px-4 py-4 lg:py-0 h-full lg:h-24 gap-4">
           {/* Shop by Category */}
           <div className="relative">
             <div
               onClick={() => setShow(!show)}
-              className="flex h-12 cursor-pointer items-center gap-2 text-primeColor"
+              className="flex h-12 cursor-pointer items-center gap-2 text-primeColor pl-5"
             >
-              <HiOutlineMenuAlt4 className="w-5 h-5 text-[#94B49F]" />
-              <p className="text-[14px] font-normal text-[#94B49F]">
+              <HiOutlineMenuAlt4 className="w-5 h-5 text-[#163020]" />
+              <p className="text-[16px] font-normal text-[#163020]">
                 Danh mục dịch vụ
               </p>
             </div>
@@ -63,11 +76,12 @@ function HeaderBottom() {
 
           {/* Booking Button */}
           <div>
-            <Link to="/booking">
-              <Button className="w-40 h-12 bg-[#94B49F] hover:bg-[#e09b6f] text-white font-semibold text-lg rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#ECB390] focus:ring-opacity-50">
-                Đặt lịch
-              </Button>
-            </Link>
+            <button
+              onClick={handleBooking}
+              className="w-40 h-12 bg-[#94B49F] text-[#163020] font-semibold text-lg rounded-md shadow-md hover:bg[#CEE5D0]"
+            >
+              Đặt lịch
+            </button>
           </div>
         </Flex>
       </div>

@@ -5,7 +5,7 @@
   .header {
     width: 100%;
     height: 80px;
-    background-color: white;
+    background-color: #E9EFEC;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 0;
@@ -35,7 +35,7 @@
   .logo {
     font-weight: bolder;
     font-size: 30px;
-    color: #ECB390;
+    color: #16423C;
     padding-left: 30px; 
     transition: color 0.3s;
   }
@@ -50,12 +50,12 @@
   
   .nav-link {
     text-decoration: none;
-    color: #ECB390!important;
+    color: #1A4D2E!important;
     padding: 10px;
     font-size: 16px;
   }
   .nav-link:hover {
-    color: #ECB390 !important;
+    color: #4F6F52!important;
   }
   
 /* User Profile Icon */
@@ -67,7 +67,7 @@
 
 .profile-icon {
   font-size: 20px; /* Adjust the icon size as needed */
-  color: #94B49F;
+  color: #94B49F; 
 }
 
   

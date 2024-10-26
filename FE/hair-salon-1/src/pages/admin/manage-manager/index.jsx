@@ -4,8 +4,13 @@ import { Form, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import TextArea from 'antd/es/input/TextArea';
 
-function ManageStylist() {
+function ManageManager() {
     const columns = [
+        {
+            title: "ID",
+            dataIndex: "id",
+            key: "id",
+        },
         {
             title: "Full Name",
             dataIndex: "fullName",
@@ -14,7 +19,7 @@ function ManageStylist() {
         {
             title: "Phone",
             dataIndex: "phone",
-            key: "discount",
+            key: "phone",
         },
         {
             title: "Email",
@@ -22,29 +27,27 @@ function ManageStylist() {
             key: "email",
         },
         {
-            title: "Level",
-            dataIndex: "level",
-            key: "level",
-        },
-        {
             title: "Sex",
             dataIndex: "sex",
             key: "sex",
-        },
-        {
-            title: "Description",
-            dataIndex: "description",
-            key: "description",
         },
         {
             title: "Image",
             dataIndex: "image",
             key: "image",
         },
+        {
+            title: "Role",
+            dataIndex: "role",
+            key: "role",
+        },
     ];
     const formItems = (
         <>
             <Form.Item name="id" hidden>
+                <Input />
+            </Form.Item>
+            <Form.Item label="Pasword" name="password" hidden>
                 <Input />
             </Form.Item>
             <FormItem
@@ -53,7 +56,7 @@ function ManageStylist() {
                 rules={[
                     {
                         required: true,
-                        message: "Please input Stylist's name!",
+                        message: "Please input Manager's name!",
                     },
                 ]}
             >
@@ -71,24 +74,6 @@ function ManageStylist() {
             >
                 <Input />
             </FormItem>
-            <FormItem
-                label="password"
-                name="password"
-                rules={[
-                    {
-                        required: true,
-                        message: "Please input password!",
-                    },
-                ]}
-            >
-                <Input/>
-            </FormItem>
-            <Form.Item
-                label="Level"
-                name="level"
-            >
-                <Input />
-            </Form.Item>
             <Form.Item
                 label="Image"
                 name="image"
@@ -107,24 +92,29 @@ function ManageStylist() {
             >
                 <Input />
             </Form.Item>
-            <FormItem
-                label="Description"
-                name="description"
+            <Form.Item
+                label="Role"
+                name="role"
+                initialValue="MANAGER"
+                hidden
             >
-                <TextArea />
-            </FormItem>
+                <Input />
+            </Form.Item>
         </>
     );
+
     return (
         <div>
             <CRUDTemplate
                 columns={columns}
                 formItems={formItems}
-                path="/api/stylist"
-                title="Stylist"
+                path="/api/account"
+                title="Manager"
+                roles="MANAGER"
+                puts="/api/manager"
             />
         </div>
     )
 }
 
-export default ManageStylist
+export default ManageManager

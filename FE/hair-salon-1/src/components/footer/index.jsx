@@ -4,12 +4,12 @@ import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
 
 const Footer = forwardRef((props, ref) => {
   return (
-    <footer ref={ref} className="bg-gray-100 py-16 border-t border-gray-200">
+    <footer ref={ref} className="bg-[#E9EFEC] py-16 border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           {/* Column 1 - Increased width */}
           <div className="md:col-span-5 pl-10">
-            <h3 className="text-xl font-semibold mb-4 text-[#ECB390]">
+            <h3 className="text-xl font-semibold mb-4 text-[#1A4D2E]">
               Về Hair Harmony
             </h3>
             <p className="text-sm text-gray-600 leading-relaxed">
@@ -29,7 +29,7 @@ const Footer = forwardRef((props, ref) => {
 
           {/* Column 2 - Reduced width */}
           <div className="md:col-span-2 pl-5 pr-5">
-            <h3 className="text-xl font-semibold mb-4 text-[#ECB390]">
+            <h3 className="text-xl font-semibold mb-4 text-[#1A4D2E]">
               Dịch vụ
             </h3>
             <ul className="space-y-3">
@@ -62,7 +62,7 @@ const Footer = forwardRef((props, ref) => {
 
           {/* Column 3 - Reduced width */}
           <div className="md:col-span-5 pr-10 pl-10">
-            <h3 className="text-xl font-semibold mb-4 text-[#ECB390]">
+            <h3 className="text-xl font-semibold mb-4 text-[#1A4D2E]">
               Đăng ký nhận tin
             </h3>
             <form>
@@ -71,29 +71,29 @@ const Footer = forwardRef((props, ref) => {
                 placeholder="Nhập email của bạn"
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200 transition duration-300"
               />
-              <button className="mt-4 w-full py-2 bg-[#94B49F] text-white font-semibold rounded-md hover:bg-[#CEE5D0] transition duration-300">
+              <button className="mt-4 w-full py-2 bg-[#B6C4B6] text-[#163020] font-semibold rounded-md hover:bg-[#CEE5D0] transition duration-300">
                 Đăng ký
               </button>
             </form>
             <div className="mt-6">
-              <h4 className="text-lg font-semibold mb-4 text-[#ECB390]">
+              <h4 className="text-lg font-semibold mb-4 text-[#1A4D2E]">
                 Kết nối với chúng tôi
               </h4>
               <div className="flex space-x-4">
                 <a
-                  href="#"
+                  href="facebook"
                   className="text-gray-600 hover:text-gray-800 transition duration-300"
                 >
                   <FaFacebookF size={20} />
                 </a>
                 <a
-                  href="#"
+                  href="twitter"
                   className="text-gray-600 hover:text-gray-800 transition duration-300"
                 >
                   <FaTwitter size={20} />
                 </a>
                 <a
-                  href="#"
+                  href="instagram"
                   className="text-gray-600 hover:text-gray-800 transition duration-300"
                 >
                   <FaInstagram size={20} />
@@ -104,7 +104,7 @@ const Footer = forwardRef((props, ref) => {
         </div>
 
         <div className="mt-12 pt-8 border-t border-gray-200">
-          <p className="text-sm text-center flex items-center justify-center text-[#ECB390]">
+          <p className="text-sm text-center flex items-center justify-center text-[#1A4D2E]">
             <AiOutlineCopyright className="mr-1" />
             <span>2024 Hair Harmony. Tất cả các quyền được bảo lưu.</span>
           </p>

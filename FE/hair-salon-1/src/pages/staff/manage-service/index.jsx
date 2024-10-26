@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react";
 import api from "../../../config/axios";
-import { Button, Form, Input, Modal, Table } from "antd";
+import { Button, Form, Input, Modal, Table, Upload } from "antd";
 import { toast } from "react-toastify";
 import CRUDTemplate from "../../../components/crud-template";
+import CRUDService from "../../../components/crud-template/service";
 
 function ManageService() {
+  const [fileList, setFileList] = useState([]);
   const columns = [
     {
       title: "ID",
       dataIndex: "id",
       key: "id",
-    },
-    {
-      title: "Image",
-      dataIndex: "image",
-      key: "image",
     },
     {
       title: "Name",
@@ -52,6 +49,7 @@ function ManageService() {
       key: "totalPrice",
     },
   ];
+  
   const formItems = (
     <>
       <Form.Item name="id" hidden>
@@ -67,9 +65,6 @@ function ManageService() {
           },
         ]}
       >
-        <Input />
-      </Form.Item>
-      <Form.Item label="Image" name="image">
         <Input />
       </Form.Item>
       <Form.Item label="Type" name="type">
@@ -92,7 +87,7 @@ function ManageService() {
 
   return (
     <div>
-      <CRUDTemplate
+      <CRUDService
         columns={columns}
         formItems={formItems}
         path="/api/service"
