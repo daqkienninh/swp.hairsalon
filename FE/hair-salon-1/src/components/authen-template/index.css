@@ -3,7 +3,6 @@ html, body{
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: 'Montserra', sans-serif;
 }
 /* Main template container */
 .authen-template {
@@ -37,9 +36,8 @@ html, body{
 /*Title and message styles*/
 .title{
     font-size: 2.5rem;
-    color: #ECB390; 
+    color: #1A4D2E; 
     margin: 0.5rem 0;
-    font-family:'Montserra', sans-serif;
 }
 
 .message{
@@ -47,7 +45,7 @@ html, body{
     color: rgba(0, 0, 0, 0.8); 
     margin: 0.5rem 0;
     font-weight: normal;
-    font-family:'Montserra', sans-serif;
+    color: #1A4D2E; 
 }
 
 /* Input field styles */
@@ -57,21 +55,26 @@ html, body{
     border: 1px solid #ddd;
     border-radius: 8px;
     font-size: 1rem;
-    font-family: 'Montserra', sans-serif;
+    border-color: #94b49f;
+    &:hover, &:active, &:focus, &:visited{
+        border-color: #163020!important;
+    }
+}
+.input:focus{
+    border-color: #163020!important;
 }
 /* Button styling */
 .button {
     width: 50%;
     padding: 0.8rem;
     background-color: #94B49F;
-    color: #fff;
+    color: #163020;
     border: none;
     border-radius: 8px;
     font-size: 1rem;
     cursor: pointer;
     margin: 0.5rem 0;     
     transition: background-color 0.3s ease;
-    font-family: 'Poppins', sans-serif;
 }
 
 .button:hover {
@@ -94,7 +97,6 @@ html, body{
     cursor: pointer;
     margin: 0.5rem 0;     
     transition: background-color 0.3s ease;
-    font-family: 'Poppins', sans-serif;
 }
  .button-google:hover {
     background-color: #CEE5D0;
@@ -107,13 +109,13 @@ html, body{
 /* Link styling */
  .authen-template_form a {
     text-decoration: none;
-    color: #ECB390;
+    color: #1A4D2E;
     margin-top: 1rem;
     display: block;
     text-align: center;
 } 
 .authen-template_form a:hover {
-    color: #DA8359;
+    color: #94B49F;
 } 
 
 .home-icon {

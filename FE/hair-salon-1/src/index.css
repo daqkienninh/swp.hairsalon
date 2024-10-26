@@ -3,11 +3,8 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
-
 /* Body */
 body {
-  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Baloo 2', sans-serif;
 }
 

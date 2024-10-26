@@ -58,7 +58,7 @@ function Header({ scrollToFooter }) {
               ) : (
                 <div>
                   <div>
-                    <Link to="/history" className="nav-link">
+                    <Link to="/history-booking" className="nav-link">
                       Lịch sử cuộc hẹn
                     </Link>
                   </div>

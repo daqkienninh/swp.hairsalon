@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Form,
-  Button,
-  Select,
-  DatePicker,
-  TimePicker,
-  Card,
-  Input,
-  message,
-} from "antd";
+import { Form, Button, Select, DatePicker, Card, Input, message } from "antd";
 import {
   ScissorOutlined,
   UserOutlined,
@@ -99,8 +90,15 @@ const Booking = () => {
   };
 
   return (
-    <div style={{ maxWidth: 800, margin: "40px auto", padding: "20px" }}>
-      <Card title="Book Your Appointment" bordered={false}>
+    <div
+      style={{
+        maxWidth: 800,
+        margin: "40px auto",
+        padding: "20px",
+        color: "#1A4D2E",
+      }}
+    >
+      <Card title="Đặt lịch hẹn tại đây" bordered={false}>
         <Form
           form={form}
           name="booking"
@@ -109,13 +107,19 @@ const Booking = () => {
           requiredMark={false}
         >
           <Form.Item
-            name="service"
-            label="Service"
-            rules={[{ required: true, message: "Please select a service" }]}
+            name="services" // Updated to 'services' to match your array
+            label="Dịch vụ"
+            rules={[
+              {
+                required: true,
+                message: "Chọn 1 hoặc nhiều dịch vụ",
+              },
+            ]}
           >
             <Select
-              placeholder="Select a service"
+              placeholder="Bạn có thể chọn một hay nhiều dịch vụ."
               suffixIcon={<ScissorOutlined />}
+              mode="multiple" // Allows multiple selections
             >
               {services.map((service) => (
                 <Option key={service.id} value={service.id}>
@@ -128,15 +132,20 @@ const Booking = () => {
           <Form.Item
             name="stylist"
             label="Stylist"
-            rules={[{ required: true, message: "Please select a stylist" }]}
+            rules={[
+              {
+                required: true,
+                message: "Chọn stylist",
+              },
+            ]}
           >
             <Select
-              placeholder="Select a stylist"
+              placeholder="Nếu bạn không biết nên chọn ai, bạn có thể chọn ngẫu nhiên."
               suffixIcon={<UserOutlined />}
             >
               {stylists.map((stylist) => (
                 <Option key={stylist.id} value={stylist.id}>
-                  {stylist.name}
+                  {stylist.fullName}
                 </Option>
               ))}
             </Select>
@@ -144,8 +153,13 @@ const Booking = () => {
 
           <Form.Item
             name="dateTime"
-            label="Date and Time"
-            rules={[{ required: true, message: "Please select date and time" }]}
+            label="Thời gian"
+            rules={[
+              {
+                required: true,
+                message: "Chọn thời gian",
+              },
+            ]}
           >
             <DatePicker
               showTime
@@ -155,14 +169,12 @@ const Booking = () => {
               }
               style={{ width: "100%" }}
               suffixIcon={<CalendarOutlined />}
+              placeholder="Bạn có thể chọn bất kỳ thời gian nào trong khung giờ 8AM-20PM."
             />
           </Form.Item>
 
-          <Form.Item name="note" label="Additional Notes">
-            <Input.TextArea
-              rows={4}
-              placeholder="Any special requests or notes?"
-            />
+          <Form.Item name="note" label="Ghi chú">
+            <Input.TextArea rows={4} placeholder="Ghi chú cho cửa hàng" />
           </Form.Item>
 
           <Form.Item
@@ -180,9 +192,25 @@ const Booking = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
-              Book Appointment
-            </Button>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                style={{
+                  width: "40%",
+                  height: "50%",
+                  backgroundColor: "#94B49F",
+                  borderColor: "#94B49F",
+                  color: "#163020",
+                  borderRadius: "5px",
+                  fontSize: "20px",
+                  cursor: "pointer",
+                  transition: "background-color 0.3s ease",
+                }}
+              >
+                Đặt lịch hẹn
+              </Button>
+            </div>
           </Form.Item>
         </Form>
       </Card>

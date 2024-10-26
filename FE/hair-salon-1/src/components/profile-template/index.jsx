@@ -16,7 +16,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout, updateUser } from "../../redux/features/userSlice";
 import { useNavigate } from "react-router-dom";
 import { GrHomeRounded } from "react-icons/gr";
-//import { updateUser } from "../../redux/userSlice"; // Assuming you have this action in your userSlice
 import uploadFile from "../../utils/file";
 import { Button, Form, Modal, Upload } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
@@ -46,7 +45,7 @@ export default function ProfileTemplate() {
     phone: user.phone,
     sex: user.sex,
     image: user.image,
-    image: user.avatarUrl,
+    // image: user.avatarUrl,
     password: user.password,
   });
 
@@ -76,7 +75,7 @@ export default function ProfileTemplate() {
 
   const handleAvatarUpload = async (field) => {
     setLoading(true);
-    let imageUrl = '';
+    let imageUrl = "";
 
     try {
       if (fileList.length > 0) {
@@ -84,13 +83,15 @@ export default function ProfileTemplate() {
         if (file) {
           imageUrl = await uploadFile(file);
           if (!imageUrl) {
-            throw new Error('Failed to upload image');
+            throw new Error("Failed to upload image");
           }
         }
       }
 
       if (imageUrl) {
-        const response = await api.put(`/users/${user.id}`, { image: imageUrl });
+        const response = await api.put(`/users/${user.id}`, {
+          image: imageUrl,
+        });
         if (response.status === 200) {
           dispatch(updateUser({ image: imageUrl }));
           setFormData({ ...formData, image: imageUrl });
@@ -131,9 +132,9 @@ export default function ProfileTemplate() {
     setPreviewImage(file.url || file.preview);
     setPreviewOpen(true);
   };
-  const handleChangeImage = ({ fileList: newFileList }) => setFileList(newFileList);
+  const handleChangeImage = ({ fileList: newFileList }) =>
+    setFileList(newFileList);
 
-  
   const renderSexField = () => (
     <MDBRow className="mb-4">
       <MDBCol sm="3">
@@ -172,7 +173,6 @@ export default function ProfileTemplate() {
     if (field === "sex") {
       return renderSexField();
     }
-
     return (
       <MDBRow className="mb-4">
         <MDBCol sm="3">
@@ -255,17 +255,18 @@ export default function ProfileTemplate() {
                       <Button
                         className="border-none"
                         htmlFor="avatar-upload"
-                        onClick={() => setShowModal(true)}>
+                        onClick={() => setShowModal(true)}
+                      >
                         <MDBBtn
                           rounded
                           size="sm"
                           style={{
                             backgroundColor: "#94B49F",
-                            color: "white",
+                            color: "#163020",
                             borderColor: "#94B49F",
                           }}
                         >
-                          Change Avatar
+                          Đổi ảnh
                         </MDBBtn>
                       </Button>
                       <Modal
@@ -282,13 +283,20 @@ export default function ProfileTemplate() {
                           <FormItem
                             label="Image"
                             name="image"
-                            rules={[{ required: true, message: 'Please upload an image' }]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please upload an image",
+                              },
+                            ]}
                           >
                             <Upload
                               listType="picture-card"
                               fileList={fileList}
                               onPreview={handlePreview}
-                              onChange={({ fileList: newFileList }) => setFileList(newFileList)}
+                              onChange={({ fileList: newFileList }) =>
+                                setFileList(newFileList)
+                              }
                               beforeUpload={() => false} // Prevent auto upload
                             >
                               {fileList.length >= 1 ? null : uploadButton}
@@ -304,11 +312,14 @@ export default function ProfileTemplate() {
                       onClick={() => setIsEditing(!isEditing)}
                       style={{
                         backgroundColor: "#94B49F",
-                        color: "white",
+                        color: "#163020",
                         borderColor: "#94B49F",
+                        "&:hover": {
+                          backgroundColor: "#CEE5D0",
+                        },
                       }}
                     >
-                      {isEditing ? "Cancel" : "Update"}
+                      {isEditing ? "Hủy" : "Cập nhật thông tin"}
                     </MDBBtn>
                   </div>
                   <hr className="my-4" />
@@ -327,11 +338,11 @@ export default function ProfileTemplate() {
                         onClick={handleUpdate}
                         style={{
                           backgroundColor: "#7a937f",
-                          color: "white",
+                          color: "#163020",
                           borderColor: "#7a937f",
                         }}
                       >
-                        Save Changes
+                        Lưu
                       </MDBBtn>
                     </div>
                   )}
@@ -349,11 +360,11 @@ export default function ProfileTemplate() {
                     onClick={handleLogout}
                     style={{
                       backgroundColor: "#94B49F",
-                      color: "white",
+                      color: "#163020",
                       borderColor: "#94B49F",
                     }}
                   >
-                    Log Out
+                    Đăng xuất
                   </MDBBtn>
                 </div>
               )}

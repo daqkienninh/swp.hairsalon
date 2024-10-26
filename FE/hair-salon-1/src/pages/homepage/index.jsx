@@ -6,13 +6,13 @@ import { Link } from "react-router-dom";
 
 function HomePage() {
   const [services, setServices] = useState([]);
-  
+
   const fetchServices = async () => {
     try {
       const response = await api.get("/api/service");
       setServices(response.data);
     } catch (error) {
-      console.error("Error fetching services:", error);
+      console.error("Lỗi:", error);
     }
   };
 
@@ -25,12 +25,12 @@ function HomePage() {
       <Banner />
       {/* Women's services */}
       <div className="max-w-container mx-auto px-4">
-        <div className="text-2xl font-semibold pb-6 mt-10 text-[#ECB390] pl-5">
+        <div className="text-2xl font-semibold pb-6 mt-10 text-[#1A4D2E] pl-5">
           Dịch vụ cho nữ
         </div>
         <div className="flex items-center justify-between h-full flex-wrap gap-3 w-full pb-16">
           {services
-            .filter((service) => service.type === "women")
+            .filter((service) => service.type === "Nữ")
             .map((service, index) => (
               <div key={index} className="px-2">
                 <Service service={service} />
@@ -40,12 +40,12 @@ function HomePage() {
       </div>
       {/* Men's services */}
       <div className="max-w-container mx-auto px-4">
-        <div className="text-2xl font-semibold pb-6 mt-10 text-[#ECB390] pl-5">
+        <div className="text-2xl font-semibold pb-6 mt-10 text-[#1A4D2E] pl-5">
           Dịch vụ cho nam
         </div>
         <div className="flex items-center justify-between h-full flex-wrap gap-3 w-full pb-16">
           {services
-            .filter((service) => service.type === "men")
+            .filter((service) => service.type === "Nam")
             .map((service, index) => (
               <div key={index} className="px-2">
                 <Service service={service} />
@@ -55,12 +55,12 @@ function HomePage() {
       </div>
       {/* Spa services */}
       <div className="max-w-container mx-auto px-4">
-        <div className="text-2xl font-semibold pb-6 mt-10 text-[#ECB390] pl-5">
+        <div className="text-2xl font-semibold pb-6 mt-10 text-[#1A4D2E] pl-5">
           Spa & Thư giãn
         </div>
         <div className="flex items-center justify-between h-full flex-wrap gap-3 w-full pb-16">
           {services
-            .filter((service) => service.type === "spa")
+            .filter((service) => service.type === "Thư giãn")
             .map((service, index) => (
               <div key={index} className="px-2">
                 <Service service={service} />
@@ -97,7 +97,7 @@ const Service = ({ service }) => {
       <div className="max-w-80 py-6 flex flex-col gap-1 border-[1px] border-t-0 px-4">
         <div className="flex items-center justify-between font-titleFont">
           <h2 className="text-lg text-primeColor font-bold">{service.name}</h2>
-          <p className="text-[#767676] text-[14px]">{service.price}000</p>
+          <p className="text-[#767676] text-[14px]">{service.price}</p>
         </div>
       </div>
     </div>

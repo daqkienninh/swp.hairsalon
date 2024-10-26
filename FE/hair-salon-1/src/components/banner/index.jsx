@@ -4,13 +4,7 @@ import Slider from "react-slick/lib/slider";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import {
-  banner,
-  banner1,
-  banner2,
-  bannerImgTwo,
-  bannerImgThree,
-} from "../../assets/images";
+import { banner, banner1, banner2 } from "../../assets/images";
 
 const Banner = () => {
   const [dotActive, setDotActive] = useState(0);
@@ -27,13 +21,13 @@ const Banner = () => {
     <div className="w-full bg-white">
       <Slider {...settings}>
         <div>
-          <img src={banner} />
+          <img src={banner} alt="hair salon" />
         </div>
         <div>
-          <img src={banner1} />
+          <img src={banner1} alt="hair harmony" />
         </div>
         <div>
-          <img src={banner2} />
+          <img src={banner2} alt="services" />
         </div>
       </Slider>
     </div>

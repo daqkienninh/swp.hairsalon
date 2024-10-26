@@ -1,7 +1,6 @@
 import {
   createBrowserRouter,
   Navigate,
-  Route,
   RouterProvider,
 } from "react-router-dom";
 import React from "react";
@@ -32,9 +31,13 @@ import ServiceDetailPage from "./pages/ServiceDetail";
 import Fail from "./pages/profile/customer/fail";
 import ManageAccount from "./pages/admin/manage-account";
 
+import HistoryBooking from "./pages/history/index";
+import ServiceDetail from "./pages/servicedetail";
+import RequireAuth from "./config/auth";
 function App() {
   const ProtectRouteAuth = ({ children, allowedRoles }) => {
     const user = useSelector((store) => store.user);
+    const token = localStorage.getItem("token");
     console.log(user);
     if (user && allowedRoles.includes(user.role)) { //Customize the role
       return children;
@@ -42,6 +45,19 @@ function App() {
     toast.error("Not allow")
     return <Navigate to={"/login"} />
   }
+    // Kiểm tra cả token và user
+    if (!token) {
+      // Lưu current path vào localStorage để sau khi login redirect lại
+      localStorage.setItem("redirectPath", window.location.pathname);
+      toast.error("Vui lòng đăng nhập để tiếp tục!");
+      return <Navigate to="/login" />;
+    }
+    if (user && allowedRoles.includes(user.role)) {
+      return children;
+    }
+    toast.error("Bạn không có quyền truy cập trang này!");
+    return <Navigate to="/" />;
+  };
 
   const router = createBrowserRouter([
     {
@@ -54,7 +70,7 @@ function App() {
         },
         {
           path: "/service-detail/:id",
-          element: <ServiceDetailPage />,
+          element: <ServiceDetail />,
         },
         {
           path: "services",
@@ -62,11 +78,27 @@ function App() {
         },
         {
           path: "booking",
-          element: <Booking />,
+          element: (
+            <RequireAuth>
+              <Booking />
+            </RequireAuth>
+          ),
         },
         {
           path: "confirm-booking",
-          element: <ConfirmBooking />,
+          element: (
+            <RequireAuth>
+              <ConfirmBooking />
+            </RequireAuth>
+          ),
+        },
+        {
+          path: "history-booking",
+          element: (
+            <RequireAuth>
+              <HistoryBooking />
+            </RequireAuth>
+          ),
         },
       ],
     },
@@ -129,6 +161,44 @@ function App() {
           element: <ManageAccount />
         }
       ]
+    }{
+          element: <DashboardLayout />,
+        },
+        {
+          path: "service",
+          element: <ManageService />,
+        },
+        {
+          path: "appointment",
+          element: <ManageAppointment />,
+        },
+      ],
+    
+    {
+      path: "admin",
+      element: (
+        <ProtectRouteAuth allowedRoles={["ADMINISTRATOR"]}>
+          <DashboardAdmin />
+        </ProtectRouteAuth>
+      ),
+      children: [
+        {
+          path: "managestylist",
+          element: <ManageStylist />,
+        },
+        {
+          path: "managecustomer",
+          element: <ManageCustomer />,
+        },
+        {
+          path: "managestaff",
+          element: <ManageStaff />,
+        },
+        {
+          path: "managemanager",
+          element: <ManageManager />,
+        },
+      ],
     },
     {
       path: "customer",
