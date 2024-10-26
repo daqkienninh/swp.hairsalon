@@ -165,7 +165,7 @@ function CRUDTemplate({ columns, formItems, path, title }) {
         confirmLoading={loading}
       >
         <Form form={form} labelCol={{ span: 24 }} onFinish={handleSubmit}>
-          {formItems},
+          {formItems}
           <FormItem
             label="Image"
             name="image"

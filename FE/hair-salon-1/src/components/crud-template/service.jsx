@@ -64,6 +64,7 @@ function CRUDService({ columns, formItems, path, title }) {
             } else {
                 const response = await api.post(path, values);
                 toast.success("Successfully Create");
+                form.resetFields(); 
             }
             fetchData(); // load data again
             form.resetFields(); // xoa data vua nhap trong form
@@ -165,7 +166,7 @@ function CRUDService({ columns, formItems, path, title }) {
                 confirmLoading={loading}
             >
                 <Form form={form} labelCol={{ span: 24 }} onFinish={handleSubmit}>
-                    {formItems},
+                    {formItems}
                     <FormItem
                         label="Image"
                         name="image"
@@ -176,7 +177,7 @@ function CRUDService({ columns, formItems, path, title }) {
                             fileList={fileList}
                             onPreview={handlePreview}
                             onChange={handleChange}
-                            beforeUpload={() => false} // Prevent auto upload
+                            beforeUpload={() => true} // Prevent auto upload
                         >
                             {fileList.length >= 1 ? null : uploadButton}
                         </Upload>

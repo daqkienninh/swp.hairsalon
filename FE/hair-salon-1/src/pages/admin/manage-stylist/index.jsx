@@ -53,24 +53,12 @@ function ManageStylist() {
             <FormItem
                 label="Email"
                 name="email"
-                rules={[
-                    {
-                        required: true,
-                        message: "Please input Email!",
-                    },
-                ]}
             >
                 <Input />
             </FormItem>
             <FormItem
                 label="Phone"
                 name="phone"
-                rules={[
-                    {
-                        required: true,
-                        message: "Please input Phone!",
-                    },
-                ]}
             >
                 <Input />
             </FormItem>
