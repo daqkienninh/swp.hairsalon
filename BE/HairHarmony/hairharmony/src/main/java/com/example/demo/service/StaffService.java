@@ -109,7 +109,7 @@ public class StaffService {
     public Staff deleteStaff(long id) {
         Staff oldStaff = getStaffById(id);
         oldStaff.setDeleted(true);
-        return oldStaff;
+        return staffRepository.save(oldStaff);
     }
 
     public Staff getStaffById(long id) {

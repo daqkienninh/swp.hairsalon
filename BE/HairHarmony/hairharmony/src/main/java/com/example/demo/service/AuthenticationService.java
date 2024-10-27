@@ -24,7 +24,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.Security;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service // đánh dấu cho Spring Boot biết đây là lớp Service
 public class AuthenticationService implements UserDetailsService {
@@ -81,7 +83,7 @@ public class AuthenticationService implements UserDetailsService {
             emailDetail.setReceiver(newAccount);
             emailDetail.setSubject("Chào mừng "+ newAccount.getFullName() +" đên với HairHarmony! ");
             emailDetail.setLink("https://www.google.com/");
-            emailService.sendEmail(emailDetail);
+            emailService.sendWelcomeEmail(emailDetail);
 
             return modelMapper.map(newAccount, AccountResponse.class);
         } catch (Exception e) {
@@ -158,9 +160,9 @@ public class AuthenticationService implements UserDetailsService {
         }else {
             EmailDetail emailDetail = new EmailDetail();
             emailDetail.setReceiver(account);
-            emailDetail.setSubject("Đặt lại mật khẩu");
+            emailDetail.setSubject("Xác nhận đặt lại mật khẩu");
             emailDetail.setLink("https://www.google.com/?token=" + tokenService.generateToken(account));
-            emailService.sendEmail(emailDetail);
+            emailService.sendResetPasswordEmail(emailDetail);
         }
     }
 
@@ -169,4 +171,38 @@ public class AuthenticationService implements UserDetailsService {
         account.setPassword(passwordEncoder.encode(resetPasswordRequest.getPassword()));
         accountRepository.save(account);
     }
+
+//    private static final String CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID";
+//
+//    public Optional<Account> loginWithGoogle(LoginGoogleRequest request) {
+//        try {
+//            GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(
+//                    GoogleNetHttpTransport.newTrustedTransport(),
+//                    JacksonFactory.getDefaultInstance()
+//            ).setAudience(Collections.singletonList(CLIENT_ID)).build();
+//
+//            GoogleIdToken idToken = verifier.verify(request.getToken());
+//            if (idToken != null) {
+//                GoogleIdToken.Payload payload = idToken.getPayload();
+//                String email = payload.getEmail();
+//                String name = (String) payload.get("name");
+//
+//                Account account = accountRepository.findByEmail(email)
+//                        .orElseGet(() -> {
+//                            Account newAccount = new Account();
+//                            newAccount.setEmail(email);
+//                            newAccount.setFullName(name);
+//                            newAccount.setRole(Role.CUSTOMER);
+//                            return accountRepository.save(newAccount);
+//                        });
+//
+//                return Optional.of(account);
+//            } else {
+//                return Optional.empty();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return Optional.empty();
+//        }
+//    }
 }

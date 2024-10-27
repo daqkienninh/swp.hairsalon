@@ -73,8 +73,6 @@ public class StylistService {
             return accountRepository.save(account);
         }
 
-
-
         //R
     public List<Stylist> getAllStylists() {
         List<Stylist> stylists = stylistRepository.findStylistsByIsDeletedFalse();
@@ -110,7 +108,7 @@ public class StylistService {
     public Stylist deleteStylist(long id) {
         Stylist oldStylist = getStylistById(id);
         oldStylist.setDeleted(true);
-        return oldStylist;
+        return stylistRepository.save(oldStylist);
     }
 
     public Stylist getStylistById(long id) {

@@ -29,7 +29,7 @@ public class TokenService {
     public String generateToken(Account account) {
         String token = Jwts.builder()
                 .subject(account.getId()+"")
-                .issuedAt(new Date(System.currentTimeMillis())) //10:30
+                .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(getSignKey())
                 .compact();

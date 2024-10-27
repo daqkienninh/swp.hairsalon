@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.entity.Account;
 import com.example.demo.entity.Feedback;
 import com.example.demo.model.FeedbackResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,5 +19,7 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
             " join ServiceEntity s on f.service.id = s.id" +
             " where f.stylist.id =:stylistID ")
     List<FeedbackResponse> findFeedbackByStylistId(@Param("stylistID") Long id);
+
+    List<Feedback> findByStylistAndRatingGreaterThan(Account stylist, int rating);
 
 }

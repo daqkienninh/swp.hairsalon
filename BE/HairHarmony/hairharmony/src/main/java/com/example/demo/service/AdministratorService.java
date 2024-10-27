@@ -55,7 +55,7 @@ public class AdministratorService {
 
             return response;
         } catch (Exception e) {
-            throw new DuplicateEntity("Duplicate! Failed to create administrator!");
+            throw new DuplicateEntity("Bị trùng! Không tìm thấy admin!");
         }
 
     }
@@ -82,7 +82,7 @@ public class AdministratorService {
 
     public Administrator getAdministratorById(long id) {
         Administrator administrator = administratorRepository.findAdministratorById(id);
-        if (administrator == null) throw new EntityNotFoundException("Administrator not found!");
+        if (administrator == null) throw new EntityNotFoundException("Không tìm thấy admin!");
         return administrator;
     }
 

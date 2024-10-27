@@ -89,7 +89,7 @@ public class Account implements UserDetails {
     }
 
     @OneToMany(mappedBy = "account")
-            @JsonIgnore
+    @JsonIgnore
     List<Customer> customers;
 
     @OneToMany(mappedBy = "account")
@@ -109,15 +109,19 @@ public class Account implements UserDetails {
     List<Administrator> administrators;
 
     @OneToMany(mappedBy = "customer")
+    @JsonIgnore
     List<Appointment> appointments;
 
     @OneToMany(mappedBy = "from")
+    @JsonIgnore
     Set<Transactions> transactionsFrom;
 
     @OneToMany(mappedBy = "to")
+    @JsonIgnore
     Set<Transactions> transactionsTo;
 
     @OneToMany(mappedBy = "stylist")
+    @JsonIgnore
     Set<Feedback> stylist_feedbacks;
 
 
