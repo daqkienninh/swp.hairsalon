@@ -39,17 +39,21 @@ public class Appointment {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    @ToString.Exclude
     @JsonIgnore
     Account customer;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    boolean loyaltyPointsAwarded = false;
+
+
     @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @ToString.Exclude
+    @JsonIgnore
     List<AppointmentDetail> appointmentDetails;
 
-    @OneToOne(mappedBy = "appointments")
+    @OneToOne(mappedBy = "appointment")
     @ToString.Exclude
-    @JsonBackReference
+    @JsonIgnore
     Payment payment;
 
 }

@@ -50,10 +50,11 @@ public class ServiceEntityService {
         oldService.setName(serviceEntity.getName());
         oldService.setDescription(serviceEntity.getDescription());
         oldService.setImage(serviceEntity.getImage());
+        oldService.setType(serviceEntity.getType());
         oldService.setPrice(serviceEntity.getPrice());
         oldService.setDuration(serviceEntity.getDuration());
         oldService.setDiscount(serviceEntity.getDiscount());
-        oldService.setTotalPrice(serviceEntity.getTotalPrice());
+        oldService.setTotalPrice(serviceEntity.getPrice()*(1-((float) serviceEntity.getDiscount() /100)));
         return serviceRepository.save(oldService);
     }
 

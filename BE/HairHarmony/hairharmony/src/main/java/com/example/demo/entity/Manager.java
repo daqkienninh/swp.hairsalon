@@ -22,8 +22,6 @@ public class Manager {
 
     String sex;
 
-    String description;
-
     int level;
 
     @JsonIgnore//không bắt nhập thông tin trên swagger

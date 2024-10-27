@@ -5,17 +5,16 @@ import com.example.demo.entity.enums.*;
 import com.example.demo.exception.EntityNotFoundException;
 import com.example.demo.exception.InvalidAppointmentTimeException;
 import com.example.demo.exception.StylistUnavailableException;
-import com.example.demo.model.AppointmentDetailRequest;
-import com.example.demo.model.AppointmentRequest;
-import com.example.demo.model.SlotRequest;
-import com.example.demo.model.SlotResponse;
+import com.example.demo.model.*;
 import com.example.demo.repository.*;
 import jakarta.persistence.NonUniqueResultException;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -23,11 +22,10 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Time;
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+
 
 @Service
 public class AppointmentService {
@@ -62,6 +60,12 @@ public class AppointmentService {
     @Autowired
     PaymentRepository   paymentRepository;
 
+    @Autowired
+    SlotService slotService;
+
+    @Autowired
+    EmailService emailService;
+
     public Appointment createAppointment(AppointmentRequest appointmentRequest) {
         Account customer = authenticationService.getCurrentAccount();
         Appointment appointment = new Appointment();
@@ -74,7 +78,8 @@ public class AppointmentService {
         appointment.setCustomer(customer);
         appointment.setDate(new Date());//current date
 
-        for(AppointmentDetailRequest appointmentDetailRequest: appointmentRequest.getDetails()){
+        AppointmentDetail appointmentDetail = null;
+        for (AppointmentDetailRequest appointmentDetailRequest : appointmentRequest.getDetails()) {
             // Validate that the startTime is not in the past
             if (appointmentDetailRequest.getStartTime().isBefore(currentTime)) {
                 throw new InvalidAppointmentTimeException("Thời gian không hợp lệ!");
@@ -86,18 +91,18 @@ public class AppointmentService {
             // Calculate the end time based on the service duration
             ServiceEntity serviceEntity = serviceRepository.findServiceById(appointmentDetailRequest.getServiceId());
             int duration = serviceEntity.getDuration(); // Assuming duration is in minutes
-            int totalTime = duration + 30; // thời gian cách 30 phút sau mỗi ca làm
+            int totalTime = duration + 0; // thời gian cách 30 phút sau mỗi ca làm
             LocalDateTime startTime = appointmentDetailRequest.getStartTime();
             LocalDateTime endTime = startTime.plusMinutes(totalTime);
             //Là có được Stylist và thời gian ở bước này, xong ta xuống hàm check stylist có bận hay không
 
             // Check if the stylist is available
-            if (!checkSlotAvailability(stylistId, startTime, endTime)) {
+            if (!slotService.checkSlotAvailability(stylistId, startTime, endTime)) {
                 throw new StylistUnavailableException("Thợ hiện tại đang bận! Xin vui lòng chọn giờ khác !");
             }
 
             // Create the appointment detail
-            AppointmentDetail appointmentDetail = new AppointmentDetail();
+            appointmentDetail = new AppointmentDetail();
             appointmentDetail.setServiceEntity(serviceEntity);
             appointmentDetail.setNote(appointmentDetailRequest.getNote());
             appointmentDetail.setStartTime(startTime);
@@ -111,95 +116,40 @@ public class AppointmentService {
         }
 
         appointment.setAppointmentDetails(appointmentDetails);
+        ;
         appointment.setTotalPrice(totalPrice);
 
         // Set the initial status
-        appointment.setStatus(AppointmentStatus.APPROVED);
 
+        appointment.setStatus(AppointmentStatus.APPROVED);
         appointment = appointmentRepository.save(appointment);
 
 
         // Now that the appointment is saved, create slots
         for (AppointmentDetail detail : appointmentDetails) {
-            createSlotForAppointment(detail.getStylist().getId(), detail.getStartTime(), detail.getEndTime(), detail);
+            slotService.createSlotForAppointment(detail.getStylist().getId(), detail.getStartTime(), detail.getEndTime(), detail);
         }
+
+//        //gửi mail về cho người dùng
+//        EmailDetail emailDetail = new EmailDetail();
+//        emailDetail.setReceiver(customer);
+//        emailDetail.setSubject("Cảm ơn quý khách " + customer.getFullName() + " đã đặt lịch tại HairHarmony! ");
+//        emailDetail.setLink("https://www.google.com/");
+//        emailService.sendAppointmentEmail(emailDetail, appointmentDetail);
 
         return appointment;
     }
 
-    private void createSlotForAppointment(Long stylistId, LocalDateTime startTime, LocalDateTime endTime, AppointmentDetail appointmentDetail) {
-        // Create a new slot for the stylist during the appointment time
-        Slot slot = new Slot();
-        slot.setStartTime(startTime);
-        slot.setEndTime(endTime);
-        slot.setStylistStatus(StylistStatus.BOOKED); // Set the status to BOOKED when booked
-        slot.setSlotStylist(stylistRepository.findStylistById(stylistId)); // Link to the stylist
-        slot.setAppointmentDetail(appointmentDetail); // Link to the appointment detail
-
-        // Save the new slot
-        slotRepository.save(slot);
-    }
-
-
-
-    // Check if the stylist is available during the requested slot
-    private boolean checkSlotAvailability(Long stylistId, LocalDateTime startTime, LocalDateTime endTime) {
-        // Giờ được phép đặt: 8:00 ~ 20:00
-        LocalDateTime earliestTime = startTime.withHour(8).withMinute(0).withSecond(0).withNano(0);
-        LocalDateTime latestTime = startTime.withHour(20).withMinute(0).withSecond(0).withNano(0);
-
-        // Check if startTime is within the allowed range
-        if (startTime.isBefore(earliestTime) || startTime.isAfter(latestTime)) {
-            throw new InvalidAppointmentTimeException("Xin vui lòng chọn trong khung giờ làm việc: 8:00 ~ 20:00");
-        }
-
-        List<Slot> existingSlots = slotRepository.findBySlotStylistIdAndIsDeletedFalse(stylistId);
-
-        for (Slot slot : existingSlots) {
-            LocalDateTime existingStartTime = slot.getStartTime();
-            LocalDateTime existingEndTime = slot.getEndTime();
-
-            // Check for overlapping or adjacent times
-            if ((startTime.isBefore(existingEndTime) && endTime.isAfter(existingStartTime)) ||
-                    startTime.isEqual(existingStartTime) || startTime.isEqual(existingEndTime) ||
-                    endTime.isEqual(existingStartTime) || endTime.isEqual(existingEndTime)) {
-                return false; // Conflict or adjacency, so stylist is not available
-            }
-        }
-        return true; // No conflict or adjacency, stylist is available
-    }
-
     public void completeAppointment(UUID appointmentId) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
-                .orElseThrow(() -> new EntityNotFoundException("Appointment not found!"));
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy cuộc hẹn!"));
 
         appointment.setStatus(AppointmentStatus.DONE);
         appointmentRepository.save(appointment);
 
-        updateSlotStatus(appointment);
+        slotService.updateSlotStatus(appointment);
     }
 
-    public void updateSlotStatus(Appointment appointment) {
-        List<AppointmentDetail> details = appointment.getAppointmentDetails();
-        for (AppointmentDetail detail : details) {
-            // Get the stylist from the appointment detail
-            Stylist stylist = detail.getStylist();
-            if (stylist == null) {
-                continue;
-            }
-            // Assuming you have a method to find the slot by stylist and appointment times
-            List<Slot> slots = slotRepository.findBySlotStylistIdAndIsDeletedFalse(stylist.getId());
-            for (Slot slot : slots) {
-                // Check if the slot overlaps with the appointment's time
-                if (detail.getStartTime().isBefore(slot.getEndTime()) && detail.getEndTime().isAfter(slot.getStartTime())) {
-                    // Update the stylist status in the slot to AVAILABLE
-                    slot.setStylistStatus(StylistStatus.AVAILABLE);
-                    slot.setDeleted(true);
-                    slotRepository.save(slot); // Save the updated slot
-                }
-            }
-        }
-    }
 
     public String createUrl(AppointmentRequest appointmentRequest) throws Exception {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
@@ -215,7 +165,7 @@ public class AppointmentService {
         String tmnCode = "ME80UKBD";
         String secretKey = "XIT7V7N01GATX36R6O8OVND0T98G74N6"; //check mail vì có thể thay đổi
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        String returnUrl = "https://blearning.vn/guide/swp/docker-local?appointmentID=" + appointments.getId(); //để đúng appointmentID để vào đúng trang thanh toán thành công bên frontend
+        String returnUrl = "http://localhost:5173/success?appointmentID=" + appointments.getId(); //để đúng appointmentID để vào đúng trang thanh toán thành công bên frontend
         String currCode = "VND";
 
         Map<String, String> vnpParams = new TreeMap<>();
@@ -274,15 +224,20 @@ public class AppointmentService {
     public void createTransactions(UUID uuId ) {
         //tìm cái appointments
         Appointment appointments = appointmentRepository.findById(uuId)
-                .orElseThrow(() -> new EntityNotFoundException("Appointment not found!"));
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy cuộc hẹn!"));
+
+
+        Account account = accountRepository.findById(authenticationService.getCurrentAccount().getId())
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy người dùng!"));
 
 
             //tạo payment
 
             Payment payment = new Payment();
-            payment.setAppointments(appointments);
+            payment.setAppointment(appointments);
             payment.setCreateAt(new Date());
-            payment.setPayment_method(PaymentEnums.BANKING);
+            payment.setMethod(PaymentEnums.BANKING);
+            payment.setTotal(appointments.getTotalPrice());
 
             Set<Transactions> setTransactions = new HashSet<>();
 
@@ -293,13 +248,14 @@ public class AppointmentService {
             transactions1.setTo(customer);
             transactions1.setPayment(payment);
             transactions1.setStatus(TransactionsEnums.SUCCESS);
-            transactions1.setDescription("VNPay to customer");
+            transactions1.setDescription("VNPay đến khách hàng");
+            transactions1.setCreateAt(new Date());
             setTransactions.add(transactions1);
 
             // Customer to manager transaction
             List<Account> managers = accountRepository.findAccountsByRole(Role.MANAGER);
             if (managers.size() != 1) {
-                throw new NonUniqueResultException("Manager role must be unique, found: " + managers.size());
+                throw new NonUniqueResultException("Chỉ có đúng duy nhất 1 manager, tìm thấy: " + managers.size());
             }
             Account manager = managers.get(0);
 
@@ -308,10 +264,12 @@ public class AppointmentService {
             transactions2.setTo(manager);
             transactions2.setPayment(payment);
             transactions2.setStatus(TransactionsEnums.SUCCESS);
-            transactions2.setDescription("Customer to manager");
+            transactions2.setDescription("Từ khách hàng đến quản lí");
+            transactions2.setCreateAt(new Date());
             setTransactions.add(transactions2);
 
             float newBalance = manager.getBalance() + appointments.getTotalPrice();
+            transactions2.setAmount(newBalance);
             manager.setBalance(newBalance);
             accountRepository.save(manager);
 
@@ -320,7 +278,28 @@ public class AppointmentService {
         }
 
 
+//Tìm appoint bằng ID
+    public Appointment getAppointmentById(UUID appointmentId) {
+        Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
+        if(appointment == null){
+            throw new EntityNotFoundException("Không tìm thấy cuộc hẹn!");
+        }
+        return appointment;
+    }
 
 
+    public Appointment updateStatusAppointment(UUID appointmentId, String action){
+        Appointment appointment = getAppointmentById(appointmentId);
+        if ("APPROVE".equalsIgnoreCase(action)) {
+            appointment.setStatus(AppointmentStatus.APPROVED);
+        } else if ("REJECT".equalsIgnoreCase(action)) {
+            appointment.setStatus(AppointmentStatus.CANCELLED);
+        } else {
+            throw new IllegalArgumentException("Invalid action. Use 'APPROVE' or 'REJECT'.");
+        }
+
+        // Save the updated appointment status
+        return appointmentRepository.save(appointment);
+    }
 
 }

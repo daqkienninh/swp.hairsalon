@@ -38,10 +38,12 @@ public class AppointmentDetail {
 
     @ManyToOne
     @JoinColumn(name = "service_id")
+    @JsonIgnore
     ServiceEntity serviceEntity;
 
     @ManyToOne
     @JoinColumn(name = "stylist_id")
+    @JsonIgnore
     Stylist stylist;
 
     @OneToMany(mappedBy = "appointmentDetail")
