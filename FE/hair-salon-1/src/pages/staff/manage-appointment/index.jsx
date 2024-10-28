@@ -20,9 +20,11 @@ function ManageAppointment() {
   };
 
   // Update status
-  const updateStatus = async (appointmentId, newStatus) => {
+  const updateStatus = async (appointmentId, action) => {
+    console.log(action)
     try {
-      await api.put(`/api/appointment/${appointmentId}/status`, { status: newStatus });
+
+      await api.put(`/api/appointment/${appointmentId}/status?action=${action}`, appointmentId, action);
       toast.success("Status updated successfully");
       fetchData(); // Refresh data to show the updated status
     } catch (error) {
@@ -54,17 +56,28 @@ function ManageAppointment() {
       title: "Status",
       dataIndex: "status",
       key: "status",
+    },
+    {
+      title: "Action",
+      dataIndex: "action",
+      key: "action",
       render: (status, record) => (
-        <Select
-          defaultValue={status || "Approve"}
-          onChange={(value) => updateStatus(record.id, value)}
-          style={{ width: 120 }}
-        >
-          <Option value="APPROVED">Approve</Option>
-          <Option value="IN-PROCESS">In Process</Option>
-          <Option value="DONE">Done</Option>
-        </Select>
-      ),
+        <>
+          {console.log(status)}
+          {console.log(record)}
+          <Select
+            onChange={(value) => updateStatus(record.id, value)
+            }
+            style={{ width: 120 }}
+
+          >
+
+            <Option value="APPROVE">APPROVE</Option>
+            <Option value="REJECT">REJECT</Option>
+          </Select>
+        </>
+      )
+
     },
     {
       title: "Loyalty Points Awarded",

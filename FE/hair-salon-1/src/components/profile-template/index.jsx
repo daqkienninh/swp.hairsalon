@@ -21,7 +21,7 @@ import { Button, Form, Modal, Upload } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import FormItem from "antd/es/form/FormItem";
 
-export default function ProfileTemplate({path}) {
+export default function ProfileTemplate({path, pathapi}) {
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -61,7 +61,7 @@ export default function ProfileTemplate({path}) {
 
   const handleUpdate = async () => {
     try {
-      const response = await api.put(`/api/customer/${user.id}`, formData);
+      const response = await api.put(`${pathapi}/${user.id}`, formData);
       if (response.status === 200) {
         dispatch(updateUser(formData));
         setIsEditing(false);

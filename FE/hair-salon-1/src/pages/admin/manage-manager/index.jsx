@@ -20,11 +20,6 @@ function ManageManager() {
             dataIndex: "sex",
             key: "sex",
         },
-        {
-            title: "Level",
-            dataIndex: "level",
-            key: "level",
-        },
     ];
     const formItems = (
         <>

@@ -8,6 +8,7 @@ function ViewCustomer() {
   return (
     <ProfileTemplate
      path="/"
+      pathapi="/api/customer"
     >
 
     </ProfileTemplate>

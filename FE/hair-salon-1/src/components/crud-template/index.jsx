@@ -107,7 +107,7 @@ function CRUDTemplate({ columns, formItems, formItemsUpdate, path, title }) {
         <>
           {console.log(value.account)}
           {console.log(id)}
-          {path !== "/api/account" && path !== "/api/customer" && (
+          {path !== "/api/account" && path !== "/api/customer" && path !== "/api/manager" && (
             <Button
               type="primary"
               onClick={() => {
@@ -120,7 +120,7 @@ function CRUDTemplate({ columns, formItems, formItemsUpdate, path, title }) {
           )
           }
           <br />
-          {path !== "/api/account" && path !== "/api/customer" && (
+          {path !== "/api/account" && path !== "/api/customer" && path !== "/api/manager" && (
 
             <Popconfirm
               title="Delete"
@@ -165,7 +165,8 @@ function CRUDTemplate({ columns, formItems, formItemsUpdate, path, title }) {
   return (
     <div>
       <h1>{title}</h1> <br />
-      <Button onClick={() => setShowModal(true)}>Create new</Button> <br />
+      {path !== "/api/customer" && (<Button onClick={() => setShowModal(true)}>Create new</Button>)}
+       <br />
       <Table columns={tableColums} dataSource={data} />
       <Modal
         open={showModal}

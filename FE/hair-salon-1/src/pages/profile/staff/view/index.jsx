@@ -4,7 +4,8 @@ import ProfileTemplate from "../../../../components/profile-template";
 function ViewStaff() {
   return (
       <ProfileTemplate
-      path = "/staff">
+      path = "/staff"
+      pathapi="/api/staff">
 
       </ProfileTemplate>
   )

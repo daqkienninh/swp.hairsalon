@@ -103,7 +103,7 @@ function ManageStylist() {
                 name="level"
             >
                 <Input />
-            </FormItem>'
+            </FormItem>
             <FormItem
                 label="Email"
                 name="email"

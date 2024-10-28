@@ -7,6 +7,7 @@ import { FaUser } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { MDBBtn } from "mdb-react-ui-kit";
 import { logout } from '../../redux/features/userSlice';
+import { AiOutlineCopyright } from 'react-icons/ai';
 const { Header, Content, Footer, Sider } = Layout;
 function getItem(label, key, icon, children) {
     return {
@@ -31,7 +32,7 @@ const DashboardAdmin = () => {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
     return (
-        <Layout 
+        <Layout
             style={{
                 minHeight: "100vh",
             }}>
@@ -66,7 +67,7 @@ const DashboardAdmin = () => {
                         <div onClick={() => navigate("/viewadmin")} className="flex">
                             <FaUser />
                         </div>
-                        
+
                     </div>
                 </Header>
                 <Content
@@ -82,7 +83,7 @@ const DashboardAdmin = () => {
                             borderRadius: borderRadiusLG,
                         }}
                     >
-                        <Outlet/>
+                        <Outlet />
                     </div>
                 </Content>
                 <Footer
@@ -90,7 +91,12 @@ const DashboardAdmin = () => {
                         textAlign: 'center',
                     }}
                 >
-                    Ant Design ©{new Date().getFullYear()} Created by Ant UED
+
+                    <p className="text-sm text-center flex items-center justify-center text-[#1A4D2E]">
+                        <AiOutlineCopyright className="mr-1" />
+                        <span>2024 Hair Harmony. Tất cả các quyền được bảo lưu.</span>
+                    </p>
+
                 </Footer>
             </Layout>
         </Layout>

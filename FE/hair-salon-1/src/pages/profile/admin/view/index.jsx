@@ -3,10 +3,11 @@ import ProfileTemplate from '../../../../components/profile-template'
 
 function ViewAdmin() {
   return (
-      <ProfileTemplate
-          path="/admin">
+    <ProfileTemplate
+      path="/admin"
+      pathapi="/api/administrator">
 
-      </ProfileTemplate>
+    </ProfileTemplate>
   )
 }
 

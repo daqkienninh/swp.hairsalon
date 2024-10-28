@@ -17,10 +17,9 @@ function OverviewAdmin() {
             console.log("Response", response.data);
             // Transform the response data into a format suitable for BarChart
             setData([
-                { name: 'Stylists', count: response.data.stylistCount },
-                { name: 'Customers', count: response.data.customerCount },
-                { name: 'Staff', count: response.data.staffCount },
-                { name: 'Managers', count: response.data.managerCount }
+                { name: 'Stylists', Account: response.data.stylistCount },
+                { name: 'Customers', Account: response.data.customerCount },
+                { name: 'Staff', Account: response.data.staffCount },
             ]);
         } catch (error) {
             toast.error(error.response ? error.response.data : error.message);
@@ -54,7 +53,7 @@ function OverviewAdmin() {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="count" fill="#8884d8" />
+                    <Bar dataKey="Account" fill="#8884d8" />
                 </BarChart>
             </div>
 
