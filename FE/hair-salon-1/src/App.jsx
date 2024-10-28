@@ -6,7 +6,6 @@ import {
 import React from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-/***************************IMPORT PAGE******************************/
 import Layout from "./components/layout";
 import HomePage from "./pages/homepage";
 import Booking from "./pages/book";
@@ -34,31 +33,26 @@ import ViewStaff from "./pages/profile/staff/view";
 import ViewAdmin from "./pages/profile/admin/view";
 import OverviewStaff from "./components/dashboard-staff/overviewStaff";
 import OverviewAdmin from "./components/dashboard-admin/overviewAdmin";
+
 function App() {
   const ProtectRouteAuth = ({ children, allowedRoles }) => {
     const user = useSelector((store) => store.user);
     const token = localStorage.getItem("token");
-    console.log(user);
-    // if (user && allowedRoles.includes(user.role)) { //Customize the role
-    //   return children;
-    // }
-    // toast.error("Not allow")
-    // return <Navigate to={"/login"} />
 
-    // Kiểm tra cả token và user
+    // If user is not authenticated
     if (!token) {
-      // Lưu current path vào localStorage để sau khi login redirect lại
+      // Save the current path in localStorage to redirect after login
       localStorage.setItem("redirectPath", window.location.pathname);
       toast.error("Vui lòng đăng nhập để tiếp tục!");
       return <Navigate to="/login" />;
     }
+    // If the user is authenticated and has the correct role
     if (user && allowedRoles.includes(user.role)) {
       return children;
     }
-      return <Navigate to="/" />;
-    
-      
+    return <Navigate to="/" />;
   };
+
   const router = createBrowserRouter([
     {
       path: "",
@@ -120,17 +114,17 @@ function App() {
       children: [
         {
           path: "",
-          element: <OverviewStaff />
+          element: <OverviewStaff />,
         },
         {
           path: "service",
-          element: <ManageService />
+          element: <ManageService />,
         },
         {
           path: "appointment",
-          element: <ManageAppointment />
-        }
-      ]
+          element: <ManageAppointment />,
+        },
+      ],
     },
     {
       path: "admin",
@@ -142,29 +136,29 @@ function App() {
       children: [
         {
           path: "",
-          element: <OverviewAdmin />
+          element: <OverviewAdmin />,
         },
         {
           path: "managestylist",
-          element: <ManageStylist />
+          element: <ManageStylist />,
         },
         {
           path: "managecustomer",
-          element: <ManageCustomer />
+          element: <ManageCustomer />,
         },
         {
           path: "managestaff",
-          element: <ManageStaff />
+          element: <ManageStaff />,
         },
         {
           path: "managemanager",
-          element: <ManageManager />
+          element: <ManageManager />,
         },
         {
           path: "manageaccount",
-          element: <ManageAccount />
-        }
-      ]
+          element: <ManageAccount />,
+        },
+      ],
     },
     {
       path: "service",
@@ -174,7 +168,6 @@ function App() {
       path: "appointment",
       element: <ManageAppointment />,
     },
-
     {
       path: "customer",
       element: <ViewCustomer />,
@@ -200,9 +193,8 @@ function App() {
       element: <Payment />,
     },
   ]);
+
   return <RouterProvider router={router} />;
-};
-
-
+}
 
 export default App;

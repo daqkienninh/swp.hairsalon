@@ -97,12 +97,43 @@ function ManageCustomer() {
       </Form.Item>
     </>
   );
+  const formItemsUpdate = (
+    <>
+      <Form.Item name="id" label="Stylist ID">
+        <Input />
+      </Form.Item>
+
+      <FormItem
+        label="Full Name"
+        name="fullName"
+      >
+        <Input />
+      </FormItem>
+      <FormItem
+        label="Email"
+        name="email"
+      >
+        <Input />
+      </FormItem>
+      <FormItem
+        label="Phone"
+        name="phone"
+        hidden
+      >
+        <Input />
+      </FormItem>
+      <Form.Item name="password" label="Password">
+        <Input />
+      </Form.Item>
+    </>
+  );
 
   return (
     <div>
       <CRUDTemplate
         columns={columns}
         formItems={formItems}
+        formItemsUpdate={formItemsUpdate}
         path="/api/customer"
         title="Customer"
       />

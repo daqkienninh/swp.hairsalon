@@ -16,6 +16,10 @@ function SuccessPage() {
     console.log(vnp_TransactionStatus);
     const nav = useNavigate();
 
+    const handleHome = () => {
+        nav("/");
+    }
+
     const postOrderID = async() =>{
         try{
 
@@ -48,9 +52,9 @@ function SuccessPage() {
               subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
               extra={[
                   <Button type="primary" key="console">
-                      Go Console
+                      History
                   </Button>,
-                  <Button key="buy">Buy Again</Button>,
+                  <Button key="buy" onClick={handleHome}>Home</Button>,
               ]}
           />
     </div>

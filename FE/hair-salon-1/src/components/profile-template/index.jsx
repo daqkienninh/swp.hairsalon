@@ -21,7 +21,7 @@ import { Button, Form, Modal, Upload } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import FormItem from "antd/es/form/FormItem";
 
-export default function ProfileTemplate({path, pathapi}) {
+export default function ProfileTemplate({ path, pathapi }) {
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -29,15 +29,7 @@ export default function ProfileTemplate({path, pathapi}) {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [fileList, setFileList] = useState([]);
-
-  const getBase64 = (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-
+  const [previewImage, setPreviewImage] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     fullName: user.fullName,
@@ -45,9 +37,10 @@ export default function ProfileTemplate({path, pathapi}) {
     phone: user.phone,
     sex: user.sex,
     image: user.image,
-    // image: user.avatarUrl,
     password: user.password,
   });
+
+  console.log(user)
 
   const handleLogout = () => {
     dispatch(logout());
@@ -59,88 +52,65 @@ export default function ProfileTemplate({path, pathapi}) {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleChangeUpload = ({ fileList: newFileList }) => {
+    setFileList(newFileList);
+    if (newFileList.length) {
+      handlePreview(newFileList[0]);
+    }
+  };
+
+  const handlePreview = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file.originFileObj);
+    reader.onload = () => {
+      setPreviewImage(reader.result);
+    };
+  };
+
   const handleUpdate = async () => {
+    setLoading(true);
+    let avatarUrl = user.image; // Default to current avatar
+
+    // Check if an avatar has been uploaded
+    if (fileList.length > 0) {
+      const file = fileList[0].originFileObj;
+      try {
+        avatarUrl = await uploadFile(file);  // Upload the file and get the new URL
+      } catch (error) {
+        console.error("Error uploading avatar:", error);
+        toast.error("Failed to upload avatar");
+        setLoading(false);
+        return;
+      }
+    }
+
+    // Update formData with new image URL
+    const updatedFormData = {
+      ...formData,
+      image: avatarUrl,
+    };
+
     try {
-      const response = await api.put(`${pathapi}/${user.id}`, formData);
+      const response = await api.put(`${pathapi}/${user.id}`, updatedFormData);
       if (response.status === 200) {
-        dispatch(updateUser(formData));
+        dispatch(updateUser(updatedFormData));
         setIsEditing(false);
         toast.success("Profile updated successfully");
       }
     } catch (error) {
       console.error("Error updating user info:", error);
       toast.error("Failed to update user information");
-    }
-  };
-
-  const handleAvatarUpload = async (field) => {
-    setLoading(true);
-    let imageUrl = "";
-
-    try {
-      if (fileList.length > 0) {
-        const file = fileList[0].originFileObj;
-        if (file) {
-          imageUrl = await uploadFile(file);
-          if (!imageUrl) {
-            throw new Error("Failed to upload image");
-          }
-        }
-      }
-
-      if (imageUrl) {
-        const response = await api.put(`/users/${user.id}`, {
-          image: imageUrl,
-        });
-        if (response.status === 200) {
-          dispatch(updateUser({ image: imageUrl }));
-          setFormData({ ...formData, image: imageUrl });
-          toast.success("Avatar updated successfully");
-          setShowModal(false);
-          setFileList([]);
-        }
-      }
-    } catch (error) {
-      console.error("Error uploading avatar:", error);
-      toast.error(error.message || "Failed to update avatar");
     } finally {
       setLoading(false);
+      setFileList([]); // Clear file list after upload
+      setShowModal(false); // Close modal
     }
   };
-  const uploadButton = (
-    <button
-      style={{
-        border: 0,
-        background: "none",
-      }}
-      type="button"
-    >
-      <PlusOutlined />
-      <div
-        style={{
-          marginTop: 8,
-        }}
-      >
-        Upload
-      </div>
-    </button>
-  );
-  const handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    setPreviewImage(file.url || file.preview);
-    setPreviewOpen(true);
-  };
-  const handleChangeImage = ({ fileList: newFileList }) =>
-    setFileList(newFileList);
 
   const renderSexField = () => (
     <MDBRow className="mb-4">
       <MDBCol sm="3">
-        <MDBCardText
-          style={{ textAlign: "left", marginLeft: "40px", fontWeight: "bold" }}
-        >
+        <MDBCardText style={{ textAlign: "left", marginLeft: "40px", fontWeight: "bold" }}>
           Giới tính
         </MDBCardText>
       </MDBCol>
@@ -158,10 +128,7 @@ export default function ProfileTemplate({path, pathapi}) {
             <option value="Khác">Khác</option>
           </select>
         ) : (
-          <MDBCardText
-            className="text-muted"
-            style={{ textAlign: "left", marginLeft: "100px" }}
-          >
+          <MDBCardText className="text-muted" style={{ textAlign: "left", marginLeft: "100px" }}>
             {user.sex}
           </MDBCardText>
         )}
@@ -176,13 +143,7 @@ export default function ProfileTemplate({path, pathapi}) {
     return (
       <MDBRow className="mb-4">
         <MDBCol sm="3">
-          <MDBCardText
-            style={{
-              textAlign: "left",
-              marginLeft: "40px",
-              fontWeight: "bold",
-            }}
-          >
+          <MDBCardText style={{ textAlign: "left", marginLeft: "40px", fontWeight: "bold" }}>
             {label}
           </MDBCardText>
         </MDBCol>
@@ -195,10 +156,7 @@ export default function ProfileTemplate({path, pathapi}) {
               onChange={handleChange}
             />
           ) : (
-            <MDBCardText
-              className="text-muted"
-              style={{ textAlign: "left", marginLeft: "100px" }}
-            >
+            <MDBCardText className="text-muted" style={{ textAlign: "left", marginLeft: "100px" }}>
               {field === "password" ? "********" : user[field]}
             </MDBCardText>
           )}
@@ -234,89 +192,66 @@ export default function ProfileTemplate({path, pathapi}) {
                 <MDBCardBody>
                   <div className="text-center mb-4">
                     <MDBCardImage
-                      src={
-                        user.image ||
-                        "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
-                      }
+                      src={user.image || "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"}
                       alt="avatar"
                       className="rounded-circle"
                       style={{ width: "150px", margin: "0 auto" }}
                       fluid
                     />
-                    <div className="mt-3">
-                      {/* <input
-                        type="file"
-                        id="avatar-upload"
-                        style={{ display: "none" }}
-                        onChange={handleAvatarUpload}
-                        accept="image/*"
-                      /> */}
-
-                      <Button
-                        className="border-none"
-                        htmlFor="avatar-upload"
+                      <MDBBtn
                         onClick={() => setShowModal(true)}
-                      >
-                        <MDBBtn
-                          rounded
-                          size="sm"
-                          style={{
-                            backgroundColor: "#94B49F",
-                            color: "#163020",
-                            borderColor: "#94B49F",
-                          }}
-                        >
-                          Đổi ảnh
-                        </MDBBtn>
-                      </Button>
-                      <Modal
-                        open={showModal}
-                        onCancel={() => {
-                          setShowModal(false);
-                          setFileList([]);
+                        rounded
+                        size="sm"
+                        style={{
+                          backgroundColor: "#94B49F",
+                          color: "#163020",
+                          borderColor: "#94B49F",
+                          marginTop: '10px'
                         }}
-                        onOk={handleAvatarUpload}
-                        title="Update Avatar"
-                        confirmLoading={loading}
                       >
-                        <Form form={form} labelCol={{ span: 24 }}>
-                          <FormItem
-                            label="Image"
-                            name="image"
-                            rules={[
-                              {
-                                required: true,
-                                message: "Please upload an image",
-                              },
-                            ]}
+                        Đổi ảnh
+                      </MDBBtn>
+                    <Modal
+                      open={showModal}
+                      onCancel={() => {
+                        setShowModal(false);
+                        setFileList([]);
+                      }}
+                      onOk={handleUpdate}
+                      title="Update Avatar"
+                      confirmLoading={loading}
+                    >
+                      <Form form={form} labelCol={{ span: 24 }}>
+                        <FormItem
+                          label="Image"
+                          name="image"
+                          rules={[{ required: true, message: "Please upload an image" }]}
+                        >
+                          <Upload
+                            listType="picture-card"
+                            fileList={fileList}
+                            onPreview={handlePreview}
+                            onChange={handleChangeUpload}
+                            beforeUpload={() => false} // Prevent auto upload
                           >
-                            <Upload
-                              listType="picture-card"
-                              fileList={fileList}
-                              onPreview={handlePreview}
-                              onChange={({ fileList: newFileList }) =>
-                                setFileList(newFileList)
-                              }
-                              beforeUpload={() => false} // Prevent auto upload
-                            >
-                              {fileList.length >= 1 ? null : uploadButton}
-                            </Upload>
-                          </FormItem>
-                        </Form>
-                      </Modal>
-                    </div>
+                            {fileList.length >= 1 ? null : (
+                              <div>
+                                <PlusOutlined />
+                                <div style={{ marginTop: 8 }}>Upload</div>
+                              </div>
+                            )}
+                          </Upload>
+                        </FormItem>
+                      </Form>
+                    </Modal>
                   </div>
                   <div className="text-center mb-4">
-                    {/* <h4 className="mb-1">{user.fullName}</h4> */}
                     <MDBBtn
                       onClick={() => setIsEditing(!isEditing)}
                       style={{
                         backgroundColor: "#94B49F",
                         color: "#163020",
                         borderColor: "#94B49F",
-                        "&:hover": {
-                          backgroundColor: "#CEE5D0",
-                        },
                       }}
                     >
                       {isEditing ? "Hủy" : "Cập nhật thông tin"}
