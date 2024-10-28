@@ -30,10 +30,6 @@ const DashboardAdmin = () => {
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
-    const handleLogout = () => {
-        dispatch(logout());
-        navigate("/"); // Navigate to the homepage after logout
-    };
     return (
         <Layout 
             style={{
@@ -61,7 +57,7 @@ const DashboardAdmin = () => {
                     className="flex items-center justify-between px-4"
                 >
                     <div class="flex items-center justify-start rtl:justify-end ">
-                        <a href="/staff" class="flex ms-2 md:me-24 mt-2.5">
+                        <a href="/admin" class="flex ms-2 md:me-24 mt-2.5">
                             <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap ">{user.fullName}</span>
                         </a>
                     </div>

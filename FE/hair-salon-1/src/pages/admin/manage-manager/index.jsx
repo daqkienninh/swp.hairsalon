@@ -16,37 +16,19 @@ function ManageManager() {
             key: "fullName",
         },
         {
-            title: "Phone",
-            dataIndex: "phone",
-            key: "phone",
-        },
-        {
-            title: "Email",
-            dataIndex: "email",
-            key: "email",
-        },
-        {
             title: "Sex",
             dataIndex: "sex",
             key: "sex",
         },
         {
-            title: "Image",
-            dataIndex: "image",
-            key: "image",
-        },
-        {
-            title: "Role",
-            dataIndex: "role",
-            key: "role",
+            title: "Level",
+            dataIndex: "level",
+            key: "level",
         },
     ];
     const formItems = (
         <>
             <Form.Item name="id" hidden>
-                <Input />
-            </Form.Item>
-            <Form.Item label="Pasword" name="password" hidden>
                 <Input />
             </Form.Item>
             <FormItem
@@ -61,6 +43,15 @@ function ManageManager() {
             >
                 <Input />
             </FormItem>
+            <Form.Item label="Pasword" name="password"
+                rules={[
+                    {
+                        required: true,
+                        message: "Please input Manager's name!",
+                    },
+                ]}>
+                <Input />
+            </Form.Item>
             <FormItem
                 label="Email"
                 name="email"
@@ -74,12 +65,6 @@ function ManageManager() {
                 <Input />
             </FormItem>
             <Form.Item
-                label="Image"
-                name="image"
-            >
-                <Input />
-            </Form.Item>
-            <Form.Item
                 label="Sex"
                 name="sex"
             >
@@ -88,6 +73,12 @@ function ManageManager() {
             <Form.Item
                 label="Phone"
                 name="phone"
+                rules={[
+                    {
+                        required: true,
+                        message: "Please input Phone!",
+                    },
+                ]}
             >
                 <Input />
             </Form.Item>
@@ -102,11 +93,50 @@ function ManageManager() {
         </>
     );
 
+    const formItemsUpdate = (
+        <>
+            <Form.Item name="id" label="Manager ID">
+                <Input />
+            </Form.Item>
+
+            <FormItem
+                label="Full Name"
+                name="fullName"
+            >
+                <Input />
+            </FormItem>
+            <FormItem
+                label="Level"
+                name="level"
+            >
+                <Input />
+            </FormItem>'
+            <FormItem
+                label="Email"
+                name="email"
+                hidden
+            >
+                <Input />
+            </FormItem>
+            <FormItem
+                label="Phone"
+                name="phone"
+                hidden
+            >
+                <Input />
+            </FormItem>
+            <Form.Item name="password" label="Password">
+                <Input />
+            </Form.Item>
+        </>
+    );
+
     return (
         <div>
             <CRUDTemplate
                 columns={columns}
                 formItems={formItems}
+                formItemsUpdate={formItemsUpdate}
                 path="/api/manager"
                 title="Manager"
             />

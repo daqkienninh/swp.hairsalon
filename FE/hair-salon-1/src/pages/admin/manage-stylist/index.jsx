@@ -30,21 +30,21 @@ function ManageStylist() {
             dataIndex: "level",
             key: "level",
         },
-        
+
     ];
     const formItems = (
         <>
             <Form.Item name="id" hidden>
                 <Input />
             </Form.Item>
-            
+
             <FormItem
                 label="Full Name"
                 name="fullName"
                 rules={[
                     {
                         required: true,
-                        message: "Please input Customer's name!",
+                        message: "Please input Stylist's name!",
                     },
                 ]}
             >
@@ -53,54 +53,68 @@ function ManageStylist() {
             <FormItem
                 label="Email"
                 name="email"
+                rules={[
+                    {
+                        required: true,
+                        message: "Please input Stylist's email!",
+                    },
+                ]}
             >
                 <Input />
             </FormItem>
             <FormItem
                 label="Phone"
                 name="phone"
+                rules={[
+                    {
+                        required: true,
+                        message: "Please input Stylist's phone!",
+                    },
+                ]}
             >
                 <Input />
             </FormItem>
-            <Form.Item name="password" label="Password">
-                <Input />
-            </Form.Item>
-            <Form.Item
-                label="Sex"
-                name="sex"
-            >
-                <Input />
+            <Form.Item name="password" label="Password"
+                rules={[
+                    {
+                        required: true,
+                        message: "Please input Stylist's Password!",
+                    },
+                ]}>
+                <Input type="password" />
             </Form.Item>
         </>
     );
 
     const formItemsUpdate = (
         <>
-            <Form.Item name="id" hidden>
+            <Form.Item name="id" label="Stylist ID">
                 <Input />
             </Form.Item>
 
             <FormItem
                 label="Full Name"
                 name="fullName"
-                rules={[
-                    {
-                        required: true,
-                        message: "Please input Customer's name!",
-                    },
-                ]}
             >
                 <Input />
             </FormItem>
             <FormItem
+                label="Level"
+                name="level"
+            >
+                <Input />
+            </FormItem>'
+            <FormItem
                 label="Email"
                 name="email"
+                hidden
             >
                 <Input />
             </FormItem>
             <FormItem
                 label="Phone"
                 name="phone"
+                hidden
             >
                 <Input />
             </FormItem>

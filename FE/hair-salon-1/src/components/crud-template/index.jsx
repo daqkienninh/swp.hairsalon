@@ -29,7 +29,7 @@ function CRUDTemplate({ columns, formItems, formItemsUpdate, path, title }) {
       toast.error(error.response.data);
     }
   };
-  
+
 
   useEffect(() => {
     fetchData();
@@ -105,12 +105,14 @@ function CRUDTemplate({ columns, formItems, formItemsUpdate, path, title }) {
       key: "id",
       render: (id, value) => (
         <>
-          {path !== "/api/account" && (
+          {console.log(value.account)}
+          {console.log(id)}
+          {path !== "/api/account" && path !== "/api/customer" && (
             <Button
               type="primary"
               onClick={() => {
                 setShowModalupdate(true);
-                form.setFieldsValue(value);
+                form.setFieldsValue(value.account);
               }}
             >
               Edit
@@ -118,17 +120,17 @@ function CRUDTemplate({ columns, formItems, formItemsUpdate, path, title }) {
           )
           }
           <br />
-          {path !=="/api/account" && (
+          {path !== "/api/account" && path !== "/api/customer" && (
 
-          <Popconfirm
-            title="Delete"
-            description="Do you really want to delete?"
-            onConfirm={() => handleDelete(id)}
-          >
-            <Button type="primary" danger>
-              Delete
-            </Button>
-          </Popconfirm>
+            <Popconfirm
+              title="Delete"
+              description="Do you really want to delete?"
+              onConfirm={() => handleDelete(id)}
+            >
+              <Button type="primary" danger>
+                Delete
+              </Button>
+            </Popconfirm>
           )}
         </>
       ),
@@ -164,7 +166,7 @@ function CRUDTemplate({ columns, formItems, formItemsUpdate, path, title }) {
     <div>
       <h1>{title}</h1> <br />
       <Button onClick={() => setShowModal(true)}>Create new</Button> <br />
-      <Table columns={tableColums} dataSource={data}/>
+      <Table columns={tableColums} dataSource={data} />
       <Modal
         open={showModal}
         onCancel={() => setShowModal(false)}

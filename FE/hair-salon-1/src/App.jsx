@@ -23,7 +23,6 @@ import ViewCustomer from "./pages/profile/customer/view";
 import DashboardStaff from "./components/dashboard-staff";
 import ManageStaff from "./pages/admin/manage-staff";
 import ManageManager from "./pages/admin/manage-manager";
-import DashboardLayout from "./components/layout/dashboardlayout";
 import Payment from "./pages/profile/customer/payment";
 import SuccessPage from "./pages/profile/customer/success";
 import Fail from "./pages/profile/customer/fail";
@@ -33,6 +32,8 @@ import RequireAuth from "./config/auth";
 import ServiceDetail from "./pages/servicedetail";
 import ViewStaff from "./pages/profile/staff/view";
 import ViewAdmin from "./pages/profile/admin/view";
+import OverviewStaff from "./components/dashboard-staff/overviewStaff";
+import OverviewAdmin from "./components/dashboard-admin/overviewAdmin";
 function App() {
   const ProtectRouteAuth = ({ children, allowedRoles }) => {
     const user = useSelector((store) => store.user);
@@ -119,7 +120,7 @@ function App() {
       children: [
         {
           path: "",
-          element: <DashboardLayout />
+          element: <OverviewStaff />
         },
         {
           path: "service",
@@ -139,6 +140,10 @@ function App() {
         </ProtectRouteAuth>
       ),
       children: [
+        {
+          path: "",
+          element: <OverviewAdmin />
+        },
         {
           path: "managestylist",
           element: <ManageStylist />

@@ -19,12 +19,12 @@ function ManageCustomer() {
     },
     {
       title: "Phone",
-      dataIndex: "phone",
+      dataIndex: ["account", "phone"],
       key: "phone",
     },
     {
       title: "Email",
-      dataIndex: "email",
+      dataIndex: ["account", "email"],
       key: "email",
     },
     {
@@ -33,15 +33,10 @@ function ManageCustomer() {
       key: "sex",
     },
     {
-      title: "Image",
-      dataIndex: "image",
-      key: "image",
-    },
-    {
-      title: "Role",
-      dataIndex: "role",
-      key: "role",
-    },
+      title: "Loyalty Point",
+      dataIndex: "loyaltyPoint",
+      key: "loyaltyPoint"
+    }
   ];
   const formItems = (
     <>
