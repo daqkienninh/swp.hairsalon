@@ -13,12 +13,12 @@ function ManageCustomer() {
       key: "id",
     },
     {
-      title: "Full Name",
+      title: "Tên",
       dataIndex: "fullName",
       key: "fullName",
     },
     {
-      title: "Phone",
+      title: "Điện thoại",
       dataIndex: ["account", "phone"],
       key: "phone",
     },
@@ -28,12 +28,12 @@ function ManageCustomer() {
       key: "email",
     },
     {
-      title: "Sex",
+      title: "Giới tính",
       dataIndex: "sex",
       key: "sex",
     },
     {
-      title: "Loyalty Point",
+      title: "Điểm thành viên",
       dataIndex: "loyaltyPoint",
       key: "loyaltyPoint"
     }
@@ -47,7 +47,7 @@ function ManageCustomer() {
         <Input />
       </Form.Item>
       <FormItem
-        label="Full Name"
+        label="Tên"
         name="fullName"
         rules={[
           {
@@ -71,25 +71,19 @@ function ManageCustomer() {
         <Input />
       </FormItem>
       <Form.Item
-        label="Image"
-        name="image"
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        label="Sex"
+        label="Giới tính"
         name="sex"
       >
         <Input />
       </Form.Item>
       <Form.Item
-        label="Phone"
+        label="Điện thoại"
         name="phone"
       >
         <Input />
       </Form.Item>
       <Form.Item
-        label="Role"
+        label="Chức vụ"
         name="role"
         hidden
       >
@@ -104,7 +98,7 @@ function ManageCustomer() {
       </Form.Item>
 
       <FormItem
-        label="Full Name"
+        label="Tên"
         name="fullName"
       >
         <Input />
@@ -116,7 +110,7 @@ function ManageCustomer() {
         <Input />
       </FormItem>
       <FormItem
-        label="Phone"
+        label="Điện thoại"
         name="phone"
         hidden
       >

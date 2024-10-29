@@ -11,12 +11,12 @@ function ManageAccount() {
             key: "id",
         },
         {
-            title: "Full Name",
+            title: "Tên",
             dataIndex: "fullName",
             key: "fullName",
         },
         {
-            title: "Phone",
+            title: "Điện thoại",
             dataIndex: "phone",
             key: "phone",
         },
@@ -26,26 +26,26 @@ function ManageAccount() {
             key: "email",
         },
         {
-            title: "Sex",
+            title: "Giới tính",
             dataIndex: "sex",
             key: "sex",
         },
         {
-            title: "Role",
+            title: "Chức vụ",
             dataIndex: "role",
             key: "role",
         },
 
     ];
-  return (
-      <div>
-          <CRUDTemplate
-              columns={columns}
-              path="/api/account"
-              title="Account"
-          />
-      </div>
-  )
+    return (
+        <div>
+            <CRUDTemplate
+                columns={columns}
+                path="/api/account"
+                title="Account"
+            />
+        </div>
+    )
 }
 
 export default ManageAccount

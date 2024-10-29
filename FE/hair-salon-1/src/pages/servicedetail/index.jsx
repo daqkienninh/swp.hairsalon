@@ -61,7 +61,7 @@ const ServiceDetail = () => {
       <div className="flex flex-col md:flex-row gap-8">
         <div className="md:w-1/2">
           <img
-            src={`/assets/images/${service.image}`}
+            src={`${service.image}`}
             alt={service.name}
             className="w-full h-auto rounded-lg shadow-md"
           />

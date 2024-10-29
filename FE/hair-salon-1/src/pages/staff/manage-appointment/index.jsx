@@ -1,4 +1,4 @@
-import { Table, Select } from 'antd';
+import { Table, Select, Radio } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import api from '../../../config/axios';
@@ -7,13 +7,15 @@ const { Option } = Select;
 
 function ManageAppointment() {
   const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [statusFilter, setStatusFilter] = useState("");
 
   // Fetch data
   const fetchData = async () => {
     try {
       const response = await api.get("/api/appointment");
       setData(response.data);
-      console.log(response.data);
+      setFilteredData(response.data); // Initialize filteredData with all data
     } catch (error) {
       toast.error(error.response ? error.response.data : error.message);
     }
@@ -21,14 +23,22 @@ function ManageAppointment() {
 
   // Update status
   const updateStatus = async (appointmentId, action) => {
-    console.log(action)
     try {
-
-      await api.put(`/api/appointment/${appointmentId}/status?action=${action}`, appointmentId, action);
+      await api.put(`/api/appointment/${appointmentId}/status?action=${action}`);
       toast.success("Status updated successfully");
       fetchData(); // Refresh data to show the updated status
     } catch (error) {
       toast.error(error.response ? error.response.data : error.message);
+    }
+  };
+
+  // Filter appointments by status
+  const filterByStatus = (status) => {
+    setStatusFilter(status);
+    if (status === "") {
+      setFilteredData(data); // Show all if no filter selected
+    } else {
+      setFilteredData(data.filter((appointment) => appointment.status === status));
     }
   };
 
@@ -38,22 +48,22 @@ function ManageAppointment() {
 
   const tableColumns = [
     {
-      title: "Appointment ID",
+      title: "ID",
       dataIndex: "id",
       key: "id",
     },
     {
-      title: "Date",
+      title: "Ngày",
       dataIndex: "date",
       key: "date",
     },
     {
-      title: "Total Price",
+      title: "Tổng giá tiền",
       dataIndex: "totalPrice",
       key: "totalPrice",
     },
     {
-      title: "Status",
+      title: "Trạng thái",
       dataIndex: "status",
       key: "status",
     },
@@ -62,34 +72,41 @@ function ManageAppointment() {
       dataIndex: "action",
       key: "action",
       render: (status, record) => (
-        <>
-          {console.log(status)}
-          {console.log(record)}
-          <Select
-            onChange={(value) => updateStatus(record.id, value)
-            }
-            style={{ width: 120 }}
-
-          >
-
-            <Option value="APPROVE">APPROVE</Option>
-            <Option value="REJECT">REJECT</Option>
-          </Select>
-        </>
-      )
-
-    },
-    {
-      title: "Loyalty Points Awarded",
-      dataIndex: "loyaltyPointsAwarded",
-      key: "loyaltyPointsAwarded",
+        <Select
+          onChange={(value) => updateStatus(record.id, value)}
+          style={{ width: 120 }}
+          defaultValue="Select"
+        >
+          <Option value="APPROVE">Chấp nhận</Option>
+          <Option value="REJECT">Từ chối</Option>
+        </Select>
+      ),
     },
   ];
 
   return (
-    <div>
-      <h1>Appointment</h1>
-      <Table columns={tableColumns} dataSource={data} rowKey="id" />
+    <div className="p-6">
+      <h1 className="text-2xl font-bold text-[#163020] mb-6">Manage Appointments</h1>
+
+      {/* Status Filter */}
+      <Radio.Group
+        onChange={(e) => filterByStatus(e.target.value)}
+        value={statusFilter}
+        className="mb-4"
+      >
+        <Radio.Button value="">All</Radio.Button>
+        <Radio.Button value="APPROVED">Chấp nhận</Radio.Button>\
+        <Radio.Button value="DONE">Hoàn thành</Radio.Button>
+        <Radio.Button value="CANCELLED">Huỷ bỏ</Radio.Button>
+      </Radio.Group>
+
+      <Table
+        columns={tableColumns}
+        dataSource={filteredData}
+        rowKey="id"
+        pagination={{ pageSize: 10 }}
+        className="shadow-lg border border-gray-200 rounded-lg"
+      />
     </div>
   );
 }

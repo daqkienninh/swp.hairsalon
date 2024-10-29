@@ -12,12 +12,22 @@ function ManageStaff() {
             key: "id",
         },
         {
-            title: "Full Name",
+            title: "Tên",
             dataIndex: "fullName",
             key: "fullName",
         },
         {
-            title: "Sex",
+            title: "Điện thoại",
+            dataIndex: ["account", "phone"],
+            key: "phone",
+        },
+        {
+            title: "Email",
+            dataIndex: ["account", "email"],
+            key: "email",
+        },
+        {
+            title: "Giới tính",
             dataIndex: "sex",
             key: "sex",
         },
@@ -28,7 +38,7 @@ function ManageStaff() {
                 <Input />
             </Form.Item>
             <FormItem
-                label="Full Name"
+                label="Tên"
                 name="fullName"
                 rules={[
                     {
@@ -55,7 +65,7 @@ function ManageStaff() {
                 <Input />
             </Form.Item>
             <Form.Item
-                label="Phone"
+                label="Điện thoại"
                 name="phone"
             >
                 <Input />
@@ -69,7 +79,7 @@ function ManageStaff() {
             </Form.Item>
 
             <FormItem
-                label="Full Name"
+                label="Tên"
                 name="fullName"
             >
                 <Input />
@@ -81,7 +91,7 @@ function ManageStaff() {
                 <Input />
             </FormItem>
             <FormItem
-                label="Phone"
+                label="Điện thoại"
                 name="phone"
                 hidden
             >

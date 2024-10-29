@@ -7,12 +7,12 @@ import FormItem from "antd/es/form/FormItem";
 import uploadFile from "../../utils/file";
 
 function CRUDService({ columns, formItems, path, title }) {
-    const [data, setData] = useState();
+    const [data, setData] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [selectedRow, setSelectedRow] = useState(null);
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [fileList, setFileList] = useState([]);
-
 
     const getBase64 = (file) =>
         new Promise((resolve, reject) => {
@@ -22,12 +22,10 @@ function CRUDService({ columns, formItems, path, title }) {
             reader.onerror = (error) => reject(error);
         });
 
-    // Get data
     const fetchData = async () => {
         try {
             const response = await api.get(path);
-            console.log(response.data)
-            setData(response.data)
+            setData(response.data);
         } catch (error) {
             toast.error(error.response.data);
         }
@@ -37,10 +35,7 @@ function CRUDService({ columns, formItems, path, title }) {
         fetchData();
     }, []);
 
-    // Create or update
     const handleSubmit = async (values) => {
-        console.log(values); // print data user send
-
         setLoading(true);
         let imageUrl = '';
 
@@ -49,85 +44,44 @@ function CRUDService({ columns, formItems, path, title }) {
             if (file) {
                 imageUrl = await uploadFile(file);
                 values.image = imageUrl;
-                if (!imageUrl) {
-                    throw new Error('Failed to upload image');
-                }
             }
         }
         try {
-            setLoading(true);
-            // if value already has id => Update
-            if (values.id) {
-                console.log(values.id);
-                const response = await api.put(`${path}/${values.id}`, values);
-                toast.success("Successfully Update");
+            if (selectedRow) {
+                await api.put(`${path}/${selectedRow.id}`, values);
+                toast.success("Successfully updated");
             } else {
-                const response = await api.post(path, values);
-                toast.success("Successfully Create");
-                form.resetFields(); 
+                await api.post(path, values);
+                toast.success("Successfully created");
             }
-            fetchData(); // load data again
-            form.resetFields(); // xoa data vua nhap trong form
-            setShowModal(false); // dong modal
+            fetchData();
+            form.resetFields();
+            setShowModal(false);
+            setSelectedRow(null);
         } catch (error) {
-            console.log(error);
             toast.error(error.response.data);
         } finally {
             setLoading(false);
         }
     };
 
-    // Delete data
-    const handleDelete = async (id) => {
+    const handleDelete = async () => {
+        if (!selectedRow) return;
         try {
-            await api.delete(`${path}/${id}`);
+            await api.delete(`${path}/${selectedRow.id}`);
             toast.success("Delete successfully");
             fetchData();
+            setSelectedRow(null);
         } catch (error) {
             toast.error(error.response.data);
         }
     };
 
-    // Table template
-    const tableColums = [
-        ...columns,
-        {
-            title: "Image",
-            dataIndex: "image",
-            key: "image",
-            render: (image) => {
-                return <img src={image} alt="" width={100}></img>;
-            },
-        },
-        {
-            title: "Manage Service",
-            dataIndex: "id",
-            key: "id",
-            render: (id, value) => (
-                <>
-                    <Button
-            type="primary"
-            onClick={() => {
-              setShowModal(true);
-              form.setFieldsValue(value);
-            }}
-          >
-            Edit
-          </Button>
-                    <br />
-                    <Popconfirm
-                        title="Delete"
-                        description="Do you really want to delete?"
-                        onConfirm={() => handleDelete(id)}
-                    >
-                        <Button type="primary" danger>
-                            Delete
-                        </Button>
-                    </Popconfirm>
-                </>
-            ),
-        },
-    ];
+    const handleRowSelect = (record) => {
+        setSelectedRow(selectedRow?.id === record.id ? null : record);
+        form.setFieldsValue(selectedRow?.id === record.id ? {} : record);
+    };
+
     const handlePreview = async (file) => {
         if (!file.url && !file.preview) {
             file.preview = await getBase64(file.originFileObj);
@@ -135,49 +89,99 @@ function CRUDService({ columns, formItems, path, title }) {
         setPreviewImage(file.url || file.preview);
         setPreviewOpen(true);
     };
+
     const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+
     const uploadButton = (
-        <button
-            style={{
-                border: 0,
-                background: "none",
-            }}
-            type="button"
-        >
+        <button className="flex flex-col items-center">
             <PlusOutlined />
-            <div
-                style={{
-                    marginTop: 8,
-                }}
-            >
-                Upload
-            </div>
+            <div className="mt-2">Tải ảnh lên</div>
         </button>
     );
+
     return (
         <div>
-            <Button onClick={() => setShowModal(true)}>Create new</Button>
-            <Table columns={tableColums} dataSource={data} />
+            <h1 className="text-2xl font-bold text-[#163020] mb-3 ml-3">Dịch vụ</h1>
+
+            <Table
+                columns={[
+                    ...columns,
+                    {
+                        title: "Hình ảnh",
+                        dataIndex: "image",
+                        key: "image",
+                        render: (image) => <img src={image} alt="" width={100} />,
+                    },
+                ]}
+                dataSource={data}
+                rowKey="id"
+                pagination={{ pageSize: 10 }}
+                rowSelection={{
+                    type: "radio",
+                    onSelect: handleRowSelect,
+                    selectedRowKeys: selectedRow ? [selectedRow.id] : [],
+                }}
+            />
+            <div className="flex justify-end mt-4 gap-2">
+                <Button
+                    type="primary"
+                    onClick={() => {
+                        setShowModal(true);
+                        setSelectedRow(null); // Reset selected row for "Create New"
+                        form.resetFields(); // Clear form for new entry
+                    }}
+                    className="w-40 h-10 bg-[#94B49F] text-[#163020] border-0 rounded-lg text-base cursor-pointer transition-colors duration-300 ease-in-out"
+                >
+                    Tạo mới
+                </Button>
+
+                <Button
+                    type="primary"
+                    onClick={() => setShowModal(true)}
+                    disabled={!selectedRow}
+                    className="w-40 h-10 bg-[#94B49F] text-[#163020] border-0 rounded-lg text-base cursor-pointer transition-colors duration-300 ease-in-out"
+                >
+                    Chỉnh sửa
+                </Button>
+
+                <Popconfirm
+                    title="Bạn có chắc sẽ xoá dịch vụ này?"
+                    onConfirm={handleDelete}
+                    okText="Có"
+                    cancelText="Không"
+                    disabled={!selectedRow}
+                >
+                    <Button
+                        type="primary"
+                        danger
+                        disabled={!selectedRow}
+                        className="w-40 h-10 text-base cursor-pointer transition-colors duration-300 ease-in-out"
+                    >
+                        Xoá
+                    </Button>
+                </Popconfirm>
+            </div>
+
             <Modal
                 open={showModal}
                 onCancel={() => setShowModal(false)}
                 onOk={() => form.submit()}
-                title={title}
+                title={selectedRow ? `Edit ${title}` : `Create ${title}`}
                 confirmLoading={loading}
             >
                 <Form form={form} labelCol={{ span: 24 }} onFinish={handleSubmit}>
                     {formItems}
                     <FormItem
-                        label="Image"
+                        label="Hình ảnh"
                         name="image"
-                        rules={[{ required: true, message: 'Please upload an image' }]}
+                        rules={[{ required: true, message: "Vui lòng tải ảnh!" }]}
                     >
                         <Upload
                             listType="picture-card"
                             fileList={fileList}
                             onPreview={handlePreview}
                             onChange={handleChange}
-                            beforeUpload={() => true} // Prevent auto upload
+                            beforeUpload={() => true}
                         >
                             {fileList.length >= 1 ? null : uploadButton}
                         </Upload>
