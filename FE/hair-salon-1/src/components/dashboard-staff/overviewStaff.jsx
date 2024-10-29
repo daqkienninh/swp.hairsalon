@@ -86,8 +86,8 @@ function OverviewStaff() {
                             <Tooltip formatter={(value, name) => [`${value}`, `${name}`]} />
                             <Legend />
                             <CartesianGrid stroke="#f5f5f5" />
-                            <Bar dataKey="products" barSize={20} fill="#413ea0" name="Total Products" />
-                            <Bar dataKey="appointments" barSize={20} fill="#82ca9d" name="Total Appointments" />
+                            <Bar dataKey="products" barSize={20} fill="#413ea0" name="Tổng dịch vụ" />
+                            <Bar dataKey="appointments" barSize={20} fill="#82ca9d" name="Tổng cuộc hẹn" />
                             <defs>
                                 <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
                                     <stop offset="5%" stopColor="#ff7300" stopOpacity={0.8} />

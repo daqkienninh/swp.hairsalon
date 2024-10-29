@@ -33,6 +33,13 @@ import ViewStaff from "./pages/profile/staff/view";
 import ViewAdmin from "./pages/profile/admin/view";
 import OverviewStaff from "./components/dashboard-staff/overviewStaff";
 import OverviewAdmin from "./components/dashboard-admin/overviewAdmin";
+import StylistPage from "./pages/stylist";
+import DashboardStylist from "./components/dashboard-stylist";
+import DashboardManager from "./components/dashboard-manager";
+import OverviewManager from "./components/dashboard-manager/overviewManager";
+import ViewTransation from "./pages/manager/manager-balance";
+import ViewManager from "./pages/profile/manager/view";
+import ViewStylist from "./pages/profile/stylist/view";
 
 function App() {
   const ProtectRouteAuth = ({ children, allowedRoles }) => {
@@ -127,6 +134,20 @@ function App() {
       ],
     },
     {
+      path: "stylist",
+      element: (
+        <ProtectRouteAuth allowedRoles={["STYLIST"]}>
+          <DashboardStylist/>
+        </ProtectRouteAuth>
+      ),
+      children: [
+        {
+          path: "",
+          element: <StylistPage/>
+        },
+      ],
+    },
+    {
       path: "admin",
       element: (
         <ProtectRouteAuth allowedRoles={["ADMINISTRATOR"]}>
@@ -161,6 +182,24 @@ function App() {
       ],
     },
     {
+      path: "manager",
+      element: (
+        <ProtectRouteAuth allowedRoles={["MANAGER"]}>
+          <DashboardManager />
+        </ProtectRouteAuth>
+      ),
+      children: [
+        {
+          path: "",
+          element: <OverviewManager/>
+        },
+        {
+          path: "viewtransation",
+          element: <ViewTransation />
+        },
+      ],
+    },
+    {
       path: "service",
       element: <ManageService />,
     },
@@ -179,6 +218,14 @@ function App() {
     {
       path: "viewadmin",
       element: <ViewAdmin />,
+    },
+    {
+      path: "viewmanager",
+      element: <ViewManager />,
+    },
+    {
+      path: "viewstylist",
+      element: <ViewStylist />,
     },
     {
       path: "success",

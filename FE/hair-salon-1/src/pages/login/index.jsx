@@ -61,6 +61,9 @@ function LoginPage() {
       } else if (role === "ADMINISTRATOR") {
         navigate("/admin");
         toast.success("Đăng nhập thành công!");
+      } else if (role === "MANAGER") {
+        navigate("/manager");
+        toast.success("Đăng nhập thành công!");
       }
     } catch (err) {
       toast.error(err.response.data || "Lỗi đăng nhập, xin hãy thử lại!");
