@@ -17,37 +17,14 @@ function ManageStaff() {
             key: "fullName",
         },
         {
-            title: "Phone",
-            dataIndex: "phone",
-            key: "phone",
-        },
-        {
-            title: "Email",
-            dataIndex: "email",
-            key: "email",
-        },
-        {
             title: "Sex",
             dataIndex: "sex",
             key: "sex",
-        },
-        {
-            title: "Image",
-            dataIndex: "image",
-            key: "image",
-        },
-        {
-            title: "Role",
-            dataIndex: "role",
-            key: "role",
         },
     ];
     const formItems = (
         <>
             <Form.Item name="id" hidden>
-                <Input />
-            </Form.Item>
-            <Form.Item label="Password" name="password">
                 <Input />
             </Form.Item>
             <FormItem
@@ -74,16 +51,7 @@ function ManageStaff() {
             >
                 <Input />
             </FormItem>
-            <Form.Item
-                label="Image"
-                name="image"
-            >
-                <Input />
-            </Form.Item>
-            <Form.Item
-                label="Sex"
-                name="sex"
-            >
+            <Form.Item label="Password" name="password">
                 <Input />
             </Form.Item>
             <Form.Item
@@ -92,11 +60,34 @@ function ManageStaff() {
             >
                 <Input />
             </Form.Item>
-            <Form.Item
-                label="Role"
-                name="role"
+        </>
+    );
+    const formItemsUpdate = (
+        <>
+            <Form.Item name="id" label="Stylist ID">
+                <Input />
+            </Form.Item>
+
+            <FormItem
+                label="Full Name"
+                name="fullName"
+            >
+                <Input />
+            </FormItem>
+            <FormItem
+                label="Email"
+                name="email"
+            >
+                <Input />
+            </FormItem>
+            <FormItem
+                label="Phone"
+                name="phone"
                 hidden
             >
+                <Input />
+            </FormItem>
+            <Form.Item name="password" label="Password">
                 <Input />
             </Form.Item>
         </>
@@ -105,10 +96,9 @@ function ManageStaff() {
       <div><CRUDTemplate
           columns={columns}
           formItems={formItems}
-          path="/api/account"
+          formItemsUpdate={formItemsUpdate}
+          path="/api/staff"
           title="Manage Staff"
-          roles="STAFF"
-          puts="/api/staff"
       /></div>
   )
 }

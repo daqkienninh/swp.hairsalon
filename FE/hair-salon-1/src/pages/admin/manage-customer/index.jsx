@@ -1,11 +1,10 @@
-import React from 'react'
-import CRUDTemplate from '../../../components/crud-template';
-import { Form, Input } from 'antd';
-import FormItem from 'antd/es/form/FormItem';
-import TextArea from 'antd/es/input/TextArea';
+import React from "react";
+import CRUDTemplate from "../../../components/crud-template";
+import { Form, Input } from "antd";
+import FormItem from "antd/es/form/FormItem";
+import TextArea from "antd/es/input/TextArea";
 
 function ManageCustomer() {
-
   const columns = [
     {
       title: "ID",
@@ -19,12 +18,12 @@ function ManageCustomer() {
     },
     {
       title: "Phone",
-      dataIndex: "phone",
+      dataIndex: ["account", "phone"],
       key: "phone",
     },
     {
       title: "Email",
-      dataIndex: "email",
+      dataIndex: ["account", "email"],
       key: "email",
     },
     {
@@ -33,14 +32,9 @@ function ManageCustomer() {
       key: "sex",
     },
     {
-      title: "Image",
-      dataIndex: "image",
-      key: "image",
-    },
-    {
-      title: "Role",
-      dataIndex: "role",
-      key: "role",
+      title: "Loyalty Point",
+      dataIndex: "loyaltyPoint",
+      key: "loyaltyPoint",
     },
   ];
   const formItems = (
@@ -75,29 +69,36 @@ function ManageCustomer() {
       >
         <Input />
       </FormItem>
-      <Form.Item
-        label="Image"
-        name="image"
-      >
+      <Form.Item label="Image" name="image">
         <Input />
       </Form.Item>
-      <Form.Item
-        label="Sex"
-        name="sex"
-      >
+      <Form.Item label="Sex" name="sex">
         <Input />
       </Form.Item>
-      <Form.Item
-        label="Phone"
-        name="phone"
-      >
+      <Form.Item label="Phone" name="phone">
         <Input />
       </Form.Item>
-      <Form.Item
-        label="Role"
-        name="role"
-        hidden
-      >
+      <Form.Item label="Role" name="role" hidden>
+        <Input />
+      </Form.Item>
+    </>
+  );
+  const formItemsUpdate = (
+    <>
+      <Form.Item name="id" label="Stylist ID">
+        <Input />
+      </Form.Item>
+
+      <FormItem label="Full Name" name="fullName">
+        <Input />
+      </FormItem>
+      <FormItem label="Email" name="email">
+        <Input />
+      </FormItem>
+      <FormItem label="Phone" name="phone" hidden>
+        <Input />
+      </FormItem>
+      <Form.Item name="password" label="Password">
         <Input />
       </Form.Item>
     </>
@@ -108,12 +109,12 @@ function ManageCustomer() {
       <CRUDTemplate
         columns={columns}
         formItems={formItems}
-        path="/api/account"
+        formItemsUpdate={formItemsUpdate}
+        path="/api/customer"
         title="Customer"
-        roles="CUSTOMER"
       />
     </div>
-  )
+  );
 }
 
-export default ManageCustomer
+export default ManageCustomer;

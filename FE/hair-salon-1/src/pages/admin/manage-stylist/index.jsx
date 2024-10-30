@@ -2,7 +2,6 @@ import React from 'react'
 import CRUDTemplate from '../../../components/crud-template';
 import { Form, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
-import TextArea from 'antd/es/input/TextArea';
 
 function ManageStylist() {
     const columns = [
@@ -17,46 +16,35 @@ function ManageStylist() {
             key: "fullName",
         },
         {
-            title: "Phone",
-            dataIndex: "phone",
-            key: "phone",
-        },
-        {
-            title: "Email",
-            dataIndex: "email",
-            key: "email",
-        },
-        {
             title: "Sex",
             dataIndex: "sex",
             key: "sex",
         },
         {
-            title: "Image",
-            dataIndex: "image",
-            key: "image",
+            title: "Description",
+            dataIndex: "description",
+            key: "description",
         },
         {
-            title: "Role",
-            dataIndex: "role",
-            key: "role",
+            title: "Level",
+            dataIndex: "level",
+            key: "level",
         },
+
     ];
     const formItems = (
         <>
             <Form.Item name="id" hidden>
                 <Input />
             </Form.Item>
-            <Form.Item label="Password" name="password">
-                <Input />
-            </Form.Item>
+
             <FormItem
                 label="Full Name"
                 name="fullName"
                 rules={[
                     {
                         required: true,
-                        message: "Please input Customer's name!",
+                        message: "Please input Stylist's name!",
                     },
                 ]}
             >
@@ -68,35 +56,69 @@ function ManageStylist() {
                 rules={[
                     {
                         required: true,
-                        message: "Please input Email!",
+                        message: "Please input Stylist's email!",
                     },
                 ]}
             >
                 <Input />
             </FormItem>
-            <Form.Item
-                label="Image"
-                name="image"
-            >
-                <Input />
-            </Form.Item>
-            <Form.Item
-                label="Sex"
-                name="sex"
-            >
-                <Input />
-            </Form.Item>
-            <Form.Item
+            <FormItem
                 label="Phone"
                 name="phone"
+                rules={[
+                    {
+                        required: true,
+                        message: "Please input Stylist's phone!",
+                    },
+                ]}
             >
                 <Input />
+            </FormItem>
+            <Form.Item name="password" label="Password"
+                rules={[
+                    {
+                        required: true,
+                        message: "Please input Stylist's Password!",
+                    },
+                ]}>
+                <Input type="password" />
             </Form.Item>
-            <Form.Item
-                label="Role"
-                name="role"
+        </>
+    );
+
+    const formItemsUpdate = (
+        <>
+            <Form.Item name="id" label="Stylist ID">
+                <Input />
+            </Form.Item>
+
+            <FormItem
+                label="Full Name"
+                name="fullName"
+            >
+                <Input />
+            </FormItem>
+            <FormItem
+                label="Level"
+                name="level"
+            >
+                <Input />
+            </FormItem>
+            <FormItem
+                label="Email"
+                name="email"
                 hidden
             >
+                <Input />
+            </FormItem>
+            <FormItem
+                label="Phone"
+                name="phone"
+                hidden
+            >
+                <Input />
+            </FormItem>
+            <Form.Item name="password" label="Password">
                 <Input />
             </Form.Item>
         </>
@@ -106,10 +128,9 @@ function ManageStylist() {
             <CRUDTemplate
                 columns={columns}
                 formItems={formItems}
-                path="/api/account"
+                formItemsUpdate={formItemsUpdate}
+                path="/api/stylist"
                 title="Stylist"
-                roles="STYLIST"
-                puts="/api/stylist"
             />
         </div>
     )

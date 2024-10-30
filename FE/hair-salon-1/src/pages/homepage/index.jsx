@@ -75,12 +75,13 @@ function HomePage() {
 const Service = ({ service }) => {
   return (
     <div className="w-full relative group">
-      <div className="max-w-80 max-h-80 relative overflow-y-hidden ">
+      <div className="w-80 h-60 overflow-hidden relative">
         <div>
           <img
             src={service.image}
             alt={service.name}
-            className="w-full h-full"
+            className="w-full h-full object-cover"
+            // Set fixed height and object-cover to make images uniform
           />
         </div>
         <div className="absolute top-6 left-8">
@@ -97,7 +98,9 @@ const Service = ({ service }) => {
       <div className="max-w-80 py-6 flex flex-col gap-1 border-[1px] border-t-0 px-4">
         <div className="flex items-center justify-between font-titleFont">
           <h2 className="text-lg text-primeColor font-bold">{service.name}</h2>
-          <p className="text-[#767676] text-[14px]">{service.price}</p>
+          <p className="text-[#767676] text-[14px]">
+            {service.price.toLocaleString()}đ
+          </p>
         </div>
       </div>
     </div>

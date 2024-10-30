@@ -1,8 +1,46 @@
 import axios from "axios";
+import { message, notification } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const api = axios.create({
-  baseURL: 'http://localhost:8080'
+  baseURL: 'http://localhost:8080',
 });
+
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    const tokenExpiration = localStorage.getItem("tokenExpiration");
+
+    if (token && tokenExpiration && new Date(tokenExpiration) < new Date()) {
+      // Clear token and redirect to login page after a delay
+      localStorage.removeItem("token");
+      localStorage.removeItem("tokenExpiration");
+      const navigate = useNavigate();
+      setTimeout(() => {
+        navigate("/login", {
+          state: {
+            redirect: window.location.pathname,
+          },
+        });
+        message.error("Token đã hết hạn, vui lòng đăng nhập lại.");
+        notification.error({
+          message: "Đăng nhập hết hạn",
+          description: "Vui lòng đăng nhập lại để tiếp tục.",
+        });
+      }, 1000); // Delay of 1 second
+      return Promise.reject("Token expired");
+    }
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 const handleBefore = (config) => {
   const token = localStorage.getItem("token")?.replaceAll('"', "");

@@ -1,168 +1,163 @@
-import React, { useState, useEffect } from "react";
-import {
-  Table,
-  Tag,
-  Select,
-  DatePicker,
-  Space,
-  Card,
-  Typography,
-  Empty,
-  Spin,
-} from "antd";
-import {
-  CalendarOutlined,
-  ClockCircleOutlined,
-  UserOutlined,
-  ScissorOutlined,
-} from "@ant-design/icons";
+import React, { useState, useEffect, useCallback } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Table, Tag, Spin, Alert, Button } from "antd";
+import api from "./../../config/axios";
 import moment from "moment";
-import api from "../../config/axios";
-
-const { Option } = Select;
-const { RangePicker } = DatePicker;
-const { Title, Text } = Typography;
-
-function HistoryBooking() {
-  // State variables
-  const [bookings, setBookings] = useState([]);
+import { toast } from "react-toastify";
+import "./index.css";
+import { useSelector } from "react-redux";
+function AppointmentHistory() {
+  const user = useSelector((store) => store.user);
+  const [appointments, setAppointments] = useState([]);
+  const [customerID, setCustomerID] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState("all");
-  const [dateRange, setDateRange] = useState(null);
+  const [error, setError] = useState(null);
+  const { accountId } = useParams();
+  const navigate = useNavigate();
 
-  // Fetch bookings when filter or dateRange changes
-  useEffect(() => {
-    fetchBookings();
-  }, [filter, dateRange]);
-
-  // Function to fetch bookings from the API
-  const fetchBookings = async () => {
-    setLoading(true);
+  const fetchCustomer = useCallback(async () => {
     try {
-      const url = buildApiUrl();
-      const response = await api.get(url);
-      setBookings(response.data);
+      setLoading(true); 
+      const response = await api.get("/api/customer");
+
+      // Filter response data to only include stylists where user.id matches account.id
+      const matchingCustomer = response.data.filter(
+        (item) => item.account.id === user.id
+      );
+
+      // Extract stylist IDs from matching stylists
+      const ids = matchingCustomer.map((item) => item.id);
+      if (ids.length > 0) {
+        setCustomerID(ids[0]); // Set stylistID if there are matching stylists
+      }
+
+      console.log("Matching Stylist IDs: ", ids);
+      console.log("User ID: ", user.id);
+      setLoading(false); // End loading after setting customer ID
     } catch (error) {
-      console.error("Error fetching bookings:", error);
-    } finally {
-      setLoading(false);
+      setLoading(false); // End loading after setting customer ID
+      toast.error(error.response?.data || "Error fetching stylists");
     }
-  };
+  }, [user.id]);
 
-  // Helper function to build the API URL based on filters
-  const buildApiUrl = () => {
-    let url = "/api/appointment/customer";
-    if (filter !== "all") {
-      url += `?status=${filter}`;
-    }
-    if (dateRange) {
-      const [start, end] = dateRange;
-      url += `${filter !== "all" ? "&" : "?"}startDate=${start.format(
-        "YYYY-MM-DD"
-      )}&endDate=${end.format("YYYY-MM-DD")}`;
-    }
-    return url;
-  };
+  console.log("StylistID: ", customerID);
 
-  // Table columns configuration
+  // Effect to fetch appointments when stylistID changes
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      if (customerID) {
+        // Only fetch if stylistID is not null
+        try {
+          setLoading(true);
+          const response = await api.get(
+            `/api/appointment/customer/${customerID}`
+          );
+
+          console.log("Appointment: ", response.data);
+          const transformedAppointments = response.data.map((appointment) => {
+            const detail = appointment.appointmentDetails[0]; // Assuming each appointment has at least one detail
+            return {
+              key: appointment.id,
+              date: moment(appointment.date).format("YYYY-MM-DD HH:mm"),
+              totalPrice: appointment.totalPrice,
+              status: appointment.status,
+              serviceName: detail.serviceEntity.name,
+              startTime: moment(detail.startTime).format("YYYY-MM-DD HH:mm"),
+              stylistName: detail.stylist.fullName,
+            };
+          });
+          setAppointments(transformedAppointments);
+          setLoading(false); 
+        } catch (error) {
+          setLoading(false);
+          toast.error(error.response?.data || "Error fetching appointments");
+        }
+      }
+    };
+
+    fetchAppointments();
+  }, [customerID]); // Dependency array with stylistID
+
+  useEffect(() => {
+    fetchCustomer();
+  }, [fetchCustomer]);
+
   const columns = [
     {
-      title: "Service",
-      dataIndex: ["details", "service", "name"],
-      key: "service",
-      render: (text) => (
-        <Space>
-          <ScissorOutlined />
-          <Text>{text}</Text>
-        </Space>
-      ),
+      title: "Thời gian bắt đầu",
+      dataIndex: "startTime",
+      key: "startTime",
+      sorter: (a, b) => moment(a.startTime).unix() - moment(b.startTime).unix(),
+    },
+    {
+      title: "Dịch vụ",
+      dataIndex: "serviceName",
+      key: "serviceName",
+    },
+    {
+      title: "Tổng giá dịch vụ",
+      dataIndex: "totalPrice",
+      key: "totalPrice",
+      render: (price) => `${price.toLocaleString()}đ`,
     },
     {
       title: "Stylist",
-      dataIndex: ["details", "stylist", "full_name"],
-      key: "stylist",
-      render: (text) => (
-        <Space>
-          <UserOutlined />
-          <Text>{text}</Text>
-        </Space>
-      ),
+      dataIndex: "stylistName",
+      key: "stylistName",
     },
     {
-      title: "Date & Time",
-      dataIndex: ["details", "startTime"],
-      key: "dateTime",
-      render: (text) => (
-        <Space direction="vertical" size={0}>
-          <Space>
-            <CalendarOutlined />
-            <Text>{moment(text).format("MMMM D, YYYY")}</Text>
-          </Space>
-          <Space>
-            <ClockCircleOutlined />
-            <Text>{moment(text).format("h:mm A")}</Text>
-          </Space>
-        </Space>
-      ),
-    },
-    {
-      title: "Status",
+      title: "Trạng thái",
       dataIndex: "status",
       key: "status",
       render: (status) => (
-        <Tag color={getStatusColor(status)}>{status.toUpperCase()}</Tag>
+        <Tag color={status === "DONE" ? "green" : "blue"}>{status}</Tag>
       ),
-    },
-    {
-      title: "Note",
-      dataIndex: ["details", "note"],
-      key: "note",
-      render: (text) => <Text italic>{text || "No note"}</Text>,
+      filters: [
+        { text: "Đã hoàn thành", value: "DONE" },
+        { text: "Chấp nhận", value: "APPROVED" },
+        { text: "Đang diễn ra", value: "IN_PROGRESS" },
+      ],
+      onFilter: (value, record) => record.status === value,
     },
   ];
 
-  // Helper function to get status color
-  const getStatusColor = (status) => {
-    const colors = { confirmed: "green", cancelled: "red", completed: "blue" };
-    return colors[status.toLowerCase()] || "default";
-  };
-
-  // Event handlers
-  const handleFilterChange = (value) => setFilter(value);
-  const handleDateRangeChange = (dates) => setDateRange(dates);
-
-  // Render function
+  if (loading) {
+    return <Spin size="large" />;
+  }
+  if (error) {
+    return (
+      <Alert
+        message="Error"
+        description={error}
+        type="error"
+        showIcon
+        action={
+          <Button type="primary" onClick={() => navigate(-1)}>
+            Go Back
+          </Button>
+        }
+      />
+    );
+  }
   return (
-    <Card style={{ margin: "20px" }}>
-      <Title level={2}>Booking History</Title>
-      <Space style={{ marginBottom: "20px" }}>
-        <Select
-          defaultValue="all"
-          style={{ width: 120 }}
-          onChange={handleFilterChange}
-        >
-          <Option value="all">All</Option>
-          <Option value="confirmed">Confirmed</Option>
-          <Option value="cancelled">Cancelled</Option>
-          <Option value="completed">Completed</Option>
-        </Select>
-        <RangePicker onChange={handleDateRangeChange} />
-      </Space>
-      <Spin spinning={loading}>
-        {bookings.length > 0 ? (
-          <Table
-            columns={columns}
-            dataSource={bookings}
-            rowKey={(record) => record.id}
-            pagination={{ pageSize: 10 }}
-            style={{ backgroundColor: "white" }}
-          />
-        ) : (
-          <Empty description="No bookings found. Try adjusting your filters or date range." />
-        )}
-      </Spin>
-    </Card>
+    <div className="appointment-history">
+      <h1>Lịch sử đặt hẹn</h1>
+      {appointments.length > 0 ? (
+        <Table
+          columns={columns}
+          dataSource={appointments}
+          rowKey="key"
+          pagination={{ pageSize: 10 }}
+        />
+      ) : (
+        <Alert
+          message="No appointments found for this customer."
+          type="info"
+          showIcon
+        />
+      )}
+    </div>
   );
 }
 
-export default HistoryBooking;
+export default AppointmentHistory;

@@ -1,0 +1,44 @@
+.appointment-history {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.appointment-history h1 {
+  font-size: 28px;
+  color: #16423C;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.appointment-history .ant-table-wrapper {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.appointment-history .ant-table-thead > tr > th {
+  background-color: #C4DAD2;
+  color: #16423C;
+}
+
+.appointment-history .ant-table-tbody > tr:hover > td {
+  background-color: #e6f7ff;
+}
+
+.appointment-history .ant-tag {
+  font-weight: bold;
+  padding: 4px 8px;
+}
+
+.appointment-history .ant-tag-green {
+  background-color: #52c41a;
+  border-color: #52c41a;
+  color: white;
+}
+
+.appointment-history .ant-tag-blue {
+  background-color: #E9EFEC;
+  border-color: #E9EFEC;
+  color: #16423C;
+}

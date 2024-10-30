@@ -17,11 +17,11 @@ import { logout, updateUser } from "../../redux/features/userSlice";
 import { useNavigate } from "react-router-dom";
 import { GrHomeRounded } from "react-icons/gr";
 import uploadFile from "../../utils/file";
-import { Button, Form, Modal, Upload } from "antd";
+import { Form, Modal, Upload } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import FormItem from "antd/es/form/FormItem";
 
-export default function ProfileTemplate() {
+export default function ProfileTemplate({ path, pathapi }) {
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -29,15 +29,7 @@ export default function ProfileTemplate() {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [fileList, setFileList] = useState([]);
-
-  const getBase64 = (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-
+  const [previewImage, setPreviewImage] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     fullName: user.fullName,
@@ -45,9 +37,10 @@ export default function ProfileTemplate() {
     phone: user.phone,
     sex: user.sex,
     image: user.image,
-    // image: user.avatarUrl,
     password: user.password,
   });
+
+  console.log(user);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -59,81 +52,62 @@ export default function ProfileTemplate() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleUpdate = async () => {
-    try {
-      const response = await api.put(`/api/customer/${user.id}`, formData);
-      if (response.status === 200) {
-        dispatch(updateUser(formData));
-        setIsEditing(false);
-        toast.success("Profile updated successfully");
-      }
-    } catch (error) {
-      console.error("Error updating user info:", error);
-      toast.error("Failed to update user information");
+  const handleChangeUpload = ({ fileList: newFileList }) => {
+    setFileList(newFileList);
+    if (newFileList.length) {
+      handlePreview(newFileList[0]);
     }
   };
 
-  const handleAvatarUpload = async (field) => {
+  const handlePreview = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file.originFileObj);
+    reader.onload = () => {
+      setPreviewImage(reader.result);
+    };
+  };
+
+  const handleUpdate = async () => {
     setLoading(true);
-    let imageUrl = "";
+    let avatarUrl = user.image; // Default to current avatar
+
+    // Check if an avatar has been uploaded
+    if (fileList.length > 0) {
+      const file = fileList[0].originFileObj;
+      try {
+        avatarUrl = await uploadFile(file); // Upload the file and get the new URL
+      } catch (error) {
+        console.error("Error uploading avatar:", error);
+        toast.error("Lỗi tải ảnh đại diện.");
+        setLoading(false);
+        return;
+      }
+    }
+
+    // Update formData with new image URL
+    const updatedFormData = {
+      ...formData,
+     image: avatarUrl,
+    };
 
     try {
-      if (fileList.length > 0) {
-        const file = fileList[0].originFileObj;
-        if (file) {
-          imageUrl = await uploadFile(file);
-          if (!imageUrl) {
-            throw new Error("Failed to upload image");
-          }
-        }
-      }
-
-      if (imageUrl) {
-        const response = await api.put(`/users/${user.id}`, {
-          image: imageUrl,
-        });
-        if (response.status === 200) {
-          dispatch(updateUser({ image: imageUrl }));
-          setFormData({ ...formData, image: imageUrl });
-          toast.success("Avatar updated successfully");
-          setShowModal(false);
-          setFileList([]);
-        }
+      console.log("Updated Form Data:", updatedFormData);
+      const response = await api.put(`${pathapi}/${user.id}`, updatedFormData);
+      if (response.status === 200) {
+        dispatch(updateUser(updatedFormData));
+        setIsEditing(false);
+        toast.success("Cập nhật thông tin thành công.");
+      } else {
+        console.error("Error updating user info:", response);
+        toast.error("Không thể cập nhật thông tin.");
       }
     } catch (error) {
-      console.error("Error uploading avatar:", error);
-      toast.error(error.message || "Failed to update avatar");
+      console.error("Error updating user info:", error);
+      toast.error("Không thể cập nhật thông tin.");
     } finally {
       setLoading(false);
     }
   };
-  const uploadButton = (
-    <button
-      style={{
-        border: 0,
-        background: "none",
-      }}
-      type="button"
-    >
-      <PlusOutlined />
-      <div
-        style={{
-          marginTop: 8,
-        }}
-      >
-        Upload
-      </div>
-    </button>
-  );
-  const handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    setPreviewImage(file.url || file.preview);
-    setPreviewOpen(true);
-  };
-  const handleChangeImage = ({ fileList: newFileList }) =>
-    setFileList(newFileList);
 
   const renderSexField = () => (
     <MDBRow className="mb-4">
@@ -243,83 +217,68 @@ export default function ProfileTemplate() {
                       style={{ width: "150px", margin: "0 auto" }}
                       fluid
                     />
-                    <div className="mt-3">
-                      {/* <input
-                        type="file"
-                        id="avatar-upload"
-                        style={{ display: "none" }}
-                        onChange={handleAvatarUpload}
-                        accept="image/*"
-                      /> */}
-
-                      <Button
-                        className="border-none"
-                        htmlFor="avatar-upload"
-                        onClick={() => setShowModal(true)}
-                      >
-                        <MDBBtn
-                          rounded
-                          size="sm"
-                          style={{
-                            backgroundColor: "#94B49F",
-                            color: "#163020",
-                            borderColor: "#94B49F",
-                          }}
+                    <MDBBtn
+                      onClick={() => setShowModal(true)}
+                      rounded
+                      size="sm"
+                      style={{
+                        backgroundColor: "#94B49F",
+                        color: "#163020",
+                        borderColor: "#94B49F",
+                        marginTop: "10px",
+                      }}
+                    >
+                      Đổi ảnh
+                    </MDBBtn>
+                    <Modal
+                      open={showModal}
+                      onCancel={() => {
+                        setShowModal(false);
+                        setFileList([]);
+                      }}
+                      onOk={handleUpdate}
+                      title="Update Avatar"
+                      confirmLoading={loading}
+                    >
+                      <Form form={form} labelCol={{ span: 24 }}>
+                        <FormItem
+                          label="Image"
+                          name="image"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Hãy tải hình ảnh của bạn lên.",
+                            },
+                          ]}
                         >
-                          Đổi ảnh
-                        </MDBBtn>
-                      </Button>
-                      <Modal
-                        open={showModal}
-                        onCancel={() => {
-                          setShowModal(false);
-                          setFileList([]);
-                        }}
-                        onOk={handleAvatarUpload}
-                        title="Update Avatar"
-                        confirmLoading={loading}
-                      >
-                        <Form form={form} labelCol={{ span: 24 }}>
-                          <FormItem
-                            label="Image"
-                            name="image"
-                            rules={[
-                              {
-                                required: true,
-                                message: "Please upload an image",
-                              },
-                            ]}
+                          <Upload
+                            listType="picture-card"
+                            fileList={fileList}
+                            onPreview={handlePreview}
+                            onChange={handleChangeUpload}
+                            beforeUpload={() => false} // Prevent auto upload
                           >
-                            <Upload
-                              listType="picture-card"
-                              fileList={fileList}
-                              onPreview={handlePreview}
-                              onChange={({ fileList: newFileList }) =>
-                                setFileList(newFileList)
-                              }
-                              beforeUpload={() => false} // Prevent auto upload
-                            >
-                              {fileList.length >= 1 ? null : uploadButton}
-                            </Upload>
-                          </FormItem>
-                        </Form>
-                      </Modal>
-                    </div>
+                            {fileList.length >= 1 ? null : (
+                              <div>
+                                <PlusOutlined />
+                                <div style={{ marginTop: 8 }}>Upload</div>
+                              </div>
+                            )}
+                          </Upload>
+                        </FormItem>
+                      </Form>
+                    </Modal>
                   </div>
                   <div className="text-center mb-4">
-                    {/* <h4 className="mb-1">{user.fullName}</h4> */}
                     <MDBBtn
                       onClick={() => setIsEditing(!isEditing)}
                       style={{
                         backgroundColor: "#94B49F",
                         color: "#163020",
                         borderColor: "#94B49F",
-                        "&:hover": {
-                          backgroundColor: "#CEE5D0",
-                        },
                       }}
                     >
-                      {isEditing ? "Hủy" : "Cập nhật thông tin"}
+                      {isEditing ? "Hủy" : "Thay đổi thông tin"}
                     </MDBBtn>
                   </div>
                   <hr className="my-4" />

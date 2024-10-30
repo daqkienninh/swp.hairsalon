@@ -63,6 +63,10 @@ html, body{
 .input:focus{
     border-color: #163020!important;
 }
+
+.input-register{
+    border-color: #94b49f !important;
+}
 /* Button styling */
 .button {
     width: 50%;
@@ -127,17 +131,51 @@ html, body{
     padding: 10px;
     cursor: pointer;
     transition: transform 0.3s ease, color 0.3s ease;
-  }
+}
   
-  .home-icon:hover {
+.home-icon:hover {
     transform: scale(1.1);
     color: #7a937f; /* Darker color when hovered */
-  }
+}
   
-  .home-icon svg {
+.home-icon svg {
     vertical-align: middle;
-  }
+}
+.forgot-password-modal {
+  width: 400px; /* thiết lập chiều rộng của modal */
+  padding: 25px; /* thêm padding để tạo khoảng cách */
+  border-radius: 15px; /* thêm bo góc để tạo giao diện mềm mại */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);/* thêm bóng để tạo giao diện sâu */
+}
 
+.forgot-password-modal .ant-modal-title {
+  font-size: 18px; /* thiết lập font size của tiêu đề */
+  font-weight: bold; /* thiết lập font weight của tiêu đề */
+}
+
+ .forgot-password-modal .ant-modal-body {
+  padding: 20px; /* thêm padding để tạo khoảng cách */
+ }
+
+.forgot-password-modal .ant-form-item {
+  margin-bottom: 20px; /* thêm khoảng cách giữa các form item */
+}
+.forgot-password-modal .ant-input:hover, .forgot-password-modal .ant-input:focus {
+    border-color: #94b49f !important; /* thiết lập màu viền của khung nhập khi hover */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* thiết lập bóng của khung nhập khi hover */
+  }
+.forgot-password-modal .ant-btn-primary {
+  margin: 0 auto; /* thiết lập margin trái và phải là 0, margin trên và dưới là auto */
+  display: block; /* thiết lập display là block để nút có thể nằm giữa */
+  background-color: #94B49F; /* thiết lập màu nền của nút gửi */
+  border-color: #94B49F; /* thiết lập màu viền của nút gửi */
+  color: #163020; /* thiết lập màu chữ của nút gửi */
+}
+.forgot-password-modal .ant-btn-primary:hover {
+    background-color: #CEE5D0 !important; /* thiết lập màu nền của button khi hover */
+    border-color: #CEE5D0 !important;
+    color: #163020 !important; /* thiết lập màu viền của button khi hover */
+  }
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .authen-template {

@@ -3,9 +3,9 @@ import {
   Navigate,
   RouterProvider,
 } from "react-router-dom";
+import React from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-/***************************IMPORT PAGE******************************/
 import Layout from "./components/layout";
 import HomePage from "./pages/homepage";
 import Booking from "./pages/book";
@@ -18,32 +18,39 @@ import ManageAppointment from "./pages/staff/manage-appointment";
 import DashboardAdmin from "./components/dashboard-admin";
 import ManageStylist from "./pages/admin/manage-stylist";
 import ManageCustomer from "./pages/admin/manage-customer";
-import ViewCustomer from "./pages/profile/customer/view";
 import DashboardStaff from "./components/dashboard-staff";
 import ManageStaff from "./pages/admin/manage-staff";
 import ManageManager from "./pages/admin/manage-manager";
-import DashboardLayout from "./components/layout/dashboardlayout";
-import Payment from "./pages/profile/customer/payment";
-import SuccessPage from "./pages/profile/customer/success";
-import HistoryBooking from "./pages/history/index";
-import ServiceDetail from "./pages/servicedetail";
+import ManageAccount from "./pages/admin/manage-account";
 import RequireAuth from "./config/auth";
+import ServiceDetail from "./pages/servicedetail";
+import OverviewStaff from "./components/dashboard-staff/overviewStaff";
+import OverviewAdmin from "./components/dashboard-admin/overviewAdmin";
+import ViewCustomer from "./pages/profile/customer/index";
+import ViewStaff from "./pages/profile/staff/index";
+import ViewAdmin from "./pages/profile/admin/index";
+import SuccessPage from "./pages/payment/success";
+import Fail from "./pages/payment/fail";
+import Payment from "./pages/payment/payment";
+import AppointmentHistory from './pages/history/index';
+import ResetPassword from './pages/password/index';
+
 function App() {
   const ProtectRouteAuth = ({ children, allowedRoles }) => {
     const user = useSelector((store) => store.user);
     const token = localStorage.getItem("token");
-    console.log(user);
-    // Kiểm tra cả token và user
+
+    // If user is not authenticated
     if (!token) {
-      // Lưu current path vào localStorage để sau khi login redirect lại
+      // Save the current path in localStorage to redirect after login
       localStorage.setItem("redirectPath", window.location.pathname);
       toast.error("Vui lòng đăng nhập để tiếp tục!");
       return <Navigate to="/login" />;
     }
+    // If the user is authenticated and has the correct role
     if (user && allowedRoles.includes(user.role)) {
       return children;
     }
-    toast.error("Bạn không có quyền truy cập trang này!");
     return <Navigate to="/" />;
   };
 
@@ -73,7 +80,7 @@ function App() {
           ),
         },
         {
-          path: "confirm-booking",
+          path: "confirm-booking/:appointmentId",
           element: (
             <RequireAuth>
               <ConfirmBooking />
@@ -81,18 +88,18 @@ function App() {
           ),
         },
         {
-          path: "history-booking",
-          element: (
-            <RequireAuth>
-              <HistoryBooking />
-            </RequireAuth>
-          ),
+          path: "/history-booking/:customerId",
+          element: <AppointmentHistory />,
         },
       ],
     },
     {
       path: "login",
       element: <LoginPage />,
+    },
+    {
+      path: "reset-password",
+      element: <ResetPassword />,
     },
     {
       path: "register",
@@ -108,7 +115,7 @@ function App() {
       children: [
         {
           path: "",
-          element: <DashboardLayout />,
+          element: <OverviewStaff />,
         },
         {
           path: "service",
@@ -129,6 +136,10 @@ function App() {
       ),
       children: [
         {
+          path: "",
+          element: <OverviewAdmin />,
+        },
+        {
           path: "managestylist",
           element: <ManageStylist />,
         },
@@ -144,21 +155,46 @@ function App() {
           path: "managemanager",
           element: <ManageManager />,
         },
+        {
+          path: "manageaccount",
+          element: <ManageAccount />,
+        },
       ],
+    },
+    {
+      path: "service",
+      element: <ManageService />,
+    },
+    {
+      path: "appointment",
+      element: <ManageAppointment />,
     },
     {
       path: "customer",
       element: <ViewCustomer />,
     },
     {
+      path: "viewstaff",
+      element: <ViewStaff />,
+    },
+    {
+      path: "viewadmin",
+      element: <ViewAdmin />,
+    },
+    {
       path: "success",
       element: <SuccessPage />,
     },
     {
-      path: "test",
+      path: "fail",
+      element: <Fail />,
+    },
+    {
+      path: "payment-vnpay",
       element: <Payment />,
     },
   ]);
+
   return <RouterProvider router={router} />;
 }
 

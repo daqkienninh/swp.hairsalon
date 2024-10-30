@@ -61,7 +61,7 @@ const ServiceDetail = () => {
       <div className="flex flex-col md:flex-row gap-8">
         <div className="md:w-1/2">
           <img
-            src={`/assets/images/${service.image}`}
+            src={service.image}
             alt={service.name}
             className="w-full h-auto rounded-lg shadow-md"
           />
@@ -94,12 +94,12 @@ const ServiceDetail = () => {
               Tổng giá: {service.totalPrice.toLocaleString()}đ
             </p>
           </div>
-            <button
-              className="mt-6 bg-[#94B49F] hover:bg-[#CEE5D0] text-[#163020] font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
-              onClick={handleBooking}
-            >
-              Đặt lịch ngay
-            </button>
+          <button
+            className="mt-6 bg-[#94B49F] hover:bg-[#CEE5D0] text-[#163020] font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
+            onClick={handleBooking}
+          >
+            Đặt lịch ngay
+          </button>
         </div>
       </div>
     </div>
