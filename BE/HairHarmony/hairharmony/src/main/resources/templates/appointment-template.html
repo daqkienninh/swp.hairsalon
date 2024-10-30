@@ -77,26 +77,20 @@
 <div class="container">
     <!-- Header -->
     <div class="header">
-        <h1>XÁC NHẬN ĐẶT LỊCH HẸN</h1>
+        <h1>XÁC NHẬN & NHẮC NHỞ LỊCH HẸN</h1>
     </div>
 
     <!-- Content -->
     <div class="content">
         <p>Xin chào, <strong th:text="${name}">Khách hàng</strong>,</p>
-        <p>Bạn đã đặt lịch thành công tại HairHarmony! Chúng tôi xin xác nhận thông tin lịch hẹn của bạn như sau:</p>
-
-        <ul>
-            <li><strong>Thời gian:</strong> <span th:text="${appointmentDate}">Thời gian</span></li>
-            <li><strong>Stylist:</strong> <span th:text="${stylistName}">Tên stylist</span></li>
-            <li><strong>Dịch vụ:</strong> <span th:text="${service}">Tên dịch vụ</span></li>
-        </ul>
-
-        <p>Vui lòng đến trước giờ hẹn 10 phút để chúng tôi có thể phục vụ bạn tốt nhất.</p>
+        <p>Quý khách đã đặt lịch thành công tại HairHarmony!</p>
+        <p><strong>Đơn đặt lịch của quý khách sắp diễn ra. Quý khách hãy vui lòng kiểm tra lại lịch đặt của mình!</strong></p>
+        <p>Vui lòng đến trước giờ hẹn 10 phút để chúng tôi có thể phục vụ được cho quý khách một cách tốt nhất.</p>
 
         <!-- Manage Appointment Button -->
         <a th:href="${link}" class="button">Quản lý lịch hẹn</a>
 
-        <p>Nếu bạn có bất kỳ câu hỏi nào hoặc cần thay đổi lịch hẹn, vui lòng liên hệ với chúng tôi.</p>
+        <p>Nếu quý khách có bất kỳ câu hỏi nào hoặc cần thay đổi lịch hẹn, xin hãy vui lòng liên hệ với chúng tôi.</p>
         <p>Trân trọng,</p>
         <p>Đội ngũ HairHarmony</p>
     </div>
@@ -104,7 +98,7 @@
     <!-- Footer -->
     <div class="footer">
         <p>HairHarmony Inc, 123 Salon Street, Thành phố Beauty, BC 10101</p>
-        <p>Liên hệ với chúng tôi nếu bạn cần trợ giúp về lịch hẹn của mình.</p>
+        <p>Liên hệ với chúng tôi nếu quý khách cần trợ giúp về lịch hẹn của mình.</p>
     </div>
 </div>
 </body>

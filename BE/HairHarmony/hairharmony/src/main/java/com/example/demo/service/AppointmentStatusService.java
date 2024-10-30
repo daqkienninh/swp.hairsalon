@@ -7,6 +7,7 @@ import com.example.demo.entity.Customer;
 import com.example.demo.entity.enums.AppointmentStatus;
 import com.example.demo.entity.enums.TransactionsEnums;
 import com.example.demo.exception.InvalidAppointmentTimeException;
+import com.example.demo.model.EmailDetail;
 import com.example.demo.repository.AccountRepository;
 import com.example.demo.repository.AppointmentRepository;
 import com.example.demo.repository.CustomerRepository;
@@ -38,6 +39,12 @@ public class AppointmentStatusService {
 
     @Autowired
     private SlotService slotService;
+
+    @Autowired
+    AuthenticationService authenticationService;
+
+    @Autowired
+    EmailService emailService;
 
     @Transactional
     @Scheduled(fixedRate = 60000) // Runs every minute
@@ -116,4 +123,42 @@ public class AppointmentStatusService {
         }
 
     }
+
+    @Scheduled(fixedRate = 14400000) // Chạy mỗi 6 giờ
+    @Transactional
+    public void sendReminderEmails() {
+        List<Appointment> appointments = appointmentRepository.findAppointmentByIsDeletedFalse();
+        LocalDateTime currentTime = LocalDateTime.now();
+
+        for (Appointment appointment : appointments) {
+            List<AppointmentDetail> details = appointment.getAppointmentDetails();
+            if (details.isEmpty()) continue;
+
+            for (AppointmentDetail appointmentDetail : details) {
+                LocalDateTime startTime = appointmentDetail.getStartTime();
+
+                // Gửi email ngay nếu thời gian còn lại ít hơn 12 tiếng
+                if (!appointment.isReminderSent()) {
+                    if (startTime.isAfter(currentTime) && startTime.minusHours(12).isBefore(currentTime)) {
+                        sendReminderEmail(appointment);
+                        appointment.setReminderSent(true);  // Đánh dấu email đã được gửi
+                        appointmentRepository.save(appointment); // Lưu thay đổi
+                    }
+                }
+            }
+        }
+    }
+
+
+    private void sendReminderEmail(Appointment appointment) {
+        Account customer = appointment.getCustomer();
+        EmailDetail emailDetail = new EmailDetail();
+        emailDetail.setReceiver(customer);
+        emailDetail.setSubject("Cảm ơn quý khách " + customer.getFullName() + " đã đặt lịch tại HairHarmony!");
+        emailDetail.setLink("http://localhost:5173/login" + appointment.getId());
+
+        // Gửi email
+        emailService.sendAppointmentEmail(emailDetail);
+    }
+
 }

@@ -22,8 +22,6 @@ public class Manager {
 
     String sex;
 
-    int level;
-
     @JsonIgnore//không bắt nhập thông tin trên swagger
     boolean isDeleted = false;
 

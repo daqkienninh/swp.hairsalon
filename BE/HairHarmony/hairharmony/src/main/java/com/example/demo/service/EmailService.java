@@ -71,13 +71,10 @@ public class EmailService {
         }
     }
 
-    public void sendAppointmentEmail(EmailDetail emailDetail, AppointmentDetail appointmentDetail) {
+    public void sendAppointmentEmail(EmailDetail emailDetail) {
         try {
             Context context = new Context();
             context.setVariable("name",emailDetail.getReceiver().getEmail());
-            context.setVariable("service",appointmentDetail.getServiceEntity());
-            context.setVariable("stylistName",appointmentDetail.getStylist());
-            context.setVariable("appointmentDate",appointmentDetail.getStartTime());
             context.setVariable("button","Quản lý lịch hẹn");
             context.setVariable("link",emailDetail.getLink());
             String template = templateEngine.process("appointment-template", context);

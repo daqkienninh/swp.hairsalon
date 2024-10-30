@@ -53,7 +53,6 @@ public class Account implements UserDetails {
 
     String sex;
 
-
     float balance = 0;
 
     @Override

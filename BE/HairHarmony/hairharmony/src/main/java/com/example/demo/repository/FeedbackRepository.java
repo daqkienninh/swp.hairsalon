@@ -20,6 +20,10 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
             " where f.stylist.id =:stylistID ")
     List<FeedbackResponse> findFeedbackByStylistId(@Param("stylistID") Long id);
 
-    List<Feedback> findByStylistAndRatingGreaterThan(Account stylist, int rating);
+
+    List<Feedback> findByStylistAndRatingGreaterThanEqualAndIsDeletedFalse(Account stylist, int rating);
+
+    long countByRating(int rating);
+
 
 }

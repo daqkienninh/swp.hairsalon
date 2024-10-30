@@ -10,10 +10,7 @@ import jakarta.validation.constraints.Min;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Data
@@ -45,15 +42,17 @@ public class Appointment {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     boolean loyaltyPointsAwarded = false;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    boolean reminderSent = false;
+
 
     @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @ToString.Exclude
-    @JsonIgnore
     List<AppointmentDetail> appointmentDetails;
 
     @OneToOne(mappedBy = "appointment")
     @ToString.Exclude
     @JsonIgnore
     Payment payment;
+
 
 }
