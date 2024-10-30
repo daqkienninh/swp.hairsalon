@@ -59,9 +59,6 @@ function DashboardManager() {
             <a href="/manager" className="text-xl font-semibold">
               Xin chào {user.fullName}!
             </a>
-          <div className="text-xl font-semibold ml-10">
-              Balance: {user.balance}
-            </div>
           </div>
           <div onClick={() => navigate("/viewmanager")} className="text-2xl cursor-pointer border-teal-600">
             <FaUser />
@@ -70,14 +67,14 @@ function DashboardManager() {
         <Content className="m-6 p-6 bg-white rounded-lg shadow-lg">
           <Outlet />
         </Content>
-        <Footer className="flex items-center justify-center p-4 bg-gray-50 text-black">
+        <Footer className="flex items-center justify-center p-4 bg-[#6A9C89]bg-gray-50 text-black">
           <AiOutlineCopyright className="mr-1" />
           <span>2024 Hair Harmony. Tất cả các quyền được bảo lưu.</span>
         </Footer>
       </Layout>
     </Layout>
   );
-  
+
 }
 
 export default DashboardManager

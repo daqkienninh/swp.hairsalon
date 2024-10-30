@@ -123,23 +123,23 @@ function CRUDService({ columns, formItems, path, title }) {
                 }}
             />
             <div className="flex justify-end mt-4 gap-2">
-                <Button
+                <button
                     type="primary"
                     onClick={() => {
                         setShowModal(true);
                         setSelectedRow(null); // Reset selected row for "Create New"
                         form.resetFields(); // Clear form for new entry
                     }}
-                    className="w-40 h-10 bg-[#94B49F] text-[#163020] border-0 rounded-lg text-base cursor-pointer transition-colors duration-300 ease-in-out"
+                    className="w-40 h-10 bg-[#94B49F] hover:bg-[#CEE5D0] text-[#163020] border-0 rounded-lg text-base cursor-pointer transition-colors duration-300 ease-in-out"
                 >
                     Tạo mới
-                </Button>
+                </button>
 
                 <Button
                     type="primary"
                     onClick={() => setShowModal(true)}
                     disabled={!selectedRow}
-                    className="w-40 h-10 bg-[#94B49F] text-[#163020] border-0 rounded-lg text-base cursor-pointer transition-colors duration-300 ease-in-out"
+                    className="w-40 h-10 bg-[#94B49F]  text-[#163020] border-0 rounded-lg text-base cursor-pointer transition-colors duration-300 ease-in-out"
                 >
                     Chỉnh sửa
                 </Button>
@@ -166,7 +166,7 @@ function CRUDService({ columns, formItems, path, title }) {
                 open={showModal}
                 onCancel={() => setShowModal(false)}
                 onOk={() => form.submit()}
-                title={selectedRow ? `Edit ${title}` : `Create ${title}`}
+                title={selectedRow ? `Chỉnh sửa` : `Tạo mới`}
                 confirmLoading={loading}
             >
                 <Form form={form} labelCol={{ span: 24 }} onFinish={handleSubmit}>

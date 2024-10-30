@@ -145,66 +145,66 @@ function CRUDTemplate({ columns, formItems, formItemsUpdate, path, title }) {
   return (
     <div>
 
-      
-        <h1 className="text-2xl font-bold text-[#163020] mb-3 ml-3">{title}</h1>
 
-        <Table columns={tableColumns} dataSource={data} pagination={{ pageSize: 10 }} />
+      <h1 className="text-2xl font-bold text-[#163020] mb-3 ml-3">{title}</h1>
 
-        <Modal
-          visible={showModal}
-          onCancel={() => setShowModal(false)}
-          onOk={() => form.submit()}
-          title={title}
-          confirmLoading={loading}
-        >
-          <Form form={form} labelCol={{ span: 24 }} onFinish={handleSubmit}>
-            {formItems}
-            <FormItem label="Hình ảnh" name="image">
-              <Upload
-                listType="picture-card"
-                fileList={fileList}
-                onPreview={handlePreview}
-                onChange={handleChange}
-                beforeUpload={() => false} // Prevent auto upload
-              >
-                {fileList.length >= 1 ? null : uploadButton}
-              </Upload>
-            </FormItem>
-          </Form>
-        </Modal>
+      <Table columns={tableColumns} dataSource={data} pagination={{ pageSize: 10 }} />
 
-        <Modal
-          visible={showModalUpdate}
-          onCancel={() => setShowModalUpdate(false)}
-          onOk={() => form.submit()}
-          title={title}
-          confirmLoading={loading}
-        >
-          <Form form={form} labelCol={{ span: 24 }} onFinish={handleSubmit}>
-            {formItemsUpdate}
-            <FormItem label="Hình ảnh" name="image">
-              <Upload
-                listType="picture-card"
-                fileList={fileList}
-                onPreview={handlePreview}
-                onChange={handleChange}
-                beforeUpload={() => false} // Prevent auto upload
-              >
-                {fileList.length >= 1 ? null : uploadButton}
-              </Upload>
-            </FormItem>
-          </Form>
-        </Modal>
+      <Modal
+        visible={showModal}
+        onCancel={() => setShowModal(false)}
+        onOk={() => form.submit()}
+        title={title}
+        confirmLoading={loading}
+      >
+        <Form form={form} labelCol={{ span: 24 }} onFinish={handleSubmit}>
+          {formItems}
+          <FormItem label="Hình ảnh" name="image">
+            <Upload
+              listType="picture-card"
+              fileList={fileList}
+              onPreview={handlePreview}
+              onChange={handleChange}
+              beforeUpload={() => false} // Prevent auto upload
+            >
+              {fileList.length >= 1 ? null : uploadButton}
+            </Upload>
+          </FormItem>
+        </Form>
+      </Modal>
+
+      <Modal
+        visible={showModalUpdate}
+        onCancel={() => setShowModalUpdate(false)}
+        onOk={() => form.submit()}
+        title={title}
+        confirmLoading={loading}
+      >
+        <Form form={form} labelCol={{ span: 24 }} onFinish={handleSubmit}>
+          {formItemsUpdate}
+          <FormItem label="Hình ảnh" name="image">
+            <Upload
+              listType="picture-card"
+              fileList={fileList}
+              onPreview={handlePreview}
+              onChange={handleChange}
+              beforeUpload={() => false} // Prevent auto upload
+            >
+              {fileList.length >= 1 ? null : uploadButton}
+            </Upload>
+          </FormItem>
+        </Form>
+      </Modal>
       <div className="flex justify-end mt-2">
-      {path !== "/api/customer" && path !== "/api/account" && (
-        <Button
-          type="primary"
-          onClick={() => setShowModal(true)}
-          className="w-40 h-10 bg-[#94B49F] text-[#163020] border-0 rounded-lg text-base cursor-pointer my-2 transition-colors duration-300 ease-in-out"
-        >
-          Tạo mới
-        </Button>
-      )}
+        {path !== "/api/customer" && path !== "/api/account" && (
+          <Button
+            type="primary"
+            onClick={() => setShowModal(true)}
+            className="w-40 h-10 bg-[#94B49F] hover:none text-[#163020] border-0 rounded-lg text-base cursor-pointer my-2 transition-colors duration-300 ease-in-out"
+          >
+            Tạo mới
+          </Button>
+        )}
       </div>
     </div>
   );

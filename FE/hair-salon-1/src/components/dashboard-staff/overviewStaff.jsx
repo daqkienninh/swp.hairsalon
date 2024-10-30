@@ -39,7 +39,7 @@ function OverviewStaff() {
 
     const composedData = data2 ? [
         {
-            name: 'Overview',
+            name: '',
             products: data2.totalProducts,
             appointments: data2.totalAppointments,  // Assuming revenue is available in data2
         }
@@ -60,7 +60,6 @@ function OverviewStaff() {
                                 cx="50%"
                                 cy="50%"
                                 labelLine={false}
-                                label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
                                 outerRadius={100}
                                 fill="#8884d8"
                                 dataKey="value"

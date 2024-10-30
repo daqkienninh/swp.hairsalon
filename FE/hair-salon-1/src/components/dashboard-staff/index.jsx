@@ -19,6 +19,7 @@ const items = [
   getItem("Trang chủ", "", <FaHome className="text-lg" />),
   getItem("Quản lý Dịch vụ", "/service", <MdOutlineHomeRepairService className="text-lg" />),
   getItem("Quản lý Cuộc hẹn", "/appointment", <GrSchedules className="text-lg" />),
+  getItem("Quản lý Đổi thưởng", "/reward", <GrSchedules className="text-lg" />),
 ];
 const DashboardStaff = () => {
   const user = useSelector((store) => store.user);
@@ -37,7 +38,7 @@ const DashboardStaff = () => {
         <div className="h-16 flex items-center justify-center font-semibold text-xl text-black bg-[#6A9C89] border-b border-teal-600">
           HAIR HARMONY
         </div>
-        <Menu 
+        <Menu
           mode="inline"
           defaultSelectedKeys={['0']}
           items={items}
@@ -59,9 +60,9 @@ const DashboardStaff = () => {
           </div>
         </Header>
         <Content className="m-6 p-6 bg-white rounded-lg shadow-lg">
-            <Outlet />
+          <Outlet />
         </Content>
-        <Footer className="flex items-center justify-center p-4 bg-gray-50 text-black">
+        <Footer className="flex items-center justify-center p-4 text-black bg-[#6A9C89]">
           <AiOutlineCopyright className="mr-1" />
           <span>2024 Hair Harmony. Tất cả các quyền được bảo lưu.</span>
         </Footer>

@@ -54,6 +54,7 @@ function ManagerPage() {
             <Typography.Title level={2}>Manager Dashboard</Typography.Title>
             <Divider />
             <Table columns={columns} dataSource={totalPrice} rowKey="id" pagination={false} />
+            
         </div>
     );
 }

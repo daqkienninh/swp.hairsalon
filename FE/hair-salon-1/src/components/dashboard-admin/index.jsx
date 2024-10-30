@@ -15,7 +15,7 @@ function getItem(label, key, icon, children) {
         children,
         label: (
             <Link to={`/admin${key}`} className="flex items-center gap-2">
-                
+
                 <span>{label}</span>
             </Link>
         ),
@@ -73,7 +73,7 @@ const DashboardAdmin = () => {
                 <Content className="m-6 p-6 bg-white rounded-lg shadow-lg">
                     <Outlet />
                 </Content>
-                <Footer className="flex items-center justify-center p-4 bg-gray-50 text-black">
+                <Footer className="flex items-center justify-center p-4 bg-[#6A9C89] text-black">
                     <AiOutlineCopyright className="mr-1" />
                     <span>2024 Hair Harmony. Tất cả các quyền được bảo lưu.</span>
                 </Footer>

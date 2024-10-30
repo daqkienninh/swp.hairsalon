@@ -23,6 +23,7 @@ function getItem(label, key, icon, children) {
 
 const items = [
   getItem("Trang chủ", "", <FaHome className="text-lg" />),
+  getItem("View Appointment", "/viewappointment", <FaHome className="text-lg" />),
 ];
 
 function DashboardStylist() {
@@ -58,9 +59,6 @@ function DashboardStylist() {
             <a href="/manager" className="text-xl font-semibold">
               Xin chào {user.fullName}!
             </a>
-            <div className="text-xl font-semibold ml-10">
-              Balance: {user.balance}
-            </div>
           </div>
           <div onClick={() => navigate("/viewstylist")} className="text-2xl cursor-pointer border-teal-600">
             <FaUser />

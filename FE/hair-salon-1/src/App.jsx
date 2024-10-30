@@ -40,6 +40,8 @@ import OverviewManager from "./components/dashboard-manager/overviewManager";
 import ViewTransation from "./pages/manager/manager-balance";
 import ViewManager from "./pages/profile/manager/view";
 import ViewStylist from "./pages/profile/stylist/view";
+import ManageReward from "./pages/staff/manage-reward";
+import OverviewStylist from "./components/dashboard-stylist/overviewStylist";
 
 function App() {
   const ProtectRouteAuth = ({ children, allowedRoles }) => {
@@ -131,6 +133,10 @@ function App() {
           path: "appointment",
           element: <ManageAppointment />,
         },
+        {
+          path: "reward",
+          element: <ManageReward />,
+        },
       ],
     },
     {
@@ -143,7 +149,11 @@ function App() {
       children: [
         {
           path: "",
-          element: <StylistPage/>
+          element: <OverviewStylist/>
+        },
+        {
+          path: "viewappointment",
+          element: <StylistPage />
         },
       ],
     },

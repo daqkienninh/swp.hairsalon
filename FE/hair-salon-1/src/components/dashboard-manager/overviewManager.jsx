@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import api from '../../config/axios';
 import { Funnel, FunnelChart, LabelList, Tooltip } from 'recharts';
+import { useSelector } from 'react-redux';
 
 function OverviewManager() {
     const [monthlyRevenue, setMonthlyRevenue] = useState([]);
+    const user = useSelector((store) => store.user);
     // Fetch data for Monthly Revenue (Funnel Chart)
     const fetchRevenueData = async () => {
         try {
@@ -29,6 +31,9 @@ function OverviewManager() {
                         <LabelList position="right" fill="#000" stroke="none" dataKey="name" />
                     </Funnel>
                 </FunnelChart>
+            </div>
+            <div className="text-xl font-semibold mt-3 flex justify-end">
+                Số dư: {user.balance.toLocaleString()}đ
             </div>
         </div>
     )
