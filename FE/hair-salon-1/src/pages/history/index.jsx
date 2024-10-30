@@ -31,7 +31,7 @@ function AppointmentHistory() {
         setCustomerID(ids[0]); // Set stylistID if there are matching stylists
       }
 
-      console.log("Matching Stylist IDs: ", ids);
+      console.log("Matching IDs: ", ids);
       console.log("User ID: ", user.id);
       setLoading(false); // End loading after setting customer ID
     } catch (error) {
@@ -40,7 +40,7 @@ function AppointmentHistory() {
     }
   }, [user.id]);
 
-  console.log("StylistID: ", customerID);
+  console.log("CustomerID: ", customerID);
 
   // Effect to fetch appointments when stylistID changes
   useEffect(() => {

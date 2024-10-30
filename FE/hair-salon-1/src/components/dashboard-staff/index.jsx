@@ -55,7 +55,7 @@ const DashboardStaff = () => {
               Xin chào {user.fullName}!
             </a>
           </div>
-          <div onClick={() => navigate("/viewadmin")} className="text-2xl cursor-pointer border-teal-600">
+          <div onClick={() => navigate("/viewstaff")} className="text-2xl cursor-pointer border-teal-600">
             <FaUser />
           </div>
         </Header>

@@ -1,5 +1,5 @@
 import React from 'react'
-import ProfileTemplate from '../../../../components/profile-template'
+import ProfileTemplate from '../../../components/profile-template'
 
 function ViewManager() {
   return (

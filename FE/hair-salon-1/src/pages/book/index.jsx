@@ -14,8 +14,6 @@ import {
   UserOutlined,
   CalendarOutlined,
   CloseOutlined,
-  CreditCardOutlined,
-  DollarOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import api from "./../../config/axios";
@@ -93,10 +91,11 @@ function Booking() {
         );
         toast.error(error.response?.data);
       }
-    } else if (selectedPaymentMethod === "cash") {
+    } else if (selectedPaymentMethod === "card") {
       try {
         const response = await api.post("/api/appointment", appointmentData);
-        const appointmentId = response.data.appointmentId; // Assuming the response includes the appointment ID
+        console.log(response.data)
+        const appointmentId = response.data.id; // Assuming the response includes the appointment ID
         navigate(`/confirm-booking/${appointmentId}`);
       } catch (error) {
         console.error("Error:", error.response?.data || error.message);
@@ -111,134 +110,126 @@ function Booking() {
   return (
     <div className="booking-container">
       <div className="max-w-3xl mx-auto">
-      <Card 
-          title={<h1 className="text-2xl font-bold text-center text-green-800">Đặt lịch hẹn tại đây</h1>} 
+        <Card
+          title={<h1 className="text-2xl font-bold text-center text-green-800">Đặt lịch hẹn tại đây</h1>}
           className="booking-card shadow-lg"
         >
-        <Form
-          form={form}
-          name="booking"
-          onFinish={handleConfirmation}
-          layout="vertical"
-          requiredMark={false}
-          className="space-y-6"
-        >
-          <Form.Item
-            name="services"
-            label="Dịch vụ"
-            rules={[{ required: true, message: "Chọn 1 hoặc nhiều dịch vụ" }]}
+          <Form
+            form={form}
+            name="booking"
+            onFinish={handleConfirmation}
+            layout="vertical"
+            requiredMark={false}
+            className="space-y-6"
           >
-            <Select
-              placeholder="Bạn có thể chọn một hay nhiều dịch vụ."
-              suffixIcon={<ScissorOutlined />}
-              mode="multiple"
-              tagRender={(props) => {
-                const { value, onClose } = props;
-                const service = services.find((s) => s.id === value);
-                return (
-                  <div className="custom-tag">
-                    {service?.name}
-                    <CloseOutlined
-                      className="custom-tag-close"
-                      onClick={onClose}
-                    />
-                  </div>
-                );
-              }}
+            <Form.Item
+              name="services"
+              label="Dịch vụ"
+              rules={[{ required: true, message: "Chọn 1 hoặc nhiều dịch vụ" }]}
             >
-              {services.map((service) => (
-                <Option key={service.id} value={service.id}>
-                  <div className="flex justify-between w-full">
-                    {service.name}
-                    <span className="text-gray-500 text-sm ml-10 font-semibold">
-                      {service.price.toLocaleString()}đ
-                    </span>
-                  </div>
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name="stylist"
-            label="Stylist"
-            rules={[{ required: true, message: "Chọn stylist" }]}
-          >
-            <Select
-              placeholder="Nếu bạn không biết nên chọn ai, bạn có thể chọn ngẫu nhiên."
-              suffixIcon={<UserOutlined />}
-            >
-              {stylists.map((stylist) => (
-                <Option key={stylist.id} value={stylist.id}>
-                  {stylist.fullName}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name="date"
-            label="Ngày"
-            rules={[{ required: true, message: "Chọn ngày" }]}
-          >
-            <DatePicker
-              disabledDate={disabledDate}
-              placeholder="Chọn ngày"
-              format="DD/MM/YYYY"
-            />
-          </Form.Item>
-          <Form.Item
-            name="time"
-            label="Thời gian"
-            rules={[{ required: true, message: "Please select a time range" }]}
-          >
-            <Radio.Group className="flex flex-wrap gap-2">
-              {Array(12)
-                .fill(null)
-                .map((_, index) => {
-                  const startTime = moment()
-                    .startOf("day")
-                    .add(8 + index, "hours");
-
+              <Select
+                placeholder="Bạn có thể chọn một hay nhiều dịch vụ."
+                suffixIcon={<ScissorOutlined />}
+                mode="multiple"
+                tagRender={(props) => {
+                  const { value, onClose } = props;
+                  const service = services.find((s) => s.id === value);
                   return (
-                    <Radio.Button
-                      key={startTime.format("HH:mm")}
-                      value={startTime.format("HH:mm")}
-                      className="flex-grow basis-1/4 text-center"
-                    >
-                      {startTime.format("HH:mm")}
-                    </Radio.Button>
+                    <div className="custom-tag">
+                      {service?.name}
+                      <CloseOutlined
+                        className="custom-tag-close"
+                        onClick={onClose}
+                      />
+                    </div>
                   );
-                })}
-            </Radio.Group>
-          </Form.Item>
-          <Form.Item name="note" label="Ghi chú">
-            <Input.TextArea rows={4} placeholder="Ghi chú cho cửa hàng" />
-          </Form.Item>
-
-          <Form.Item
-            label="Thanh toán"
-            rules={[
-              { required: true, message: "Please select a payment method" },
-            ]}
-          >
-            <Select
-              placeholder="Select a payment method"
-              suffixIcon={<UserOutlined />}
-              onChange={handlePaymentMethodChange}
+                }}
+              >
+                {services.map((service) => (
+                  <Option key={service.id} value={service.id}>
+                    <div className="flex justify-between w-full">
+                      {service.name}
+                      <span className="text-gray-500 text-sm ml-10 font-semibold">
+                        {service.price.toLocaleString()}đ
+                      </span>
+                    </div>
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+            <Form.Item
+              name="stylist"
+              label="Stylist"
+              rules={[{ required: true, message: "Chọn stylist" }]}
             >
-              <Option value="vnpay" label={<span><CreditCardOutlined /> VNPay</span>}>
-                <span className="flex items-center gap-2">
-                  <CreditCardOutlined /> VNPay
-                </span>
-              </Option>
-              <Option value="cash" label={<span><DollarOutlined /> Card Payment</span>}>
-                <span className="flex items-center gap-2">
-                  <DollarOutlined /> Card Payment
-                </span>
-              </Option>
-            </Select>
-          </Form.Item>
+              <Select
+                placeholder="Nếu bạn không biết nên chọn ai, bạn có thể chọn ngẫu nhiên."
+                suffixIcon={<UserOutlined />}
+              >
+                {stylists.map((stylist) => (
+                  <Option key={stylist.id} value={stylist.id}>
+                    {stylist.fullName}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+            <Form.Item
+              name="date"
+              label="Ngày"
+              rules={[{ required: true, message: "Chọn ngày" }]}
+            >
+              <DatePicker
+                disabledDate={disabledDate}
+                placeholder="Chọn ngày"
+                format="DD/MM/YYYY"
+              />
+            </Form.Item>
+            <Form.Item
+              name="time"
+              label="Thời gian"
+              rules={[{ required: true, message: "Please select a time range" }]}
+            >
+              <Radio.Group className="flex flex-wrap gap-2">
+                {Array(12)
+                  .fill(null)
+                  .map((_, index) => {
+                    const startTime = moment()
+                      .startOf("day")
+                      .add(8 + index, "hours");
 
-          <Form.Item>
+                    return (
+                      <Radio.Button
+                        key={startTime.format("HH:mm")}
+                        value={startTime.format("HH:mm")}
+                        className="flex-grow basis-1/4 text-center"
+                      >
+                        {startTime.format("HH:mm")}
+                      </Radio.Button>
+                    );
+                  })}
+              </Radio.Group>
+            </Form.Item>
+            <Form.Item name="note" label="Ghi chú">
+              <Input.TextArea rows={4} placeholder="Ghi chú cho cửa hàng" />
+            </Form.Item>
+
+            <Form.Item
+              label="Thanh toán"
+              rules={[
+                { required: true, message: "Please select a payment method" },
+              ]}
+            >
+              <Select
+                placeholder="Select a payment method"
+                suffixIcon={<UserOutlined />}
+                onChange={handlePaymentMethodChange}
+              >
+                <Option value="vnpay">VNPay</Option>
+                <Option value="card">Thanh toán trục tiếp</Option>
+              </Select>
+            </Form.Item>
+
+            <Form.Item>
               <Button
                 type="primary"
                 htmlType="submit"
@@ -247,9 +238,9 @@ function Booking() {
                 Đặt lịch hẹn
               </Button>
             </Form.Item>
-        </Form>
-      </Card>
-    </div>
+          </Form>
+        </Card>
+      </div>
     </div>
   );
 }

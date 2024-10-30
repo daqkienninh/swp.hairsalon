@@ -21,15 +21,9 @@ import ManageCustomer from "./pages/admin/manage-customer";
 import DashboardStaff from "./components/dashboard-staff";
 import ManageStaff from "./pages/admin/manage-staff";
 import ManageManager from "./pages/admin/manage-manager";
-import Payment from "./pages/profile/customer/payment";
-import SuccessPage from "./pages/profile/customer/success";
-import Fail from "./pages/profile/customer/fail";
 import ManageAccount from "./pages/admin/manage-account";
-import HistoryBooking from "./pages/history/index";
 import RequireAuth from "./config/auth";
 import ServiceDetail from "./pages/servicedetail";
-import ViewStaff from "./pages/profile/staff/view";
-import ViewAdmin from "./pages/profile/admin/view";
 import OverviewStaff from "./components/dashboard-staff/overviewStaff";
 import OverviewAdmin from "./components/dashboard-admin/overviewAdmin";
 import StylistPage from "./pages/stylist";
@@ -37,15 +31,9 @@ import DashboardStylist from "./components/dashboard-stylist";
 import DashboardManager from "./components/dashboard-manager";
 import OverviewManager from "./components/dashboard-manager/overviewManager";
 import ViewTransation from "./pages/manager/manager-balance";
-import ViewManager from "./pages/profile/manager/view";
-import ViewStylist from "./pages/profile/stylist/view";
+import ViewStylist from "./pages/profile/stylist";
 import ManageReward from "./pages/staff/manage-reward";
 import OverviewStylist from "./components/dashboard-stylist/overviewStylist";
-import ManageAccount from "./pages/admin/manage-account";
-import RequireAuth from "./config/auth";
-import ServiceDetail from "./pages/servicedetail";
-import OverviewStaff from "./components/dashboard-staff/overviewStaff";
-import OverviewAdmin from "./components/dashboard-admin/overviewAdmin";
 import ViewCustomer from "./pages/profile/customer/index";
 import ViewStaff from "./pages/profile/staff/index";
 import ViewAdmin from "./pages/profile/admin/index";
@@ -54,6 +42,10 @@ import Fail from "./pages/payment/fail";
 import Payment from "./pages/payment/payment";
 import AppointmentHistory from './pages/history/index';
 import ResetPassword from './pages/password/index';
+import ViewManager from "./pages/profile/manager";
+import Test from "./pages/test";
+import AboutPage from "./pages/about";
+import RewardPage from "./pages/reward";
 
 function App() {
   const ProtectRouteAuth = ({ children, allowedRoles }) => {
@@ -92,6 +84,10 @@ function App() {
           element: <ServicePage />,
         },
         {
+          path: "about",
+          element: <AboutPage />,
+        },
+        {
           path: "booking",
           element: (
             <RequireAuth>
@@ -110,6 +106,10 @@ function App() {
         {
           path: "/history-booking/:customerId",
           element: <AppointmentHistory />,
+        },
+        {
+          path: "/reward/:customerId",
+          element: <RewardPage />,
         },
       ],
     },
@@ -155,13 +155,13 @@ function App() {
       path: "stylist",
       element: (
         <ProtectRouteAuth allowedRoles={["STYLIST"]}>
-          <DashboardStylist/>
+          <DashboardStylist />
         </ProtectRouteAuth>
       ),
       children: [
         {
           path: "",
-          element: <OverviewStylist/>
+          element: <OverviewStylist />
         },
         {
           path: "viewappointment",
@@ -213,7 +213,7 @@ function App() {
       children: [
         {
           path: "",
-          element: <OverviewManager/>
+          element: <OverviewManager />
         },
         {
           path: "viewtransation",
@@ -259,7 +259,7 @@ function App() {
     },
     {
       path: "test",
-      element: <Payment />,
+      element: <Test />,
     },
   ]);
 

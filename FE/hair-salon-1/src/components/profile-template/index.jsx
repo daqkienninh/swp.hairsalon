@@ -193,7 +193,7 @@ export default function ProfileTemplate({ path, pathapi }) {
       >
         <GrHomeRounded
           size={30}
-          onClick={() => navigate("/")}
+          onClick={() => navigate(`${path}`)}
           style={{ cursor: "pointer" }}
         />
       </div>
