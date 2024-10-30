@@ -2,7 +2,7 @@ import React from 'react';
 import { Layout, Menu } from 'antd';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { FaHome, FaUser } from "react-icons/fa";
+import { FaCalendar, FaHome, FaUser } from "react-icons/fa";
 import { AiOutlineCopyright } from 'react-icons/ai';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -23,7 +23,7 @@ function getItem(label, key, icon, children) {
 
 const items = [
   getItem("Trang chủ", "", <FaHome className="text-lg" />),
-  getItem("View Appointment", "/viewappointment", <FaHome className="text-lg" />),
+  getItem("Xem đặt hẹn", "/viewappointment", <FaCalendar className="text-lg" />),
 ];
 
 function DashboardStylist() {

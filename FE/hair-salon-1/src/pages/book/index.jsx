@@ -55,7 +55,7 @@ function Booking() {
   const disabledDate = (current) => {
     return (
       current < moment().startOf("day") ||
-      current > moment().add(2, "days").endOf("day")
+      current > moment().add(4, "days").endOf("day")
     );
   };
 

@@ -4,11 +4,9 @@ import com.example.demo.service.DashboardService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,11 +55,14 @@ public class DashboardAPI {
         return ResponseEntity.ok(revenueMonthly);
     }
 
-//    @GetMapping("/stylist-monthly-data")
-//    public ResponseEntity<Map<String, Object>> getStylistDashboardMonthlyData() {
-//        Map<String, Object> data = dashboardService.getStylistDashboardMonthlyData();
-//        return ResponseEntity.ok(data);
-//    }
+    @GetMapping("/{stylistId}/kpi")
+    public ResponseEntity<Map<String, Object>> getKPIDashboard(@PathVariable Long stylistId) {
+        // Lấy thời gian bắt đầu của tháng hiện tại
+        LocalDateTime startOfMonth = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+
+        Map<String, Object> dashboard = dashboardService.getStylistDashboard(stylistId, startOfMonth);
+        return ResponseEntity.ok(dashboard);
+    }
 
 
 }
