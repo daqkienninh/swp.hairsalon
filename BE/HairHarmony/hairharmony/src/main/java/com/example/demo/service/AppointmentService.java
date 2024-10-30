@@ -91,7 +91,7 @@ public class AppointmentService {
             // Calculate the end time based on the service duration
             ServiceEntity serviceEntity = serviceRepository.findServiceById(appointmentDetailRequest.getServiceId());
             int duration = serviceEntity.getDuration(); // Assuming duration is in minutes
-            int totalTime = duration + 0; // thời gian cách 30 phút sau mỗi ca làm
+            int totalTime = duration + 30; // thời gian cách 30 phút sau mỗi ca làm
             LocalDateTime startTime = appointmentDetailRequest.getStartTime();
             LocalDateTime endTime = startTime.plusMinutes(totalTime);
             //Là có được Stylist và thời gian ở bước này, xong ta xuống hàm check stylist có bận hay không
@@ -129,13 +129,6 @@ public class AppointmentService {
         for (AppointmentDetail detail : appointmentDetails) {
             slotService.createSlotForAppointment(detail.getStylist().getId(), detail.getStartTime(), detail.getEndTime(), detail);
         }
-
-//        //gửi mail về cho người dùng
-//        EmailDetail emailDetail = new EmailDetail();
-//        emailDetail.setReceiver(customer);
-//        emailDetail.setSubject("Cảm ơn quý khách " + customer.getFullName() + " đã đặt lịch tại HairHarmony! ");
-//        emailDetail.setLink("https://www.google.com/");
-//        emailService.sendAppointmentEmail(emailDetail, appointmentDetail);
 
         return appointment;
     }
@@ -278,13 +271,18 @@ public class AppointmentService {
         }
 
 
-//Tìm appoint bằng ID
+    //Tìm appoint bằng ID
     public Appointment getAppointmentById(UUID appointmentId) {
         Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
         if(appointment == null){
             throw new EntityNotFoundException("Không tìm thấy cuộc hẹn!");
         }
         return appointment;
+    }
+
+    //Tìm cuộc hẹn bằng StylistId
+    public List<Appointment> findAppointmentsByStylistId(long stylistId) {
+        return appointmentRepository.findAppointmentsByStylistId(stylistId);
     }
 
 

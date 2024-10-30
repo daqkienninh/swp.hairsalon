@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -48,5 +49,24 @@ public class Stylist {
     @OneToMany(mappedBy = "stylist")
     @JsonIgnore
     List<AppointmentDetail> appointmentDetails;
+
+    @Override
+    public String toString() {
+        return "Stylist{id=" + id + ", fullName=" + fullName + "}";  // Keep it simple
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Stylist)) return false;
+        Stylist other = (Stylist) obj;
+        return Objects.equals(id, other.id); // Compare relevant fields
+    }
+
 
 }

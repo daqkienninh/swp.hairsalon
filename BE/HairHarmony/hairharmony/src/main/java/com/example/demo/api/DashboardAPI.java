@@ -33,6 +33,18 @@ public class DashboardAPI {
         return ResponseEntity.ok(stats);
     }
 
+    @GetMapping("/feedback")
+    public ResponseEntity getDashboardFeedback() {
+        Map<String, Object> stats = dashboardService.getDashboardFeedBackStats();
+        return ResponseEntity.ok(stats);
+    }
+
+    @GetMapping("/reward")
+    public ResponseEntity getDashboardReward() {
+        Map<String, Object> stats = dashboardService.getDashboardRewardStats();
+        return ResponseEntity.ok(stats);
+    }
+
     @GetMapping("/top3Service")
     public ResponseEntity getDashboardTop3Service() {
         Map<String, Object> stats = dashboardService.getDashboardServiceStats();
@@ -44,6 +56,12 @@ public class DashboardAPI {
         Map<String, Object> revenueMonthly = dashboardService.getDashboardMonthlyRevenue();
         return ResponseEntity.ok(revenueMonthly);
     }
+
+//    @GetMapping("/stylist-monthly-data")
+//    public ResponseEntity<Map<String, Object>> getStylistDashboardMonthlyData() {
+//        Map<String, Object> data = dashboardService.getStylistDashboardMonthlyData();
+//        return ResponseEntity.ok(data);
+//    }
 
 
 }
