@@ -52,4 +52,93 @@
     color: #388e3c;
     cursor: pointer;
   }
+  .booking-container {
+    background: linear-gradient(to bottom, #e0f2f1, #b2dfdb);
+  }
+  
+  .booking-card {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(10px);
+    border-radius: 15px !important;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .booking-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .ant-form-item-label > label {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+  
+  .ant-select:not(.ant-select-disabled):hover .ant-select-selector,
+  .ant-input:hover,
+  .ant-picker:hover,
+  .ant-input-number:hover,
+  .ant-input-number-input:hover {
+    border-color: #4CAF50 !important;
+  }
+  
+  .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector,
+  .ant-input:focus,
+  .ant-picker-focused,
+  .ant-input-number-focused,
+  .ant-input-number-input:focus {
+    border-color: #4CAF50 !important;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2) !important;
+  }
+  
+  .ant-radio-button-wrapper:hover {
+    color: #4CAF50;
+  }
+  
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+    background: #4CAF50 !important;
+    border-color: #4CAF50 !important;
+  }
+  
+  .booking-submit-btn {
+    background-color: #4CAF50 !important;
+    border-color: #4CAF50 !important;
+    transition: all 0.3s ease;
+  }
+  
+  .booking-submit-btn:hover {
+    background-color: #45a049 !important;
+    border-color: #45a049 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .custom-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    background-color: #e8f5e9;
+    border-radius: 4px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+  }
+  
+  .custom-tag-close {
+    margin-left: 4px;
+    cursor: pointer;
+  }
+  
+  .ant-form-item {
+    margin-bottom: 24px;
+  }
+  
+  @media (max-width: 768px) {
+    .booking-container {
+      padding: 10px;
+    }
+    
+    .booking-card {
+      border-radius: 10px !important;
+    }
+  }
   

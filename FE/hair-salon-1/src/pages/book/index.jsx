@@ -109,21 +109,19 @@ function Booking() {
     fetchStylists();
   }, []);
   return (
-    <div
-      style={{
-        maxWidth: 800,
-        margin: "40px auto",
-        padding: "20px",
-        color: "#1A4D2E",
-      }}
-    >
-      <Card title="Đặt lịch hẹn tại đây" bordered={false}>
+    <div className="booking-container">
+      <div className="max-w-3xl mx-auto">
+      <Card 
+          title={<h1 className="text-2xl font-bold text-center text-green-800">Đặt lịch hẹn tại đây</h1>} 
+          className="booking-card shadow-lg"
+        >
         <Form
           form={form}
           name="booking"
           onFinish={handleConfirmation}
           layout="vertical"
           requiredMark={false}
+          className="space-y-6"
         >
           <Form.Item
             name="services"
@@ -184,15 +182,15 @@ function Booking() {
             <DatePicker
               disabledDate={disabledDate}
               placeholder="Chọn ngày"
-              format="DD-MM-YYYY"
+              format="DD/MM/YYYY"
             />
           </Form.Item>
           <Form.Item
             name="time"
-            label="Available Time"
+            label="Thời gian"
             rules={[{ required: true, message: "Please select a time range" }]}
           >
-            <Radio.Group>
+            <Radio.Group className="flex flex-wrap gap-2">
               {Array(12)
                 .fill(null)
                 .map((_, index) => {
@@ -204,6 +202,7 @@ function Booking() {
                     <Radio.Button
                       key={startTime.format("HH:mm")}
                       value={startTime.format("HH:mm")}
+                      className="flex-grow basis-1/4 text-center"
                     >
                       {startTime.format("HH:mm")}
                     </Radio.Button>
@@ -216,7 +215,7 @@ function Booking() {
           </Form.Item>
 
           <Form.Item
-            label="Payment"
+            label="Thanh toán"
             rules={[
               { required: true, message: "Please select a payment method" },
             ]}
@@ -240,28 +239,17 @@ function Booking() {
           </Form.Item>
 
           <Form.Item>
-            <div style={{ display: "flex", justifyContent: "center" }}>
               <Button
                 type="primary"
                 htmlType="submit"
-                style={{
-                  width: "40%",
-                  height: "50%",
-                  backgroundColor: "#94B49F",
-                  borderColor: "#94B49F",
-                  color: "#163020",
-                  borderRadius: "5px",
-                  fontSize: "20px",
-                  cursor: "pointer",
-                  transition: "background-color 0.3s ease",
-                }}
+                className="booking-submit-btn w-full py-3 text-lg font-semibold"
               >
                 Đặt lịch hẹn
               </Button>
-            </div>
-          </Form.Item>
+            </Form.Item>
         </Form>
       </Card>
+    </div>
     </div>
   );
 }

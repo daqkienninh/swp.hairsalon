@@ -18,7 +18,6 @@ import ManageAppointment from "./pages/staff/manage-appointment";
 import DashboardAdmin from "./components/dashboard-admin";
 import ManageStylist from "./pages/admin/manage-stylist";
 import ManageCustomer from "./pages/admin/manage-customer";
-import ViewCustomer from "./pages/profile/customer/view";
 import DashboardStaff from "./components/dashboard-staff";
 import ManageStaff from "./pages/admin/manage-staff";
 import ManageManager from "./pages/admin/manage-manager";
@@ -42,6 +41,19 @@ import ViewManager from "./pages/profile/manager/view";
 import ViewStylist from "./pages/profile/stylist/view";
 import ManageReward from "./pages/staff/manage-reward";
 import OverviewStylist from "./components/dashboard-stylist/overviewStylist";
+import ManageAccount from "./pages/admin/manage-account";
+import RequireAuth from "./config/auth";
+import ServiceDetail from "./pages/servicedetail";
+import OverviewStaff from "./components/dashboard-staff/overviewStaff";
+import OverviewAdmin from "./components/dashboard-admin/overviewAdmin";
+import ViewCustomer from "./pages/profile/customer/index";
+import ViewStaff from "./pages/profile/staff/index";
+import ViewAdmin from "./pages/profile/admin/index";
+import SuccessPage from "./pages/payment/success";
+import Fail from "./pages/payment/fail";
+import Payment from "./pages/payment/payment";
+import AppointmentHistory from './pages/history/index';
+import ResetPassword from './pages/password/index';
 
 function App() {
   const ProtectRouteAuth = ({ children, allowedRoles }) => {
@@ -88,7 +100,7 @@ function App() {
           ),
         },
         {
-          path: "confirm-booking",
+          path: "confirm-booking/:appointmentId",
           element: (
             <RequireAuth>
               <ConfirmBooking />
@@ -96,18 +108,18 @@ function App() {
           ),
         },
         {
-          path: "history-booking",
-          element: (
-            <RequireAuth>
-              <HistoryBooking />
-            </RequireAuth>
-          ),
+          path: "/history-booking/:customerId",
+          element: <AppointmentHistory />,
         },
       ],
     },
     {
       path: "login",
       element: <LoginPage />,
+    },
+    {
+      path: "reset-password",
+      element: <ResetPassword />,
     },
     {
       path: "register",

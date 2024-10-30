@@ -36,3 +36,6 @@ npm i framer-motion
 
 - npm install moment
 npm i redux-persist @reduxjs/toolkit -D tailwindcss react-toastify antd react-router-dom axios firebase react-icons framer-motion react-transition-group styled-components mdb-react-ui-kit @fortawesome/fontawesome-free lucide-react sass moment @mui/material @emotion/react @emotion/styled @mui/icons-material recharts
+npm i redux-persist @reduxjs/toolkit -D tailwindcss react-toastify antd react-router-dom axios firebase react-icons framer-motion 
+react-transition-group styled-components mdb-react-ui-kit @fortawesome/fontawesome-free lucide-react sass moment @mui/material 
+@emotion/react @emotion/styled @mui/icons-material react-image-resizer recharts

@@ -21,7 +21,6 @@ function ServiceCard({
     navigate(`/service-detail/${id}`);
   };
 
-
   return (
     <Card
       hoverable

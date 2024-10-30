@@ -17,7 +17,7 @@ import { logout, updateUser } from "../../redux/features/userSlice";
 import { useNavigate } from "react-router-dom";
 import { GrHomeRounded } from "react-icons/gr";
 import uploadFile from "../../utils/file";
-import { Button, Form, Modal, Upload } from "antd";
+import { Form, Modal, Upload } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import FormItem from "antd/es/form/FormItem";
 
@@ -29,7 +29,7 @@ export default function ProfileTemplate({ path, pathapi }) {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [fileList, setFileList] = useState([]);
-  const [previewImage, setPreviewImage] = useState('');
+  const [previewImage, setPreviewImage] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     fullName: user.fullName,
@@ -40,7 +40,7 @@ export default function ProfileTemplate({ path, pathapi }) {
     password: user.password,
   });
 
-  console.log(user)
+  console.log(user);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -75,10 +75,10 @@ export default function ProfileTemplate({ path, pathapi }) {
     if (fileList.length > 0) {
       const file = fileList[0].originFileObj;
       try {
-        avatarUrl = await uploadFile(file);  // Upload the file and get the new URL
+        avatarUrl = await uploadFile(file); // Upload the file and get the new URL
       } catch (error) {
         console.error("Error uploading avatar:", error);
-        toast.error("Failed to upload avatar");
+        toast.error("Lỗi tải ảnh đại diện.");
         setLoading(false);
         return;
       }
@@ -87,30 +87,34 @@ export default function ProfileTemplate({ path, pathapi }) {
     // Update formData with new image URL
     const updatedFormData = {
       ...formData,
-      image: avatarUrl,
+     image: avatarUrl,
     };
 
     try {
+      console.log("Updated Form Data:", updatedFormData);
       const response = await api.put(`${pathapi}/${user.id}`, updatedFormData);
       if (response.status === 200) {
         dispatch(updateUser(updatedFormData));
         setIsEditing(false);
-        toast.success("Profile updated successfully");
+        toast.success("Cập nhật thông tin thành công.");
+      } else {
+        console.error("Error updating user info:", response);
+        toast.error("Không thể cập nhật thông tin.");
       }
     } catch (error) {
       console.error("Error updating user info:", error);
-      toast.error("Failed to update user information");
+      toast.error("Không thể cập nhật thông tin.");
     } finally {
       setLoading(false);
-      setFileList([]); // Clear file list after upload
-      setShowModal(false); // Close modal
     }
   };
 
   const renderSexField = () => (
     <MDBRow className="mb-4">
       <MDBCol sm="3">
-        <MDBCardText style={{ textAlign: "left", marginLeft: "40px", fontWeight: "bold" }}>
+        <MDBCardText
+          style={{ textAlign: "left", marginLeft: "40px", fontWeight: "bold" }}
+        >
           Giới tính
         </MDBCardText>
       </MDBCol>
@@ -128,7 +132,10 @@ export default function ProfileTemplate({ path, pathapi }) {
             <option value="Khác">Khác</option>
           </select>
         ) : (
-          <MDBCardText className="text-muted" style={{ textAlign: "left", marginLeft: "100px" }}>
+          <MDBCardText
+            className="text-muted"
+            style={{ textAlign: "left", marginLeft: "100px" }}
+          >
             {user.sex}
           </MDBCardText>
         )}
@@ -143,7 +150,13 @@ export default function ProfileTemplate({ path, pathapi }) {
     return (
       <MDBRow className="mb-4">
         <MDBCol sm="3">
-          <MDBCardText style={{ textAlign: "left", marginLeft: "40px", fontWeight: "bold" }}>
+          <MDBCardText
+            style={{
+              textAlign: "left",
+              marginLeft: "40px",
+              fontWeight: "bold",
+            }}
+          >
             {label}
           </MDBCardText>
         </MDBCol>
@@ -156,7 +169,10 @@ export default function ProfileTemplate({ path, pathapi }) {
               onChange={handleChange}
             />
           ) : (
-            <MDBCardText className="text-muted" style={{ textAlign: "left", marginLeft: "100px" }}>
+            <MDBCardText
+              className="text-muted"
+              style={{ textAlign: "left", marginLeft: "100px" }}
+            >
               {field === "password" ? "********" : user[field]}
             </MDBCardText>
           )}
@@ -177,7 +193,7 @@ export default function ProfileTemplate({ path, pathapi }) {
       >
         <GrHomeRounded
           size={30}
-          onClick={() => navigate(`${path}`)}
+          onClick={() => navigate("/")}
           style={{ cursor: "pointer" }}
         />
       </div>
@@ -192,25 +208,28 @@ export default function ProfileTemplate({ path, pathapi }) {
                 <MDBCardBody>
                   <div className="text-center mb-4">
                     <MDBCardImage
-                      src={user.image || "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"}
+                      src={
+                        user.image ||
+                        "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                      }
                       alt="avatar"
                       className="rounded-circle"
                       style={{ width: "150px", margin: "0 auto" }}
                       fluid
                     />
-                      <MDBBtn
-                        onClick={() => setShowModal(true)}
-                        rounded
-                        size="sm"
-                        style={{
-                          backgroundColor: "#94B49F",
-                          color: "#163020",
-                          borderColor: "#94B49F",
-                          marginTop: '10px'
-                        }}
-                      >
-                        Đổi ảnh
-                      </MDBBtn>
+                    <MDBBtn
+                      onClick={() => setShowModal(true)}
+                      rounded
+                      size="sm"
+                      style={{
+                        backgroundColor: "#94B49F",
+                        color: "#163020",
+                        borderColor: "#94B49F",
+                        marginTop: "10px",
+                      }}
+                    >
+                      Đổi ảnh
+                    </MDBBtn>
                     <Modal
                       open={showModal}
                       onCancel={() => {
@@ -225,7 +244,12 @@ export default function ProfileTemplate({ path, pathapi }) {
                         <FormItem
                           label="Image"
                           name="image"
-                          rules={[{ required: true, message: "Please upload an image" }]}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Hãy tải hình ảnh của bạn lên.",
+                            },
+                          ]}
                         >
                           <Upload
                             listType="picture-card"
@@ -254,7 +278,7 @@ export default function ProfileTemplate({ path, pathapi }) {
                         borderColor: "#94B49F",
                       }}
                     >
-                      {isEditing ? "Hủy" : "Cập nhật thông tin"}
+                      {isEditing ? "Hủy" : "Thay đổi thông tin"}
                     </MDBBtn>
                   </div>
                   <hr className="my-4" />

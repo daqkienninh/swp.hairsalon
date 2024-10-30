@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import AuthenTemplate from "../../components/authen-template";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Modal } from "antd";
 import { googleProvider } from "../../config/firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,7 +10,10 @@ import { useDispatch } from "react-redux";
 import { login } from "../../redux/features/userSlice";
 
 function LoginPage() {
-  const navigate = useNavigate(); // Function link to another location
+  const navigate = useNavigate();
+  const [isModalVisible, setIsModalVisible] = useState(false); // Function link to another location
+  const [sendEmail, setSendEmail] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleLoginGoolge = () => {
     const auth = getAuth();
@@ -45,7 +48,7 @@ function LoginPage() {
       const { role, token, tokenExpiration } = response.data;
       console.log(role);
       dispatch(login(response.data));
-      localStorage.setItem("token", token);
+      localStorage.setItem("token", token); 
       localStorage.setItem("tokenExpiration", tokenExpiration);
       // Lấy đường dẫn redirect từ localStorage
       const redirectPath = sessionStorage.getItem("redirectPath") || "/";
@@ -71,7 +74,22 @@ function LoginPage() {
   };
 
   /*End handle Login--------------------------------------------------------------------------- */
-
+  const handleForgotPassword = async (email) => {
+    try {
+      setSendEmail(false);
+      setLoading(true);
+      const response = await api.post("/api/forgot-password", email);
+      console.log(response.data);
+      setSendEmail(true);
+      toast.success("Hãy check email để lấy mật khẩu mới.");
+    } catch (err) {
+      const errorMessage =
+        err.response?.data || "Có lỗi xảy ra. Hãy thực hiện lại.";
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <AuthenTemplate>
       <div style={{ height: "100vh" }}>
@@ -100,7 +118,6 @@ function LoginPage() {
           <Form.Item
             label="Mật khẩu"
             name="password"
-            className="form-item"
             rule={[
               {
                 required: true,
@@ -110,6 +127,40 @@ function LoginPage() {
           >
             <Input.Password className="input" />
           </Form.Item>
+          <div>
+            <Link to="#" onClick={() => setIsModalVisible(true)}>
+              Quên mật khẩu?
+            </Link>
+          </div>
+          <Modal
+            title="Quên mật khẩu"
+            open={isModalVisible}
+            onCancel={() => setIsModalVisible(false)}
+            footer={null}
+            className="forgot-password-modal"
+          >
+            <Form onFinish={handleForgotPassword}>
+              <Form.Item
+                label="Email"
+                name="email"
+                rules={[
+                  {
+                    required: true,
+                    message: "Hãy nhập email của bạn!",
+                  },
+                  {
+                    type: "email",
+                    message: "Email không hợp lệ!",
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+              <Button type="primary" htmlType="submit">
+                Nhận email đổi mật khẩu
+              </Button>
+            </Form>
+          </Modal>
           <button type="submit" className="button">
             Đăng nhập
           </button>

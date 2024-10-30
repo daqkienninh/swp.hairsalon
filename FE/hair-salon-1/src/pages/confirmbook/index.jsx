@@ -1,130 +1,130 @@
-import React, { useState, useEffect } from "react";
-import { CheckCircle, Calendar, Clock, Scissors, User } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { Button } from "antd";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import api from "./../../config/axios";
+import {
+  Card,
+  Spin,
+  Typography,
+  Descriptions,
+  Button,
+  Result,
+  message,
+} from "antd";
 import moment from "moment";
-import api from "../../config/axios";
 
-function ConfirmBooking() {
-  const location = useLocation();
+const { Title, Text } = Typography;
+
+const ConfirmBooking = () => {
+  const { appointmentId } = useParams();
   const navigate = useNavigate();
-  const [bookingDetails, setBookingDetails] = useState({});
+  const [appointment, setAppointment] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchBookingDetails();
-  }, []);
+    const fetchAppointment = async () => {
+      console.log("Fetching appointment with ID:", appointmentId);
 
-  const fetchBookingDetails = async () => {
-    try {
-      const response = await api.get("/api/appointment");
-      const appointment = response.data;
-
-      if (appointment.details && appointment.details.length > 0) {
-        setBookingDetails({
-          service: appointment.service.name,
-          stylist: appointment.stylist.fullName,
-          dateTime: appointment.startTime,
-          note: appointment.note,
-        });
-      } else {
-        console.error("No booking details found.");
+      if (!appointmentId) {
+        console.error("AppointmentId is undefined or null");
+        setError("Invalid appointment ID: ID is missing");
+        setLoading(false);
+        return;
       }
-    } catch (error) {
-      console.error("Error fetching booking details:", error);
-    }
-  };
 
-  const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-  };
+      try {
+        const response = await api.get(`/api/appointment/${appointmentId}`);
+        console.log("API Response:", response.data);
+        setAppointment(response.data);
+      } catch (err) {
+        console.error("Error fetching appointment details:", err);
+        const errorMessage =
+          err.response?.data?.message ||
+          err.message ||
+          "An error occurred while fetching the appointment";
+        setError(`Error: ${errorMessage}`);
+        message.error(`Failed to fetch appointment: ${errorMessage}`);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const itemVariants = {
-    hidden: { opacity: 0, x: -10 },
-    visible: { opacity: 1, x: 0 },
-  };
+    fetchAppointment();
+  }, [appointmentId]);
 
-  const handleBackToHome = () => {
-    navigate("/");
-  };
+  if (loading) {
+    return <Spin size="large" />;
+  }
+
+  if (error) {
+    return (
+      <Result
+        status="error"
+        title="Error"
+        subTitle={error}
+        extra={[
+          <Button type="primary" key="home" onClick={() => navigate("/")}>
+            Back to Home
+          </Button>,
+        ]}
+      />
+    );
+  }
+
+  if (!appointment) {
+    return (
+      <Result
+        status="warning"
+        title="No Data"
+        subTitle="No appointment data found. Please check the appointment ID and try again."
+        extra={[
+          <Button type="primary" key="home" onClick={() => navigate("/")}>
+            Back to Home
+          </Button>,
+        ]}
+      />
+    );
+  }
+
+  const { appointmentDetails } = appointment;
+  const detail = appointmentDetails[0]; // Assuming there's only one detail per appointment
 
   return (
-    <motion.div
-      className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
+    <Card
+      title={<Title level={2}>Booking Confirmation</Title>}
+      style={{ maxWidth: 600, margin: "0 auto" }}
     >
-      <div className="max-w-sm w-full space-y-8 bg-white p-10 rounded-xl shadow-lg">
-        <div className="text-center mb-4">
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", stiffness: 260, damping: 20 }}
-          >
-            <CheckCircle className="mx-auto text-green-500 w-20 h-20 mb-3" />
-          </motion.div>
-          <h2 className="mt-2 text-2xl font-bold text-gray-900">
-            Đặt lịch thành công!
-          </h2>
-        </div>
-        <motion.div className="space-y-3" variants={itemVariants}>
-          <BookingDetail
-            icon={<Scissors className="h-4 w-4 text-green-500" />}
-            label="Dịch vụ"
-            value={bookingDetails.service}
-          />
-          <BookingDetail
-            icon={<User className="h-4 w-4 text-green-500" />}
-            label="Stylist"
-            value={bookingDetails.stylist}
-          />
-          <BookingDetail
-            icon={<Calendar className="h-4 w-4 text-green-500" />}
-            label="Thời gian"
-            value={moment(bookingDetails.dateTime).format(
-              "MMMM D, YYYY h:mm A"
-            )}
-          />
-          {bookingDetails.note && (
-            <BookingDetail
-              icon={<Clock className="h-4 w-4 text-green-500" />}
-              label="Ghi chú"
-              value={bookingDetails.note}
-            />
-          )}
-        </motion.div>
-        <motion.p
-          className="text-center text-xs text-gray-500 mt-4"
-          variants={itemVariants}
-        >
-          Bạn có thể xem lại lịch hẹn ở lịch sử
-          <br /> Hẹn gặp lại bạn!
-        </motion.p>
-        <motion.div variants={itemVariants} className="mt-6">
-          <Button
-            type="primary"
-            onClick={handleBackToHome}
-            style={{ width: "100%" }}
-            className="bg-[#94B49F] hover:bg-[#CEE5D0] text-[#163020]"
-          >
-            Trở lại trang chủ
-          </Button>
-        </motion.div>
-      </div>
-    </motion.div>
-  );
-}
+      <Descriptions bordered column={1}>
+        <Descriptions.Item label="Appointment ID">
+          {appointment.id}
+        </Descriptions.Item>
+        <Descriptions.Item label="Service">
+          {detail.serviceEntity.name}
+        </Descriptions.Item>
+        <Descriptions.Item label="Stylist">
+          {detail.stylist.fullName}
+        </Descriptions.Item>
+        <Descriptions.Item label="Start Time">
+          {moment(detail.startTime).format("MMMM D, YYYY h:mm A")}
+        </Descriptions.Item>
+        <Descriptions.Item label="End Time">
+          {moment(detail.endTime).format("MMMM D, YYYY h:mm A")}
+        </Descriptions.Item>
+        <Descriptions.Item label="Total Price">
+          {appointment.totalPrice.toLocaleString()} VND
+        </Descriptions.Item>
+        <Descriptions.Item label="Status">
+          <Text strong>{appointment.status}</Text>
+        </Descriptions.Item>
+      </Descriptions>
 
-function BookingDetail({ icon, label, value }) {
-  return (
-    <div className="flex items-center space-x-2 text-sm">
-      {icon}
-      <span className="font-medium text-gray-700">{label}:</span>
-      <span className="text-gray-600">{value}</span>
-    </div>
+      <div style={{ marginTop: 20, textAlign: "center" }}>
+        <Button type="primary" onClick={() => navigate("/")}>
+          Back to Home
+        </Button>
+      </div>
+    </Card>
   );
-}
+};
 
 export default ConfirmBooking;

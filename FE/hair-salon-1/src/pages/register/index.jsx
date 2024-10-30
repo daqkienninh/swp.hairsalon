@@ -27,7 +27,7 @@ function RegisterPage() {
       <div>
         <h2 className="title">Đăng kí</h2>
         <h4 className="message">
-          Hãy đăng kí thông tin của bạn để sử dụng dịch vụ đặt lịch.
+          Đăng kí thông tin của bạn để sử dụng dịch vụ đặt lịch hẹn.
         </h4>
         <Form labelCol={{ span: 24 }} onFinish={handleRegister}>
           <Form.Item
@@ -41,7 +41,7 @@ function RegisterPage() {
               },
             ]}
           >
-            <Input />
+            <Input className="input-register" />
           </Form.Item>
           <Form.Item
             label="Mật khẩu"
@@ -56,15 +56,15 @@ function RegisterPage() {
             ]}
             hasFeedback
           >
-            <Input.Password />
+            <Input.Password className="input-register" />
           </Form.Item>
           <Form.Item
-            label="Confirm Password"
+            label="Xác nhận lại mật khẩu"
             name="confirmPassword"
             dependencies={["password"]}
             hasFeedback
             rules={[
-              { required: true, message: "Please confirm your password!" },
+              { required: true, message: "Hãy xác nhận lại mật khẩu!" },
               ({ getFieldValue }) => ({
                 validator(_, value) {
                   if (!value || getFieldValue("password") === value) {
@@ -77,10 +77,10 @@ function RegisterPage() {
               }),
             ]}
           >
-            <Input.Password />
+            <Input.Password className="input-register" />
           </Form.Item>
           <Form.Item label="Họ và Tên" name="fullName">
-            <Input />
+            <Input className="input-register" />
           </Form.Item>
           <Form.Item
             label="Email của bạn"
@@ -93,7 +93,7 @@ function RegisterPage() {
               },
             ]}
           >
-            <Input />
+            <Input className="input-register" />
           </Form.Item>
           <button
             type="submit"
@@ -101,7 +101,7 @@ function RegisterPage() {
             disabled={loading}
             style={{ cursor: loading ? "not-allowed" : "pointer" }}
           >
-            {loading ? "Registering..." : "Đăng kí"}
+            {loading ? "Đang đăng kí..." : "Đăng kí"}
           </button>
           <div>
             <Link to="/login">Bạn đã có tài khoản? Đăng nhập tại đây.</Link>
