@@ -1,0 +1,31 @@
+.container {
+    padding: 20px;
+    text-align: center;
+}
+
+.service-card {
+    border-radius: 10px;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.service-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.button-container {
+    margin-top: 20px;
+}
+
+.ant-btn-primary {
+    background-color: #1A73E8;
+    border-color: #1A73E8;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 8px 24px;
+}

@@ -1,0 +1,103 @@
+.booking-container {
+  background: linear-gradient(to right, #e0f2f1, #b2dfdb);
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+.booking-card {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(10px);
+  border-radius: 15px !important;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.booking-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.ant-form-item-label > label {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 1rem;
+}
+
+.ant-select:not(.ant-select-disabled):hover .ant-select-selector,
+.ant-input:hover,
+.ant-picker:hover,
+.ant-input-number:hover,
+.ant-input-number-input:hover {
+  border-color: #4CAF50 !important;
+}
+
+.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector,
+.ant-input:focus,
+.ant-picker-focused,
+.ant-input-number-focused,
+.ant-input-number-input:focus {
+  border-color: #4CAF50 !important;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2) !important;
+}
+
+.ant-radio-button-wrapper:hover {
+  color: #4CAF50;
+}
+
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+  background: #4CAF50 !important;
+  border-color: #4CAF50 !important;
+}
+
+.booking-submit-btn {
+  background-color: #4CAF50 !important;
+  border-color: #4CAF50 !important;
+  height: auto !important;
+  font-size: 1.1rem !important;
+}
+
+.booking-submit-btn:hover {
+  background-color: #45a049 !important;
+  border-color: #45a049 !important;
+}
+
+.custom-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 7px;
+  font-size: 12px;
+  line-height: 20px;
+  background: #f0f0f0;
+  border-radius: 2px;
+  margin-right: 4px;
+  margin-bottom: 4px;
+}
+
+.custom-tag-close {
+  margin-left: 4px;
+  color: #00000073;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .booking-card {
+    padding: 1rem;
+  }
+
+  .ant-form-item-label > label {
+    font-size: 0.9rem;
+  }
+
+  .ant-radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .ant-radio-button-wrapper {
+    flex-basis: calc(33.333% - 0.5rem);
+    text-align: center;
+  }
+}
