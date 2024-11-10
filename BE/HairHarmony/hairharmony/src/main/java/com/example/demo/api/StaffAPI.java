@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,11 +19,13 @@ import java.util.List;
 @RequestMapping("/api/staff")
 @CrossOrigin("*")
 @SecurityRequirement(name = "api")
+
 public class StaffAPI {
     @Autowired
     StaffService staffService;
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
     public ResponseEntity createStaff(@Valid @RequestBody StaffRequest staffRequest) {
         StaffResponse  newStaff = staffService.createStaff(staffRequest);
         return ResponseEntity.ok(newStaff);
@@ -33,7 +36,6 @@ public class StaffAPI {
         List<Staff> allStaff = staffService.getAllStaff();
         return ResponseEntity.ok(allStaff);
     }
-
 
 
     @PutMapping("{staffId}")

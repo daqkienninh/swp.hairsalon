@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class ServiceAPI {
 
 
     @PostMapping
+    @PreAuthorize("hasAuthority('STAFF')")
     public ResponseEntity createService (@Valid @RequestBody ServiceRequest serviceRequest) {
         ServiceResponse newService = serviceEntityService.createService(serviceRequest);
         return ResponseEntity.ok(newService);
@@ -57,12 +59,14 @@ public class ServiceAPI {
     }
 
     @PutMapping("{serviceId}")
+    @PreAuthorize("hasAuthority('STAFF')")
     public ResponseEntity updateService(@PathVariable UUID serviceId, @Valid @RequestBody ServiceEntity service) {
         ServiceEntity updatedService = serviceEntityService.updateServiceById(serviceId, service);
         return ResponseEntity.ok(updatedService);
     }
 
     @DeleteMapping("{serviceId}")
+    @PreAuthorize("hasAuthority('STAFF')")
     public ResponseEntity deleteService(@PathVariable UUID serviceId) {
         ServiceEntity updatedService = serviceEntityService.deleteServiceById(serviceId);
         return ResponseEntity.ok(updatedService);

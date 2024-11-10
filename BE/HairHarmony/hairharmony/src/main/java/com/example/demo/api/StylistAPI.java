@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +22,9 @@ public class StylistAPI
     @Autowired
     StylistService stylistService;
 
+
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
     public ResponseEntity createStylist(@Valid @RequestBody StylistRequest stylistRequest) {
         StylistResponse newStylist = stylistService.createStylist(stylistRequest);
         return ResponseEntity.ok(newStylist);
@@ -32,6 +35,7 @@ public class StylistAPI
         List<Stylist> stylists = stylistService.getAllStylists();
         return ResponseEntity.ok(stylists);
     }
+
 
     //tìm stylist bằng id
     @GetMapping("{stylistId}")
@@ -53,6 +57,7 @@ public class StylistAPI
         Stylist updatedStylist = stylistService.updateStylist(stylistId, stylistRequest);
         return ResponseEntity.ok(updatedStylist);
     }
+
 
     @DeleteMapping("{stylistId}")
     public ResponseEntity deleteStylist(@PathVariable long stylistId) {

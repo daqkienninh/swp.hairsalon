@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,13 +29,16 @@ public class AdministratorAPI {
         return ResponseEntity.ok(newAdministrator);
     }
 
+
     @GetMapping
     public ResponseEntity getAllAdministrators() {
         List<Administrator> allAdministrators = administratorService.getAllAdministrators();
         return ResponseEntity.ok(allAdministrators);
     }
 
+
     @PutMapping("{administratorId}")
+    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
     public ResponseEntity updateAdministrator(@PathVariable Long administratorId, @Valid @RequestBody AdministratorRequest administratorRequest) {
         Administrator updatedAdministrator = administratorService.updateAdministrator(administratorId, administratorRequest);
         return ResponseEntity.ok(updatedAdministrator);
@@ -47,7 +51,9 @@ public class AdministratorAPI {
         return ResponseEntity.ok(administrator);
     }
 
+
     @DeleteMapping("{administratorId}")
+    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
     public ResponseEntity deleteAdministrator(@PathVariable long administratorId) {
         Administrator deletedAdministrator = administratorService.deleteAdministrator(administratorId);
         return ResponseEntity.ok(deletedAdministrator);

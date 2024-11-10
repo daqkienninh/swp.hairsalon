@@ -34,12 +34,6 @@ public class AppointmentService {
     AuthenticationService authenticationService;
 
     @Autowired
-    ModelMapper modelMapper;
-
-    @Autowired
-    ServiceEntityService serviceEntityService;
-
-    @Autowired
     ServiceRepository serviceRepository;
 
     @Autowired
@@ -49,12 +43,6 @@ public class AppointmentService {
     StylistRepository stylistRepository;
 
     @Autowired
-    AppointmentStatusService appointmentStatusService;
-
-    @Autowired
-    SlotRepository slotRepository;
-
-    @Autowired
     AccountRepository accountRepository;
 
     @Autowired
@@ -62,9 +50,6 @@ public class AppointmentService {
 
     @Autowired
     SlotService slotService;
-
-    @Autowired
-    EmailService emailService;
 
     public Appointment createAppointment(AppointmentRequest appointmentRequest) {
         Account customer = authenticationService.getCurrentAccount();
@@ -86,10 +71,10 @@ public class AppointmentService {
             }
 
             long stylistId = appointmentDetailRequest.getStylistId();
-            Stylist stylist = stylistRepository.findStylistById(stylistId);
+            Stylist stylist = stylistRepository.findStylistByIdAndIsDeletedFalse(stylistId);
 
             // Calculate the end time based on the service duration
-            ServiceEntity serviceEntity = serviceRepository.findServiceById(appointmentDetailRequest.getServiceId());
+            ServiceEntity serviceEntity = serviceRepository.findServiceByIdAndIsDeletedFalse(appointmentDetailRequest.getServiceId());
             int duration = serviceEntity.getDuration(); // Assuming duration is in minutes
             int totalTime = duration + 30; // thời gian cách 30 phút sau mỗi ca làm
             LocalDateTime startTime = appointmentDetailRequest.getStartTime();
@@ -116,14 +101,11 @@ public class AppointmentService {
         }
 
         appointment.setAppointmentDetails(appointmentDetails);
-        ;
         appointment.setTotalPrice(totalPrice);
 
         // Set the initial status
-
         appointment.setStatus(AppointmentStatus.APPROVED);
         appointment = appointmentRepository.save(appointment);
-
 
         // Now that the appointment is saved, create slots
         for (AppointmentDetail detail : appointmentDetails) {
@@ -158,7 +140,7 @@ public class AppointmentService {
         String tmnCode = "ME80UKBD";
         String secretKey = "XIT7V7N01GATX36R6O8OVND0T98G74N6"; //check mail vì có thể thay đổi
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        String returnUrl = "http://localhost:5173/success?appointmentID=" + appointments.getId(); //để đúng appointmentID để vào đúng trang thanh toán thành công bên frontend
+        String returnUrl = "https://fe-hairsalon.vercel.app/success?appointmentID=" + appointments.getId(); //để đúng appointmentID để vào đúng trang thanh toán thành công bên frontend
         String currCode = "VND";
 
         Map<String, String> vnpParams = new TreeMap<>();
@@ -293,7 +275,7 @@ public class AppointmentService {
         } else if ("REJECT".equalsIgnoreCase(action)) {
             appointment.setStatus(AppointmentStatus.CANCELLED);
         } else {
-            throw new IllegalArgumentException("Invalid action. Use 'APPROVE' or 'REJECT'.");
+            throw new IllegalArgumentException("Chỉ dùng 'APPROVE' hoặc 'REJECT'.");
         }
 
         // Save the updated appointment status

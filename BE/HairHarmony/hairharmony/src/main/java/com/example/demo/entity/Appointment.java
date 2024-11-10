@@ -45,6 +45,9 @@ public class Appointment {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     boolean reminderSent = false;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    boolean isPaid = false;
+
 
     @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     List<AppointmentDetail> appointmentDetails;

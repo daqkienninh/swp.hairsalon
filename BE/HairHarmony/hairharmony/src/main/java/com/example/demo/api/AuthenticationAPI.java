@@ -3,7 +3,9 @@ package com.example.demo.api;
 import com.example.demo.entity.Account;
 import com.example.demo.model.*;
 import com.example.demo.service.AuthenticationService;
+import com.example.demo.service.NotificationService;
 import com.example.demo.service.TokenService;
+import com.example.demo.service.UpdateFCMRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -36,6 +38,7 @@ public class AuthenticationAPI {
     @Autowired
     TokenService tokenService;
 
+
     @PostMapping("register")
     public ResponseEntity register(@Valid @RequestBody RegisterRequest registerRequest) {
         //nhờ authenticationService => tạo dùm account
@@ -59,13 +62,13 @@ public class AuthenticationAPI {
     @PostMapping("forgot-password")
     public ResponseEntity forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest ) {
         authenticationService.forgotPassword(forgotPasswordRequest);
-        return ResponseEntity.ok("Forgot Password successfully");
+        return ResponseEntity.ok("Forgot password successfully!");
     }
 
     @PostMapping("reset-password")
     public ResponseEntity resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest ) {
         authenticationService.resetPassword(resetPasswordRequest);
-        return ResponseEntity.ok("Reset Password successfully");
+        return ResponseEntity.ok("Đổi mật khẩu thành công!");
     }
 
     private static final String GOOGLE_CLIENT_ID = "41329500178-l75j7k4054582dko4m02ahsaig05hn4k.apps.googleusercontent.com";
@@ -91,15 +94,21 @@ public class AuthenticationAPI {
                 Account account = authenticationService.findOrCreateAccount(email); // Implement this method based on your logic
 
                 // Generate JWT token
-                String jwtToken = tokenService.generateToken(account);
+                String token = tokenService.generateToken(account);
 
-                return ResponseEntity.ok(jwtToken);
+                return ResponseEntity.ok(token);
             } else {
                 return ResponseEntity.status(401).body("Invalid Google token");
             }
         } catch (Exception e) {
             return ResponseEntity.status(401).body("Invalid Google token");
         }
+    }
+
+    @PatchMapping("/account/fcm")
+    public ResponseEntity updateFCM(@RequestBody UpdateFCMRequest updateFCMRequest){
+       authenticationService.updateFCM(updateFCMRequest);
+       return ResponseEntity.ok("Thay đổi FCM thành công");
     }
 
 }

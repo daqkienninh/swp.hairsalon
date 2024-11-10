@@ -55,6 +55,8 @@ public class Account implements UserDetails {
 
     float balance = 0;
 
+    String fcmToken;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();

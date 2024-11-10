@@ -81,7 +81,7 @@ public class AuthenticationService implements UserDetailsService {
             EmailDetail emailDetail = new EmailDetail();
             emailDetail.setReceiver(newAccount);
             emailDetail.setSubject("Chào mừng "+ newAccount.getFullName() +" đên với HairHarmony! ");
-            emailDetail.setLink("https://www.google.com/");
+            emailDetail.setLink("https://fe-hairsalon.vercel.app/");
             emailService.sendWelcomeEmail(emailDetail);
 
             return modelMapper.map(newAccount, AccountResponse.class);
@@ -160,7 +160,7 @@ public class AuthenticationService implements UserDetailsService {
             EmailDetail emailDetail = new EmailDetail();
             emailDetail.setReceiver(account);
             emailDetail.setSubject("Xác nhận đặt lại mật khẩu");
-            emailDetail.setLink("http://localhost:5173/reset-password?token=" + tokenService.generateToken(account));
+            emailDetail.setLink("https://fe-hairsalon.vercel.app/reset-password?token=" + tokenService.generateToken(account));
             emailService.sendResetPasswordEmail(emailDetail);
         }
     }
@@ -237,10 +237,6 @@ public class AuthenticationService implements UserDetailsService {
         newAccount.setEmail(loginRequest.getEmail());
         newAccount.setImage(loginRequest.getAvatar());
 
-        // Generate placeholder phone and password
-        newAccount.setPhone("0900000000"); // Placeholder phone number
-        newAccount.setPassword("OAuthGeneratedPassword123"); // Placeholder password
-
         // Set default role (e.g., CUSTOMER) if not specified by OAuth
         newAccount.setRole(Role.CUSTOMER);
 
@@ -259,5 +255,10 @@ public class AuthenticationService implements UserDetailsService {
         });
     }
 
+    public Account updateFCM(UpdateFCMRequest updateFCMRequest) {
+        Account account = getCurrentAccount();
+        account.setFcmToken(updateFCMRequest.getFcmToken());
+        return accountRepository.save(account);
+    }
 
 }

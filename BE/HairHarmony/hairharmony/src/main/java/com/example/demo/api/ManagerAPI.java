@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,10 +17,14 @@ import java.util.List;
 @RequestMapping("/api/manager")
 @CrossOrigin("*")
 @SecurityRequirement(name = "api")
+
 public class ManagerAPI {
+
     @Autowired
     ManagerService managerService;
+
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMINISTRATOR')")
     public ResponseEntity createManager(@Valid @RequestBody ManagerRequest managerRequest) {
         ManagerResponse newManager = managerService.createManager(managerRequest);
         return ResponseEntity.ok(newManager);
