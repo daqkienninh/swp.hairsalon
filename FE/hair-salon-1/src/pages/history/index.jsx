@@ -154,16 +154,16 @@ function AppointmentHistory() {
       ],
       onFilter: (value, record) => record.status === value,
     },
-    {
-      title: "Payment Status",
-      dataIndex: "isPaid",
-      key: "isPaid",
-      render: (isPaid) => (
-        <Tag color={isPaid ? "green" : "red"}>
-          {isPaid ? "Paid" : "Unpaid"}
-        </Tag>
-      ),
-    },
+    // {
+    //   title: "Payment Status",
+    //   dataIndex: "isPaid",
+    //   key: "isPaid",
+    //   render: (isPaid) => (
+    //     <Tag color={isPaid ? "green" : "red"}>
+    //       {isPaid ? "Paid" : "Unpaid"}
+    //     </Tag>
+    //   ),
+    // },
     {
       title: "Action",
       dataIndex: "id",

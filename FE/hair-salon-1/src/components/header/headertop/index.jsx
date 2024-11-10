@@ -89,9 +89,6 @@ function Header() {
           <Link onClick={() => setShowLinks(false)} to="/about" className="nav-link">
             Về chúng tôi
           </Link>
-          <Link onClick={() => setShowLinks(false)} to="/contact" className="nav-link">
-            Liên hệ
-          </Link>
 
           {user ? (
             <> {customerId && (
@@ -119,7 +116,7 @@ function Header() {
                     </Link>
                     <Link onClick={() => setShowLinks(false)} to={`/recieved/${customerId}`}>
                       <li className="text-gray-400 px-0 py-2 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
-                        Đổi điểm thưởng
+                        Lịch sử đổi
                       </li>
                     </Link>
                     <li className="text-gray-400 px-0 py-2 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">

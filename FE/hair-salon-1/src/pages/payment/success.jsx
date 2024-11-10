@@ -22,7 +22,7 @@ function SuccessPage() {
 
   const postOrderID = async () => {
     try {
-      const response = await api.post(`api/appointment/transaction?uuId=${appointmentID}`) // post transaction
+      const response = await api.post(`/api/appointment/transaction?uuId=${appointmentID}`) // post transaction
       console.log(response.data);
     } catch (err) {
       console.log(err)
@@ -30,6 +30,7 @@ function SuccessPage() {
   }
 
   const confirmbanking = async () => {
+    console.log(appointmentID);
     try {
       const response = await api.put(`/api/payment/confirm-banking?appointmentId=${appointmentID}`) // post transaction
       console.log(response.data);
@@ -57,9 +58,6 @@ function SuccessPage() {
           status="success"
           title="Thanh toán thành công!"
           extra={[
-            <Button type="primary" key="console" className="mr-2">
-              Lịch sử
-            </Button>,
             <Button key="buy" onClick={handleHome}>
               Trang chủ
             </Button>,
