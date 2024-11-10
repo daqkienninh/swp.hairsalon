@@ -11,12 +11,12 @@ function ManageManager() {
             key: "id",
         },
         {
-            title: "Full Name",
+            title: "Tên",
             dataIndex: "fullName",
             key: "fullName",
         },
         {
-            title: "Sex",
+            title: "Giới tính",
             dataIndex: "sex",
             key: "sex",
         },
@@ -27,7 +27,7 @@ function ManageManager() {
                 <Input />
             </Form.Item>
             <FormItem
-                label="Full Name"
+                label="Tên"
                 name="fullName"
                 rules={[
                     {
@@ -60,13 +60,13 @@ function ManageManager() {
                 <Input />
             </FormItem>
             <Form.Item
-                label="Sex"
+                label="Giới tính"
                 name="sex"
             >
                 <Input />
             </Form.Item>
             <Form.Item
-                label="Phone"
+                label="Điện thoại"
                 name="phone"
                 rules={[
                     {
@@ -78,7 +78,7 @@ function ManageManager() {
                 <Input />
             </Form.Item>
             <Form.Item
-                label="Role"
+                label="Chức vụ"
                 name="role"
                 initialValue="MANAGER"
                 hidden
@@ -95,17 +95,11 @@ function ManageManager() {
             </Form.Item>
 
             <FormItem
-                label="Full Name"
+                label="Tên"
                 name="fullName"
             >
                 <Input />
             </FormItem>
-            <FormItem
-                label="Level"
-                name="level"
-            >
-                <Input />
-            </FormItem>'
             <FormItem
                 label="Email"
                 name="email"
@@ -114,7 +108,7 @@ function ManageManager() {
                 <Input />
             </FormItem>
             <FormItem
-                label="Phone"
+                label="Điện thoại"
                 name="phone"
                 hidden
             >

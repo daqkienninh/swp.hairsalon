@@ -3,70 +3,63 @@ import { toast } from 'react-toastify';
 import {
     BarChart, Bar, FunnelChart, Funnel, LabelList,
     CartesianGrid, Tooltip, Legend, XAxis, YAxis
-} from 'recharts'; // Update this path as necessary
+} from 'recharts';
 import api from '../../config/axios';
 
 function OverviewAdmin() {
-    const [data, setData] = useState([]);
-    const [data2, setData2] = useState([]);
+    const [accountData, setAccountData] = useState([]);
+    const [monthlyRevenue, setMonthlyRevenue] = useState([]);
 
-    // Get data for BarChart
-    const fetchData = async () => {
+    // Fetch data for Account Overview (Bar Chart)
+    const fetchAccountData = async () => {
         try {
             const response = await api.get("/api/dashboard/admin");
-            console.log("Response", response.data);
-            // Transform the response data into a format suitable for BarChart
-            setData([
-                { name: 'Stylists', Account: response.data.stylistCount },
-                { name: 'Customers', Account: response.data.customerCount },
-                { name: 'Staff', Account: response.data.staffCount },
+            setAccountData([
+                { name: 'Stylist', Account: response.data.stylistCount },
+                { name: 'Khách hàng', Account: response.data.customerCount },
+                { name: 'Nhân viên', Account: response.data.staffCount },
             ]);
         } catch (error) {
             toast.error(error.response ? error.response.data : error.message);
         }
     };
 
-    // Get data for FunnelChart
-    const fetchData2 = async () => {
+    // Fetch data for Monthly Revenue (Funnel Chart)
+    const fetchRevenueData = async () => {
         try {
             const response = await api.get("/api/dashboard/revenue/monthly");
-            console.log("Response2", response.data);
-            setData2(response.data.monthlyRevenue); // Assuming monthlyRevenue is an array
+            setMonthlyRevenue(response.data.monthlyRevenue);
         } catch (error) {
             toast.error(error.response ? error.response.data : error.message);
         }
     };
 
     useEffect(() => {
-        fetchData();
-        fetchData2();
+        fetchAccountData();
+        fetchRevenueData();
     }, []);
 
     return (
-        <div className="flex flex-row gap-8 p-4">
-            {/* Bar Chart for Admin Overview */}
-            <div className="flex-1 bg-white p-4 rounded shadow-md">
-                <h2 className="text-center text-lg font-semibold mb-4">Admin Overview</h2>
-                <BarChart width={400} height={300} data={data}>
+        <div className="grid grid-cols-2 gap-8 p-4">
+            {/* Account Overview Bar Chart */}
+            <div className="bg-white p-4 rounded shadow-md">
+                <h2 className="text-center text-lg font-semibold mb-4">Tổng quan</h2>
+                <BarChart width={400} height={300} data={accountData} barCategoryGap="20%">
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
-                    <YAxis />
+                    <YAxis type="number" allowDecimals={false} />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="Account" fill="#8884d8" />
+                    <Bar dataKey="Account" fill="#6A9C89" />
                 </BarChart>
             </div>
 
-            {/* Funnel Chart for Monthly Revenue */}
-            <div className="flex-1 bg-white p-4 rounded shadow-md">
-                <h2 className="text-center text-lg font-semibold mb-4">Monthly Revenue</h2>
+            {/* Monthly Revenue Funnel Chart */}
+            <div className="bg-white p-4 rounded shadow-md">
+                <h2 className="text-center text-lg font-semibold mb-4">Doanh thu tháng</h2>
                 <FunnelChart width={400} height={300}>
                     <Tooltip />
-                    <Funnel
-                        dataKey="value"
-                        data={data2}
-                        isAnimationActive
-                    >
+                    <Funnel dataKey="value" data={monthlyRevenue} isAnimationActive>
                         <LabelList position="right" fill="#000" stroke="none" dataKey="name" />
                     </Funnel>
                 </FunnelChart>

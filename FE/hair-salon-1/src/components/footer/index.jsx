@@ -63,18 +63,11 @@ const Footer = forwardRef((props, ref) => {
           {/* Column 3 - Reduced width */}
           <div className="md:col-span-5 pr-10 pl-10">
             <h3 className="text-xl font-semibold mb-4 text-[#1A4D2E]">
-              Đăng ký nhận tin
+              Hỗ trợ khách hàng
             </h3>
-            <form>
-              <input
-                type="email"
-                placeholder="Nhập email của bạn"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200 transition duration-300"
-              />
-              <button className="mt-4 w-full py-2 bg-[#B6C4B6] text-[#163020] font-semibold rounded-md hover:bg-[#CEE5D0] transition duration-300">
-                Đăng ký
-              </button>
-            </form>
+            <button className="mt-2 w-1/2 py-2 bg-[#B6C4B6] text-[#163020] font-semibold rounded-md hover:bg-[#CEE5D0] transition duration-300">
+              <a href="https://docs.google.com/forms/d/e/1FAIpQLSe7ze2Bl9VGUyTTn6kgp3CwoiFBwtJkn0se4AQsdbACQJ1vZA/viewform"> Cần hỗ trợ</a>
+            </button>
             <div className="mt-6">
               <h4 className="text-lg font-semibold mb-4 text-[#1A4D2E]">
                 Kết nối với chúng tôi

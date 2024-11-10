@@ -6,12 +6,14 @@ import { PlusOutlined } from "@ant-design/icons";
 import FormItem from "antd/es/form/FormItem";
 
 function CRUDTemplate({ columns, formItems, formItemsUpdate, path, title }) {
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [showModalupdate, setShowModalupdate] = useState(false);
+  const [showModalUpdate, setShowModalUpdate] = useState(false);
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [fileList, setFileList] = useState([]);
+  const [previewImage, setPreviewImage] = useState('');
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   const getBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -20,25 +22,23 @@ function CRUDTemplate({ columns, formItems, formItemsUpdate, path, title }) {
       reader.onload = () => resolve(reader.result);
       reader.onerror = (error) => reject(error);
     });
-  // Get data
+
+  // Fetch data
   const fetchData = async () => {
     try {
       const response = await api.get(path);
-      setData(response.data)
+      setData(response.data);
     } catch (error) {
       toast.error(error.response.data);
     }
   };
 
-
   useEffect(() => {
     fetchData();
   }, []);
 
-  // Create or update
+  // Handle form submission for create/update
   const handleSubmit = async (values) => {
-    console.log(values); // print data user send
-
     setLoading(true);
     let imageUrl = '';
 
@@ -54,81 +54,70 @@ function CRUDTemplate({ columns, formItems, formItemsUpdate, path, title }) {
     }
 
     try {
-      setLoading(true);
-      // if value already has id => Update
       if (values.id) {
-        console.log(values.id);
-        const response = await api.put(`${path}/${values.id}`, values);
-        toast.success("Successfully Update");
+        await api.put(`${path}/${values.id}`, values);
+        toast.success("Successfully Updated");
       } else {
-        const response = await api.post(path, values);
-        toast.success("Successfully Create");
+        await api.post(path, values);
+        toast.success("Successfully Created");
       }
-      fetchData(); // load data again
-      form.resetFields(); // xoa data vua nhap trong form
-      setShowModal(false); // dong modal
-      setShowModalupdate(false);
+      fetchData();
+      form.resetFields();
+      setShowModal(false);
+      setShowModalUpdate(false);
     } catch (error) {
-      console.log(error);
       toast.error(error.response.data);
     } finally {
       setLoading(false);
     }
   };
 
-  // Delete data
+  // Handle delete action
   const handleDelete = async (id) => {
-    console.log(id);
     try {
       await api.delete(`${path}/${id}`);
-      toast.success("Delete successfully");
+      toast.success("Deleted successfully");
       fetchData();
     } catch (error) {
       toast.error(error.response.data);
     }
   };
 
-  // Table template
-  const tableColums = [
+  // Table columns with management actions
+  const tableColumns = [
     ...columns,
     {
-      title: "Image",
+      title: "Hình ảnh",
       dataIndex: "image",
       key: "image",
-      render: (image) => {
-        return <img src={image} alt="" width={100}></img>;
-      },
+      render: (image) => <img src={image} alt="" width={100} className="rounded" />,
     },
     {
-      title: "Manage",
+      title: "Quản lý",
       dataIndex: "id",
       key: "id",
       render: (id, value) => (
         <>
-          {console.log(value.account)}
-          {console.log(id)}
           {path !== "/api/account" && path !== "/api/manager" && (
             <Button
               type="primary"
               onClick={() => {
-                setShowModalupdate(true);
+                setShowModalUpdate(true);
                 form.setFieldsValue(value.account);
               }}
+              className="mr-2 bg-[#94B49F] text-[#163020]"
             >
-              Edit
+              Chỉnh sửa
             </Button>
-          )
-          }
-          <br />
+          )}
           {path !== "/api/account" && path !== "/api/manager" && (
-
             <Popconfirm
               title="Delete"
               description="Do you really want to delete?"
               onConfirm={() => handleDelete(id)}
             >
               <Button type="primary" danger>
-                Delete
+                Xoá
               </Button>
             </Popconfirm>
           )}
@@ -136,6 +125,7 @@ function CRUDTemplate({ columns, formItems, formItemsUpdate, path, title }) {
       ),
     },
   ];
+
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
@@ -143,33 +133,25 @@ function CRUDTemplate({ columns, formItems, formItemsUpdate, path, title }) {
     setPreviewImage(file.url || file.preview);
     setPreviewOpen(true);
   };
+
   const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
   const uploadButton = (
-    <button
-      style={{
-        border: 0,
-        background: "none",
-      }}
-      type="button"
-    >
+    <div className="flex flex-col items-center">
       <PlusOutlined />
-      <div
-        style={{
-          marginTop: 8,
-        }}
-      >
-        Upload
-      </div>
-    </button>
+      <div className="mt-2">Tải ảnh lên</div>
+    </div>
   );
+
   return (
     <div>
-      <h1>{title}</h1> <br />
-      {path !== "/api/customer" && (<Button onClick={() => setShowModal(true)}>Create new</Button>)}
-       <br />
-      <Table columns={tableColums} dataSource={data} />
+
+
+      <h1 className="text-2xl font-bold text-[#163020] mb-3 ml-3">{title}</h1>
+
+      <Table columns={tableColumns} dataSource={data} pagination={{ pageSize: 10 }} />
+
       <Modal
-        open={showModal}
+        visible={showModal}
         onCancel={() => setShowModal(false)}
         onOk={() => form.submit()}
         title={title}
@@ -177,10 +159,7 @@ function CRUDTemplate({ columns, formItems, formItemsUpdate, path, title }) {
       >
         <Form form={form} labelCol={{ span: 24 }} onFinish={handleSubmit}>
           {formItems}
-          <FormItem
-            label="Image"
-            name="image"
-          >
+          <FormItem label="Hình ảnh" name="image">
             <Upload
               listType="picture-card"
               fileList={fileList}
@@ -195,18 +174,15 @@ function CRUDTemplate({ columns, formItems, formItemsUpdate, path, title }) {
       </Modal>
 
       <Modal
-        open={showModalupdate}
-        onCancel={() => setShowModalupdate(false)}
+        visible={showModalUpdate}
+        onCancel={() => setShowModalUpdate(false)}
         onOk={() => form.submit()}
         title={title}
         confirmLoading={loading}
       >
         <Form form={form} labelCol={{ span: 24 }} onFinish={handleSubmit}>
           {formItemsUpdate}
-          <FormItem
-            label="Image"
-            name="image"
-          >
+          <FormItem label="Hình ảnh" name="image">
             <Upload
               listType="picture-card"
               fileList={fileList}
@@ -219,6 +195,17 @@ function CRUDTemplate({ columns, formItems, formItemsUpdate, path, title }) {
           </FormItem>
         </Form>
       </Modal>
+      <div className="flex justify-end mt-2">
+        {path !== "/api/customer" && path !== "/api/account" && (
+          <Button
+            type="primary"
+            onClick={() => setShowModal(true)}
+            className="w-40 h-10 bg-[#94B49F] hover:none text-[#163020] border-0 rounded-lg text-base cursor-pointer my-2 transition-colors duration-300 ease-in-out"
+          >
+            Tạo mới
+          </Button>
+        )}
+      </div>
     </div>
   );
 }

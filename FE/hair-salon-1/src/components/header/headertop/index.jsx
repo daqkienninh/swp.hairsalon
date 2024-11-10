@@ -5,6 +5,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import api from "../../../config/axios";
 import { toast } from "react-toastify";
+import { motion } from "framer-motion";
 
 function Header() {
   const user = useSelector((store) => store.user);
@@ -12,7 +13,9 @@ function Header() {
   const location = useLocation();
   const topRef = useRef(null);
   const [customerId, setCustomerId] = useState(null);
-  
+  const [showLinks, setShowLinks] = useState(false);
+  const [point, setPoint] = useState([]);
+
   useEffect(() => {
     const handleScroll = () => {
       if (topRef.current) {
@@ -31,61 +34,124 @@ function Header() {
     const fetchCustomer = async () => {
       try {
         const response = await api.get("/api/customer");
-  
+
         // Filter response data to only include stylists where user.id matches account.id
-        const matchingCustomer = response.data.filter(item => item.account.id === user.id);
-  
+        const matchingCustomer = response.data.filter(
+          (item) => item.account.id === user.id
+        );
+
         // Extract stylist IDs from matching stylists
-        const ids = matchingCustomer.map(item => item.id);
+        const ids = matchingCustomer.map((item) => item.id);
         if (ids.length > 0) {
-          setCustomerId(ids[0]); // Set stylistID if there are matching stylists
+          setCustomerId(ids[0]); // Set stylistID if there  are matching stylists
         }
-  
-        console.log("Matching Stylist IDs: ", ids);
+
+        console.log("Matching Customer IDs: ", ids);
         console.log("User ID: ", user.id);
       } catch (error) {
-        toast.error(error.response?.data || "Error fetching stylists");
+        console.log(error);
       }
     };
 
     fetchCustomer();
   }, [customerId]);
 
+  useEffect(() => {
+    const fetchCustomerPoint = async () => {
+      if (!customerId) {
+        return;
+      }
+      try {
+        const response = await api.get(`/api/customer/${customerId}`);
+        setPoint(response.data);
+        console.log("Po", response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchCustomerPoint();
+  }, [customerId]);
 
   return (
     <div className="header" ref={topRef}>
       <div className="navbar">
-        <Link to="/" className="logo">
+        <Link onClick={() => setShowLinks(false)} to="/" className="logo">
           Hair Harmony
         </Link>
 
         <nav className="nav-links">
-          <Link to="/" className="nav-link">
+          <Link onClick={() => setShowLinks(false)} to="/" className="nav-link">
             Trang chủ
           </Link>
-          <Link to="/services" className="nav-link">
+          <Link
+            onClick={() => setShowLinks(false)}
+            to="/services"
+            className="nav-link"
+          >
             Dịch vụ
           </Link>
-          <Link to="/about" className="nav-link">
+          <Link
+            onClick={() => setShowLinks(false)}
+            to="/about"
+            className="nav-link"
+          >
             Về chúng tôi
           </Link>
-          <Link to="/contact" className="nav-link">
+          {/* <Link onClick={() => setShowLinks(false)} to="/contact" className="nav-link">
             Liên hệ
-          </Link>
+          </Link> */}
 
           {user ? (
-            <> {customerId && (
-              <Link to={`/history-booking/${customerId}`} className="nav-link">
-                Lịch sử cuộc hẹn
-              </Link>
-            )}
+            <>
+              {" "}
+              {customerId && (
+                <div className="flex gap-4 lg:mt-0 items-center pr-6 cursor-pointer relative nav-link">
+                  <div
+                    onClick={() => {
+                      setShowLinks(!showLinks);
+                    }}
+                    className="flex"
+                  >
+                    <span style={{ marginLeft: "8px" }}>Khác</span>{" "}
+                    {/* Optional text for the toggle */}
+                  </div>
+
+                  {showLinks && (
+                    <motion.ul
+                      initial={{ y: 30, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ duration: 0.5 }}
+                      className="absolute top-8 right-0 z-50 bg-primeColor w-44 text-25 h-auto p-4 pb-6"
+                    >
+                      <Link
+                        onClick={() => setShowLinks(false)}
+                        to={`/history-booking/${customerId}`}
+                      >
+                        <li className="text-gray-400 px-0 py-2 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
+                          Lịch sử cuộc hẹn
+                        </li>
+                      </Link>
+                      <Link
+                        onClick={() => setShowLinks(false)}
+                        to={`/reward/${customerId}`}
+                      >
+                        <li className="text-gray-400 px-0 py-2 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
+                          Đổi điểm thưởng
+                        </li>
+                      </Link>
+                      <li className="text-gray-400 px-0 py-2 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
+                        Điểm: {point.loyaltyPoint}
+                      </li>
+                    </motion.ul>
+                  )}
+                </div>
+              )}
               <div className="user-menu">
                 <Link to="/customer" className="nav-link">
                   <FaUser className="profile-icon" />
                 </Link>
                 <div className="dropdown-menu">
-                  <Link to="/profile" className="dropdown-item">
-                  </Link>
+                  <Link to="/profile" className="dropdown-item"></Link>
                 </div>
               </div>
             </>

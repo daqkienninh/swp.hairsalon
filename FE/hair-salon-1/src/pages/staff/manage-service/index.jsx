@@ -14,32 +14,32 @@ function ManageService() {
       key: "id",
     },
     {
-      title: "Name",
+      title: "Tên dịch vụ",
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Type",
+      title: "Loại",
       dataIndex: "type",
       key: "type",
     },
     {
-      title: "Duration",
+      title: "Thời gian",
       dataIndex: "duration",
       key: "duration",
     },
     {
-      title: "Description",
+      title: "Mô tả",
       dataIndex: "description",
       key: "description",
     },
     {
-      title: "Price",
+      title: "Giá dịch vụ",
       dataIndex: "price",
       key: "price",
     },
     {
-      title: "Discount",
+      title: "Giảm giá (%)",
       dataIndex: "discount",
       key: "discount",
     },
@@ -56,30 +56,55 @@ function ManageService() {
         <Input />
       </Form.Item>
       <Form.Item
-        label="Name"
+        label="Tên dịch vụ"
         name="name"
         rules={[
           {
             required: true,
-            message: "Please input category name!",
+            message: "Vui lòng nhập tên dịch vụ!",
           },
         ]}
       >
         <Input />
       </Form.Item>
-      <Form.Item label="Type" name="type">
+      <Form.Item label="Loại" name="type" rules={[
+        {
+          required: true,
+          message: "Vui lòng nhập loại dịch vụ!",
+        },
+      ]}>
         <Input />
       </Form.Item>
-      <Form.Item label="Duration" name="duration">
+      <Form.Item label="Thời gian" name="duration" rules={[
+        {
+          required: true,
+          message: "Vui lòng nhập thời gian dịch vụ!",
+        },
+      ]}>
         <Input />
       </Form.Item>
-      <Form.Item label="Description" name="description">
+      <Form.Item label="Mô tả" name="description" rules={[
+        {
+          required: true,
+          message: "Vui lòng nhập mô tả dịch vụ!",
+        },
+      ]}>
         <Input.TextArea />
       </Form.Item>
-      <Form.Item label="Price" name="price">
+      <Form.Item label="Giá dịch vụ" name="price" rules={[
+        {
+          required: true,
+          message: "Vui lòng nhập giá dịch vụ!",
+        },
+      ]}>
         <Input />
       </Form.Item>
-      <Form.Item label="Discount" name="discount">
+      <Form.Item label="Giảm giá" name="discount" rules={[
+        {
+          required: true,
+          message: "Vui lòng nhập giảm giá dịch vụ!",
+        },
+      ]}>
         <Input />
       </Form.Item>
     </>

@@ -1,10 +1,11 @@
-import React from "react";
-import CRUDTemplate from "../../../components/crud-template";
-import { Form, Input } from "antd";
-import FormItem from "antd/es/form/FormItem";
-import TextArea from "antd/es/input/TextArea";
+import React from 'react'
+import CRUDTemplate from '../../../components/crud-template';
+import { Form, Input } from 'antd';
+import FormItem from 'antd/es/form/FormItem';
+import TextArea from 'antd/es/input/TextArea';
 
 function ManageCustomer() {
+
   const columns = [
     {
       title: "ID",
@@ -12,12 +13,12 @@ function ManageCustomer() {
       key: "id",
     },
     {
-      title: "Full Name",
+      title: "Tên",
       dataIndex: "fullName",
       key: "fullName",
     },
     {
-      title: "Phone",
+      title: "Điện thoại",
       dataIndex: ["account", "phone"],
       key: "phone",
     },
@@ -27,15 +28,15 @@ function ManageCustomer() {
       key: "email",
     },
     {
-      title: "Sex",
+      title: "Giới tính",
       dataIndex: "sex",
       key: "sex",
     },
     {
-      title: "Loyalty Point",
+      title: "Điểm thành viên",
       dataIndex: "loyaltyPoint",
-      key: "loyaltyPoint",
-    },
+      key: "loyaltyPoint"
+    }
   ];
   const formItems = (
     <>
@@ -46,7 +47,7 @@ function ManageCustomer() {
         <Input />
       </Form.Item>
       <FormItem
-        label="Full Name"
+        label="Tên"
         name="fullName"
         rules={[
           {
@@ -69,16 +70,23 @@ function ManageCustomer() {
       >
         <Input />
       </FormItem>
-      <Form.Item label="Image" name="image">
+      <Form.Item
+        label="Giới tính"
+        name="sex"
+      >
         <Input />
       </Form.Item>
-      <Form.Item label="Sex" name="sex">
+      <Form.Item
+        label="Điện thoại"
+        name="phone"
+      >
         <Input />
       </Form.Item>
-      <Form.Item label="Phone" name="phone">
-        <Input />
-      </Form.Item>
-      <Form.Item label="Role" name="role" hidden>
+      <Form.Item
+        label="Chức vụ"
+        name="role"
+        hidden
+      >
         <Input />
       </Form.Item>
     </>
@@ -89,13 +97,23 @@ function ManageCustomer() {
         <Input />
       </Form.Item>
 
-      <FormItem label="Full Name" name="fullName">
+      <FormItem
+        label="Tên"
+        name="fullName"
+      >
         <Input />
       </FormItem>
-      <FormItem label="Email" name="email">
+      <FormItem
+        label="Email"
+        name="email"
+      >
         <Input />
       </FormItem>
-      <FormItem label="Phone" name="phone" hidden>
+      <FormItem
+        label="Điện thoại"
+        name="phone"
+        hidden
+      >
         <Input />
       </FormItem>
       <Form.Item name="password" label="Password">
@@ -114,7 +132,7 @@ function ManageCustomer() {
         title="Customer"
       />
     </div>
-  );
+  )
 }
 
-export default ManageCustomer;
+export default ManageCustomer

@@ -11,22 +11,22 @@ function ManageStylist() {
             key: "id",
         },
         {
-            title: "Full Name",
+            title: "Tên",
             dataIndex: "fullName",
             key: "fullName",
         },
         {
-            title: "Sex",
+            title: "Giới tính",
             dataIndex: "sex",
             key: "sex",
         },
         {
-            title: "Description",
+            title: "Mô tả",
             dataIndex: "description",
             key: "description",
         },
         {
-            title: "Level",
+            title: "Cấp độ",
             dataIndex: "level",
             key: "level",
         },
@@ -39,12 +39,12 @@ function ManageStylist() {
             </Form.Item>
 
             <FormItem
-                label="Full Name"
+                label="Tên"
                 name="fullName"
                 rules={[
                     {
                         required: true,
-                        message: "Please input Stylist's name!",
+                        message: "Vui lòng nhập Tên Stylist",
                     },
                 ]}
             >
@@ -56,19 +56,19 @@ function ManageStylist() {
                 rules={[
                     {
                         required: true,
-                        message: "Please input Stylist's email!",
+                        message: "Vui lòng nhập Email của Stylist",
                     },
                 ]}
             >
                 <Input />
             </FormItem>
             <FormItem
-                label="Phone"
+                label="Điện thoại"
                 name="phone"
                 rules={[
                     {
                         required: true,
-                        message: "Please input Stylist's phone!",
+                        message: "Vui lòng nhập Điện thoại Stylist",
                     },
                 ]}
             >
@@ -78,7 +78,7 @@ function ManageStylist() {
                 rules={[
                     {
                         required: true,
-                        message: "Please input Stylist's Password!",
+                        message: "Vui lòng nhập Password",
                     },
                 ]}>
                 <Input type="password" />
@@ -93,13 +93,13 @@ function ManageStylist() {
             </Form.Item>
 
             <FormItem
-                label="Full Name"
+                label="Tên"
                 name="fullName"
             >
                 <Input />
             </FormItem>
             <FormItem
-                label="Level"
+                label="Cấp độ"
                 name="level"
             >
                 <Input />
@@ -112,7 +112,7 @@ function ManageStylist() {
                 <Input />
             </FormItem>
             <FormItem
-                label="Phone"
+                label="Điện thoại"
                 name="phone"
                 hidden
             >

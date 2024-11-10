@@ -26,6 +26,14 @@ import RequireAuth from "./config/auth";
 import ServiceDetail from "./pages/servicedetail";
 import OverviewStaff from "./components/dashboard-staff/overviewStaff";
 import OverviewAdmin from "./components/dashboard-admin/overviewAdmin";
+import StylistPage from "./pages/stylist";
+import DashboardStylist from "./components/dashboard-stylist";
+import DashboardManager from "./components/dashboard-manager";
+import OverviewManager from "./components/dashboard-manager/overviewManager";
+import ViewTransation from "./pages/manager/manager-balance";
+import ViewStylist from "./pages/profile/stylist";
+import ManageReward from "./pages/staff/manage-reward";
+import OverviewStylist from "./components/dashboard-stylist/overviewStylist";
 import ViewCustomer from "./pages/profile/customer/index";
 import ViewStaff from "./pages/profile/staff/index";
 import ViewAdmin from "./pages/profile/admin/index";
@@ -34,6 +42,10 @@ import Fail from "./pages/payment/fail";
 import Payment from "./pages/payment/payment";
 import AppointmentHistory from './pages/history/index';
 import ResetPassword from './pages/password/index';
+import ViewManager from "./pages/profile/manager";
+import Test from "./pages/test";
+import AboutPage from "./pages/about";
+import RewardPage from "./pages/reward";
 
 function App() {
   const ProtectRouteAuth = ({ children, allowedRoles }) => {
@@ -72,6 +84,10 @@ function App() {
           element: <ServicePage />,
         },
         {
+          path: "about",
+          element: <AboutPage />,
+        },
+        {
           path: "booking",
           element: (
             <RequireAuth>
@@ -90,6 +106,10 @@ function App() {
         {
           path: "/history-booking/:customerId",
           element: <AppointmentHistory />,
+        },
+        {
+          path: "/reward/:customerId",
+          element: <RewardPage />,
         },
       ],
     },
@@ -124,6 +144,28 @@ function App() {
         {
           path: "appointment",
           element: <ManageAppointment />,
+        },
+        {
+          path: "reward",
+          element: <ManageReward />,
+        },
+      ],
+    },
+    {
+      path: "stylist",
+      element: (
+        <ProtectRouteAuth allowedRoles={["STYLIST"]}>
+          <DashboardStylist />
+        </ProtectRouteAuth>
+      ),
+      children: [
+        {
+          path: "",
+          element: <OverviewStylist />
+        },
+        {
+          path: "viewappointment",
+          element: <StylistPage />
         },
       ],
     },
@@ -162,6 +204,24 @@ function App() {
       ],
     },
     {
+      path: "manager",
+      element: (
+        <ProtectRouteAuth allowedRoles={["MANAGER"]}>
+          <DashboardManager />
+        </ProtectRouteAuth>
+      ),
+      children: [
+        {
+          path: "",
+          element: <OverviewManager />
+        },
+        {
+          path: "viewtransation",
+          element: <ViewTransation />
+        },
+      ],
+    },
+    {
       path: "service",
       element: <ManageService />,
     },
@@ -182,6 +242,14 @@ function App() {
       element: <ViewAdmin />,
     },
     {
+      path: "viewmanager",
+      element: <ViewManager />,
+    },
+    {
+      path: "viewstylist",
+      element: <ViewStylist />,
+    },
+    {
       path: "success",
       element: <SuccessPage />,
     },
@@ -190,8 +258,8 @@ function App() {
       element: <Fail />,
     },
     {
-      path: "payment-vnpay",
-      element: <Payment />,
+      path: "test",
+      element: <Test />,
     },
   ]);
 

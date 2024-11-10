@@ -1,27 +1,32 @@
-import React, { useState } from 'react';
-import { Flex, Layout, Menu, theme } from 'antd';
+import React from 'react';
+import { Layout, Menu } from 'antd';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { FaHome, FaUser } from "react-icons/fa";
+import { FaCalendar, FaHome, FaUser } from "react-icons/fa";
 import { AiOutlineCopyright } from 'react-icons/ai';
-import { MdOutlineHomeRepairService } from "react-icons/md";
-import { GrSchedules } from "react-icons/gr";
+
 const { Header, Content, Footer, Sider } = Layout;
+
 function getItem(label, key, icon, children) {
   return {
     key,
     icon,
     children,
-    label: <Link to={`/staff${key}`} className="flex items-center gap-2"><span>{label}</span></Link>,
+    label: (
+      <Link to={`/stylist${key}`} className="flex items-center gap-2">
+
+        <span>{label}</span>
+      </Link>
+    ),
   };
 }
+
 const items = [
   getItem("Trang chủ", "", <FaHome className="text-lg" />),
-  getItem("Quản lý Dịch vụ", "/service", <MdOutlineHomeRepairService className="text-lg" />),
-  getItem("Quản lý Cuộc hẹn", "/appointment", <GrSchedules className="text-lg" />),
-  getItem("Quản lý Đổi thưởng", "/reward", <GrSchedules className="text-lg" />),
+  getItem("Xem đặt hẹn", "/viewappointment", <FaCalendar className="text-lg" />),
 ];
-const DashboardStaff = () => {
+
+function DashboardStylist() {
   const user = useSelector((store) => store.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -51,23 +56,24 @@ const DashboardStaff = () => {
       <Layout>
         <Header className="flex items-center justify-between px-6 bg-[#E9EFEC]">
           <div className="flex items-center">
-            <a href="/staff" className="text-xl font-semibold">
+            <a href="/manager" className="text-xl font-semibold">
               Xin chào {user.fullName}!
             </a>
           </div>
-          <div onClick={() => navigate("/viewstaff")} className="text-2xl cursor-pointer border-teal-600">
+          <div onClick={() => navigate("/viewstylist")} className="text-2xl cursor-pointer border-teal-600">
             <FaUser />
           </div>
         </Header>
         <Content className="m-6 p-6 bg-white rounded-lg shadow-lg">
           <Outlet />
         </Content>
-        <Footer className="flex items-center justify-center p-4 text-black bg-[#6A9C89]">
+        <Footer className="flex items-center justify-center p-4 bg-gray-50 text-black">
           <AiOutlineCopyright className="mr-1" />
           <span>2024 Hair Harmony. Tất cả các quyền được bảo lưu.</span>
         </Footer>
       </Layout>
     </Layout>
-  );
-};
-export default DashboardStaff;
+  )
+}
+
+export default DashboardStylist
