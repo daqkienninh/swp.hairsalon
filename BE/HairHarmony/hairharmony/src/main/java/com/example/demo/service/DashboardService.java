@@ -147,7 +147,7 @@ public class DashboardService {
         int totalBookedAppointments = appointmentDetailRepository.countBookedAppointmentsByStylistId(stylistId, startOfMonth);
 
         // KPI appointment
-        int kpiAppointment = 100;
+        int kpiAppointment = 50;
 
         // Tính toán KPI đạt được
         boolean kpiMet = totalBookedAppointments >= kpiAppointment;

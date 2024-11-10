@@ -98,7 +98,7 @@ function CRUDTemplate({ columns, formItems, formItemsUpdate, path, title }) {
       key: "id",
       render: (id, value) => (
         <>
-          {path !== "/api/account" && path !== "/api/manager" && (
+          {path !== "/api/account" && path !== "/api/manager" && path !== "/api/customer" && (
             <Button
               type="primary"
               onClick={() => {
@@ -110,7 +110,7 @@ function CRUDTemplate({ columns, formItems, formItemsUpdate, path, title }) {
               Chỉnh sửa
             </Button>
           )}
-          {path !== "/api/account" && path !== "/api/manager" && (
+          {path !== "/api/account" && path !== "/api/manager" && path !== "/api/customer" && (
             <Popconfirm
               title="Delete"
               description="Do you really want to delete?"

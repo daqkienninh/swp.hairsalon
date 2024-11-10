@@ -21,7 +21,7 @@ function ManagerPage() {
     const fetchTotalPrice = async () => {
         try {
             const response = await api.get('/api/appointment');
-            const approvedAppointments = response.data.filter(appointment => appointment.status === "DONE");
+            const approvedAppointments = response.data.filter(appointment => appointment.status === "APPROVED");
             setTotalPrice(approvedAppointments);
             console.log("Approved Appointments:", approvedAppointments);
         } catch (error) {

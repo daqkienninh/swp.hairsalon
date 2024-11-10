@@ -20,6 +20,7 @@ const items = [
   getItem("Quản lý Dịch vụ", "/service", <MdOutlineHomeRepairService className="text-lg" />),
   getItem("Quản lý Cuộc hẹn", "/appointment", <GrSchedules className="text-lg" />),
   getItem("Quản lý Đổi thưởng", "/reward", <GrSchedules className="text-lg" />),
+  getItem("Quản lý Nhận thưởng", "/recived", <GrSchedules className="text-lg" />),
 ];
 const DashboardStaff = () => {
   const user = useSelector((store) => store.user);
@@ -47,6 +48,7 @@ const DashboardStaff = () => {
             padding: '2rem 0',
           }}
         />
+        <a className="text-black bg-[#E9EFEC] ml-14 font-bold" href="https://docs.google.com/spreadsheets/d/1Ja0YkvudKD-0-PSRIhR3FeTW5IImjU88DFHUcjuoLqA/edit?resourcekey=&gid=1889532333#gid=1889532333">Hỗ trợ khách hàng</a>
       </Sider>
       <Layout>
         <Header className="flex items-center justify-between px-6 bg-[#E9EFEC]">

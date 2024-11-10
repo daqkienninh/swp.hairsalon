@@ -89,25 +89,45 @@ export default function ProfileTemplate({ path, pathapi }) {
       ...formData,
      image: avatarUrl,
     };
-
-    try {
-      console.log("Updated Form Data:", updatedFormData);
-      const response = await api.put(`${pathapi}/${user.id}`, updatedFormData);
-      if (response.status === 200) {
-        dispatch(updateUser(updatedFormData));
-        setIsEditing(false);
-        toast.success("Cập nhật thông tin thành công.");
-      } else {
-        console.error("Error updating user info:", response);
-        toast.error("Không thể cập nhật thông tin.");
-      }
-    } catch (error) {
-      console.error("Error updating user info:", error);
-      toast.error("Không thể cập nhật thông tin.");
-    } finally {
-      setLoading(false);
-    }
   };
+
+  const renderImageField = () => (
+    <MDBRow className="mb-4">
+      <MDBCol sm="3">
+        <MDBCardText
+          style={{ textAlign: "left", marginLeft: "40px", fontWeight: "bold" }}
+        >
+          Ảnh
+        </MDBCardText>
+      </MDBCol>
+      <MDBCol sm="9">
+        {isEditing ? (
+          <Upload
+            listType="picture-card"
+            fileList={fileList}
+            onPreview={handlePreview}
+            onChange={handleChange}
+            beforeUpload={() => false} // Prevents auto-upload
+          >
+            {fileList.length >= 1 ? null : (
+              <div>
+                <PlusOutlined />
+                <div style={{ marginTop: 8 }}>Upload</div>
+              </div>
+            )}
+          </Upload>
+        ) : (
+          <MDBCardText
+            className="text-muted"
+            style={{ textAlign: "left", marginLeft: "100px" }}
+          >
+            
+          </MDBCardText>
+        )}
+      </MDBCol>
+    </MDBRow>
+  );
+
 
   const renderSexField = () => (
     <MDBRow className="mb-4">
@@ -146,6 +166,9 @@ export default function ProfileTemplate({ path, pathapi }) {
   const renderField = (field, label) => {
     if (field === "sex") {
       return renderSexField();
+    }
+    if(field === "image"){
+      return renderImageField();
     }
     return (
       <MDBRow className="mb-4">
@@ -281,6 +304,8 @@ export default function ProfileTemplate({ path, pathapi }) {
                       {isEditing ? "Hủy" : "Thay đổi thông tin"}
                     </MDBBtn>
                   </div>
+                  {/* <hr className="my-4" />
+                  {renderField("image", "Ảnh")} */}
                   <hr className="my-4" />
                   {renderField("fullName", "Họ và Tên")}
                   <hr className="my-4" />

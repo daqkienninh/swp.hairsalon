@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import api from '../../config/axios';
 import { toast } from 'react-toastify';
@@ -8,40 +8,29 @@ function OverviewStylist() {
   const user = useSelector((store) => store.user);
   const [stylistID, setStylistID] = useState(null);
   const [data, setData] = useState([]);
+  const [stylist, setStylist] = useState([]);
 
   const fetchStylist = async () => {
     try {
       const response = await api.get("/api/stylist");
-
-      // Filter response data to only include stylists where user.id matches account.id
       const matchingStylists = response.data.filter(item => item.account.id === user.id);
-
-      // Extract stylist IDs from matching stylists
       const ids = matchingStylists.map(item => item.id);
       if (ids.length > 0) {
-        setStylistID(ids[0]); // Set stylistID if there are matching stylists
+        setStylistID(ids[0]);
       }
-
-      console.log("Matching Stylist IDs: ", ids);
-      console.log("User ID: ", user.id);
     } catch (error) {
       toast.error(error.response?.data || "Error fetching stylists");
     }
   };
-  console.log("StylistID: ", stylistID)
 
   useEffect(() => {
     const fetchAppointments = async () => {
-      if (stylistID) { // Only fetch if stylistID is not null
+      if (stylistID) {
         try {
           const response = await api.get(`/api/dashboard/${stylistID}/kpi`);
-          console.log("Data: ", response.data);
-          const { totalBookedAppointments, kpiMet, kpiAppointment } = response.data;
-
-          // Transform the API response into the format needed for Recharts
+          const { totalBookedAppointments, kpiAppointment } = response.data;
           const chartData = [
             {
-              name: 'Appointments',
               totalBooked: totalBookedAppointments,
               kpi: kpiAppointment,
             },
@@ -52,27 +41,47 @@ function OverviewStylist() {
         }
       }
     };
-
     fetchAppointments();
   }, [stylistID]);
+
   useEffect(() => {
     fetchStylist();
   }, []);
+
+  useEffect(() => {
+    const fetchStylistbyID = async () => {
+      if (stylistID) {
+        try {
+          const response = await api.get(`/api/stylist/${stylistID}`);
+          setStylist(response.data);
+        } catch (error) {
+          toast.error(error.response?.data || "Error fetching stylist");
+        }
+      }
+    };
+    fetchStylistbyID();
+  }, [stylistID]);
+
   return (
-    <div>
+    <div className="p-6 bg-white shadow-lg rounded-lg">
+      <h2 className="text-2xl font-bold mb-4 text-gray-800 text-center">Tổng quan</h2>
       <ResponsiveContainer width="100%" height={300}>
-      <BarChart data={data}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="totalBooked" fill="#8884d8" name="Total Booked Appointments" />
-        <Bar dataKey="kpi" fill="#82ca9d" name="KPI Appointment" />
-      </BarChart>
-    </ResponsiveContainer>
+        <BarChart data={data}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="totalBooked" fill="#4A90E2" name="Tổng cuộc hẹn" />
+          <Bar dataKey="kpi" fill="#7ED321" name="KPI" />
+        </BarChart>
+      </ResponsiveContainer>
+      <div className="text-right mt-6">
+        <p className="text-lg font-semibold">Số dư: <span className="text-blue-600">{user.balance.toLocaleString()}đ</span></p>
+        <p className="text-lg font-semibold">Level: <span className="text-green-600">{stylist.level}</span></p>
+      </div>
     </div>
-  )
+  );
 }
 
-export default OverviewStylist
+export default OverviewStylist;

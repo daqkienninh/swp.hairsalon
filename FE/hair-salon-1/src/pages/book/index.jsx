@@ -26,11 +26,13 @@ function Booking() {
   const [form] = Form.useForm();
   const [services, setServices] = useState([]);
   const [stylists, setStylists] = useState([]);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
-  const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
   const [availableTimes, setAvailableTimes] = useState([]);
-  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
+  const [selectedStylist, setSelectedStylist] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
   const navigate = useNavigate();
+  const [isVNPayAllowed, setIsVNPayAllowed] = useState(false);
+
   const fetchServices = async () => {
     try {
       const response = await api.get("/api/service");
@@ -49,6 +51,28 @@ function Booking() {
     }
   };
 
+   const fetchAvailableTime = async (stylistId, date) => {
+    if (!stylistId || !date) return;
+    try {
+      const response = await api.get(`/api/appointment/available-times?stylistId=${stylistId}&date=${date.format("YYYY-MM-DD")}`);
+      setAvailableTimes(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching available times:", error);
+    }
+  };
+
+  const handleStylistChange = (value) => {
+    setSelectedStylist(value);
+    fetchAvailableTime(value, selectedDate);
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    fetchAvailableTime(selectedStylist, date);
+  };
+
+
   // Restrict date selection to only the next three days
   const disabledDate = (current) => {
     return (
@@ -62,16 +86,18 @@ function Booking() {
   };
 
   const handleConfirmation = async (values) => {
-    if (!selectedPaymentMethod) {
-      toast.error("Please select a payment method");
+    if (selectedPaymentMethod === "vnpay" && !isVNPayAllowed) {
+      toast.error("Please allow booking with VNPay by ticking the checkbox");
       return;
     }
+
+    const formattedTime = values.time; // assuming values.time is already in HH:mm format
 
     const appointmentData = {
       details: values.services.map((serviceId) => ({
         serviceId: serviceId, // Assuming each selected service should be listed separately
         stylistId: values.stylist,
-        startTime: values.date.format("YYYY-MM-DD") + "T" + values.time + ":00",
+        startTime: `${formattedTime}`,
         note: values.note,
       })),
     };
@@ -157,6 +183,7 @@ function Booking() {
                 ))}
               </Select>
             </Form.Item>
+
             <Form.Item
               name="stylist"
               label="Stylist"
@@ -165,6 +192,7 @@ function Booking() {
               <Select
                 placeholder="Nếu bạn không biết nên chọn ai, bạn có thể chọn ngẫu nhiên."
                 suffixIcon={<UserOutlined />}
+                onChange={handleStylistChange}
               >
                 {stylists.map((stylist) => (
                   <Option key={stylist.id} value={stylist.id}>
@@ -173,42 +201,42 @@ function Booking() {
                 ))}
               </Select>
             </Form.Item>
+
+            {/* Date Selection */}
             <Form.Item
               name="date"
               label="Ngày"
               rules={[{ required: true, message: "Chọn ngày" }]}
             >
               <DatePicker
-                disabledDate={disabledDate}
+                disabledDate={(current) =>
+                  current < moment().startOf("day") || current > moment().add(4, "days").endOf("day")
+                }
                 placeholder="Chọn ngày"
                 format="DD/MM/YYYY"
+                onChange={handleDateChange}
               />
             </Form.Item>
+
+            {/* Time Selection */}
             <Form.Item
               name="time"
               label="Thời gian"
               rules={[{ required: true, message: "Please select a time range" }]}
             >
               <Radio.Group className="flex flex-wrap gap-2">
-                {Array(12)
-                  .fill(null)
-                  .map((_, index) => {
-                    const startTime = moment()
-                      .startOf("day")
-                      .add(8 + index, "hours");
-
-                    return (
-                      <Radio.Button
-                        key={startTime.format("HH:mm")}
-                        value={startTime.format("HH:mm")}
-                        className="flex-grow basis-1/4 text-center"
-                      >
-                        {startTime.format("HH:mm")}
-                      </Radio.Button>
-                    );
-                  })}
+                {availableTimes.map((time) => (
+                  <Radio.Button
+                    key={time}
+                    value={time}
+                    className="flex-grow basis-1/4 text-center"
+                  >
+                    {moment(time).format("HH:mm")} {/* Display in HH:mm format */}
+                  </Radio.Button>
+                ))}
               </Radio.Group>
             </Form.Item>
+
             <Form.Item name="note" label="Ghi chú">
               <Input.TextArea rows={4} placeholder="Ghi chú cho cửa hàng" />
             </Form.Item>
@@ -228,6 +256,16 @@ function Booking() {
                 <Option value="card">Thanh toán trục tiếp</Option>
               </Select>
             </Form.Item>
+            {selectedPaymentMethod === "vnpay" && (
+              <Form.Item>
+                <Checkbox
+                  checked={isVNPayAllowed}
+                  onChange={(e) => setIsVNPayAllowed(e.target.checked)}
+                >
+                  I allow booking with VNPay
+                </Checkbox>
+              </Form.Item>
+            )}
 
             <Form.Item>
               <Button

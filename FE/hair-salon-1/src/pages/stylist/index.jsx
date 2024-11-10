@@ -120,9 +120,7 @@ function StylistPage() {
         pagination={{ pageSize: 10 }}
         className="shadow-lg border border-gray-200 rounded-lg"
       />
-      <div className="text-xl font-semibold mt-3 flex justify-end">
-        Số dư: {user.balance.toLocaleString()}đ
-      </div>
+      
     </div>
   );
 }

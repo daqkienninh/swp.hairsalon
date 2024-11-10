@@ -131,7 +131,7 @@ function ManageReward() {
 
   return (
       <div>
-          <h1 className="text-2xl font-bold text-[#163020] mb-3 ml-3">Dịch vụ</h1>
+          <h1 className="text-2xl font-bold text-[#163020] mb-3 ml-3">Đổi thưởng</h1>
 
           <Table
               columns={columns}

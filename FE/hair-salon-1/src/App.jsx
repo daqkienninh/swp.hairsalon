@@ -46,6 +46,8 @@ import ViewManager from "./pages/profile/manager";
 import Test from "./pages/test";
 import AboutPage from "./pages/about";
 import RewardPage from "./pages/reward";
+import ManageRecived from "./pages/staff/manage-recived";
+import RecievedPage from "./pages/recieved";
 
 function App() {
   const ProtectRouteAuth = ({ children, allowedRoles }) => {
@@ -111,6 +113,10 @@ function App() {
           path: "/reward/:customerId",
           element: <RewardPage />,
         },
+        {
+          path: "/recieved/:customerId",
+          element: <RecievedPage />,
+        },
       ],
     },
     {
@@ -148,6 +154,10 @@ function App() {
         {
           path: "reward",
           element: <ManageReward />,
+        },
+        {
+          path: "recived",
+          element: <ManageRecived />,
         },
       ],
     },

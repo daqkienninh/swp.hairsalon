@@ -30,9 +30,19 @@ function SuccessPage() {
     }
   }
 
+  const confirmbanking = async () => {
+    try {
+      const response = await api.put(`/api/payment/confirm-banking?appointmentId=${appointmentID}`) // post transaction
+      console.log(response.data);
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   useEffect(() => {
     if (vnp_TransactionStatus === "00") {
       postOrderID();
+      confirmbanking();
     } else {
       // chuyen qua trang thanh toan that bai
       nav("/fail");

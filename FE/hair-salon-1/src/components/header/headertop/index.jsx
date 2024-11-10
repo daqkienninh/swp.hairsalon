@@ -116,6 +116,11 @@ function Header() {
                         Đổi điểm thưởng
                       </li>
                     </Link>
+                    <Link onClick={() => setShowLinks(false)} to={`/recieved/${customerId}`}>
+                      <li className="text-gray-400 px-0 py-2 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
+                        Đổi điểm thưởng
+                      </li>
+                    </Link>
                     <li className="text-gray-400 px-0 py-2 border-b-[1px] border-b-gray-400 hover:border-b-white hover:text-white duration-300 cursor-pointer">
                       Điểm: {point.loyaltyPoint}
                     </li>
