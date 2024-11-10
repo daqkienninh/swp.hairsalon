@@ -8,6 +8,7 @@ import {
   Input,
   TimePicker,
   Radio,
+  Modal,
 } from "antd";
 import {
   ScissorOutlined,
@@ -32,6 +33,7 @@ function Booking() {
   const [selectedDate, setSelectedDate] = useState(null);
   const navigate = useNavigate();
   const [isVNPayAllowed, setIsVNPayAllowed] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const fetchServices = async () => {
     try {
@@ -51,7 +53,7 @@ function Booking() {
     }
   };
 
-   const fetchAvailableTime = async (stylistId, date) => {
+  const fetchAvailableTime = async (stylistId, date) => {
     if (!stylistId || !date) return;
     try {
       const response = await api.get(`/api/appointment/available-times?stylistId=${stylistId}&date=${date.format("YYYY-MM-DD")}`);
@@ -83,6 +85,23 @@ function Booking() {
 
   const handlePaymentMethodChange = (value) => {
     setSelectedPaymentMethod(value);
+    if (value === "vnpay") {
+      setIsModalVisible(true);
+    } else {
+      setIsVNPayAllowed(false);
+    }
+  };
+
+  const handleAgree = () => {
+    setIsVNPayAllowed(true);
+    setIsModalVisible(false);
+  };
+
+  const handleNotAgree = () => {
+    setIsVNPayAllowed(false);
+    setIsModalVisible(false);
+    toast.warning("Vui lòng đọc kỹ và Đồng ý điều khoản trên")
+    console.log("is", isVNPayAllowed);
   };
 
   const handleConfirmation = async (values) => {
@@ -228,7 +247,7 @@ function Booking() {
                   <Radio.Button
                     key={time}
                     value={time}
-                    className="flex-grow basis-1/4 text-center"
+                    className="timePicker"
                   >
                     {moment(time).format("HH:mm")} {/* Display in HH:mm format */}
                   </Radio.Button>
@@ -252,19 +271,10 @@ function Booking() {
                 onChange={handlePaymentMethodChange}
               >
                 <Option value="vnpay">VNPay</Option>
-                <Option value="card">Thanh toán trục tiếp</Option>
+                <Option value="card">Thanh toán trực tiếp</Option>
               </Select>
             </Form.Item>
-            {selectedPaymentMethod === "vnpay" && (
-              <Form.Item>
-                <Checkbox
-                  checked={isVNPayAllowed}
-                  onChange={(e) => setIsVNPayAllowed(e.target.checked)}
-                >
-                  I allow booking with VNPay
-                </Checkbox>
-              </Form.Item>
-            )}
+
 
             <Form.Item>
               <Button
@@ -277,6 +287,49 @@ function Booking() {
             </Form.Item>
           </Form>
         </Card>
+        <Modal
+          title="Điều khoản sử dụng"
+          open={isModalVisible}
+          footer={[
+            <button
+              key="ok"
+              onClick={handleAgree}
+              className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+            >
+              Đồng ý và tiếp tục
+            </button>,
+          ]}
+        >
+
+          <strong>1. Giới thiệu</strong>
+          <p> Khi sử dụng dịch vụ đặt lịch hẹn qua ứng dụng HairHarmony và thực hiện giao dịch thanh toán qua VNPay, quý khách đồng ý với các điều khoản và điều kiện dưới đây.</p>
+
+          <strong>2. Đặt Lịch Hẹn</strong>
+          <p> Quý khách cần cung cấp thông tin cá nhân và thông tin liên hệ chính xác khi đặt lịch hẹn để đảm bảo dịch vụ được cung cấp một cách tốt nhất.</p>
+          <p> Thời gian và dịch vụ đã chọn khi đặt lịch hẹn có thể không thay đổi sau khi xác nhận, trừ trường hợp có hỗ trợ từ bộ phận chăm sóc khách hàng.</p>
+          <p> HairHarmony không chịu trách nhiệm về các thông tin không chính xác do khách hàng cung cấp, dẫn đến việc không thể cung cấp dịch vụ đúng thời gian đã hẹn.</p>
+
+          <strong>3. Thanh Toán qua VNPay</strong>
+          <p> Khi thực hiện thanh toán qua VNPay, quý khách đồng ý tuân thủ các quy định của VNPay và HairHarmony.</p>
+          <p> Tất cả các giao dịch đều được xử lý thông qua hệ thống bảo mật của VNPay, và HairHarmony không lưu trữ các thông tin nhạy cảm liên quan đến thẻ tín dụng hoặc tài khoản ngân hàng.</p>
+          <p> Sau khi giao dịch được xác nhận, quý khách sẽ nhận được thông báo về tình trạng thanh toán và lịch hẹn đã đặt.</p>
+
+          <strong>4. Hủy Dịch Vụ và Hoàn Tiền</strong>
+          <p> HairHarmony không hỗ trợ hoàn tiền sau khi lịch hẹn đã được xác nhận và thanh toán qua VNPay, trừ trường hợp dịch vụ bị hủy do lỗi từ phía chúng tôi hoặc do các lý do bất khả kháng.</p>
+          <p> Trong trường hợp yêu cầu hoàn tiền do hủy lịch hẹn, HairHarmony sẽ hỗ trợ khách hàng liên hệ với VNPay để thực hiện quy trình hoàn tiền, nếu áp dụng.</p>
+
+          <strong>5. Đảm Bảo An Toàn Giao Dịch</strong>
+          <p> Quý khách chịu trách nhiệm bảo mật thông tin tài khoản và thông tin giao dịch của mình. HairHarmony không chịu trách nhiệm đối với các trường hợp mất mát hoặc thiệt hại do hành vi gian lận, chiếm đoạt tài khoản do lỗi của khách hàng.</p>
+          <p> HairHarmony cam kết không chia sẻ thông tin cá nhân và thông tin giao dịch của khách hàng với bên thứ ba ngoại trừ khi có yêu cầu từ cơ quan chức năng.</p>
+
+          <strong>6. Giới Hạn Trách Nhiệm</strong>
+          <p> HairHarmony không chịu trách nhiệm cho bất kỳ thiệt hại nào phát sinh từ lỗi hệ thống, lỗi kết nối mạng hoặc bất kỳ nguyên nhân nào khác nằm ngoài khả năng kiểm soát của chúng tôi trong quá trình thực hiện giao dịch qua VNPay.</p>
+          <p> HairHarmony không chịu trách nhiệm đối với các trường hợp lịch hẹn bị hủy hoặc thay đổi do các yếu tố bất khả kháng như thiên tai, dịch bệnh, v.v.</p>
+
+          <strong>7. Điều Khoản Khác</strong>
+          <p> HairHarmony có quyền thay đổi, điều chỉnh các điều khoản sử dụng mà không cần báo trước. Khách hàng có trách nhiệm xem lại các điều khoản trước mỗi lần thực hiện đặt lịch hẹn và giao dịch qua VNPay.</p>
+          <p> Bằng việc nhấn "Đồng ý" và "Tiếp tục", quý khách xác nhận đã đọc, hiểu và đồng ý với các điều khoản trên.</p>
+        </Modal>
       </div>
     </div>
   );

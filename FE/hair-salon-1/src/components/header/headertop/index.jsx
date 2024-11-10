@@ -91,13 +91,13 @@ function Header() {
           </Link>
           <Link onClick={() => setShowLinks(false)} to="/contact" className="nav-link">
             Liên hệ
-          </Link> 
+          </Link>
 
           {user ? (
             <> {customerId && (
               <div className="flex gap-4 lg:mt-0 items-center pr-6 cursor-pointer relative">
                 <div onClick={() => { setShowLinks(!showLinks) }} className="flex">
-                  <span style={{ marginLeft: '8px' }}>Other</span> {/* Optional text for the toggle */}
+                  <span style={{ marginLeft: '8px' }}>Khác</span> {/* Optional text for the toggle */}
                 </div>
 
                 {showLinks && (
