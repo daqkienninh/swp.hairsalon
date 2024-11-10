@@ -22,7 +22,6 @@ function SuccessPage() {
 
   const postOrderID = async () => {
     try {
-
       const response = await api.post(`api/appointment/transaction?uuId=${appointmentID}`) // post transaction
       console.log(response.data);
     } catch (err) {

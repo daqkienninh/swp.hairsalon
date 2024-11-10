@@ -183,7 +183,6 @@ function Booking() {
                 ))}
               </Select>
             </Form.Item>
-
             <Form.Item
               name="stylist"
               label="Stylist"

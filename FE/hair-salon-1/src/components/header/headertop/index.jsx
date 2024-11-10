@@ -16,7 +16,6 @@ function Header() {
   const [showLinks, setShowLinks] = useState(false);
   const [point, setPoint] = useState([]);
 
-
   useEffect(() => {
     const handleScroll = () => {
       if (topRef.current) {
@@ -37,12 +36,14 @@ function Header() {
         const response = await api.get("/api/customer");
 
         // Filter response data to only include stylists where user.id matches account.id
-        const matchingCustomer = response.data.filter(item => item.account.id === user.id);
+        const matchingCustomer = response.data.filter(
+          (item) => item.account.id === user.id
+        );
 
         // Extract stylist IDs from matching stylists
-        const ids = matchingCustomer.map(item => item.id);
+        const ids = matchingCustomer.map((item) => item.id);
         if (ids.length > 0) {
-          setCustomerId(ids[0]); // Set stylistID if there are matching stylists
+          setCustomerId(ids[0]); // Set stylistID if there  are matching stylists
         }
 
         console.log("Matching Customer IDs: ", ids);
@@ -63,13 +64,13 @@ function Header() {
       try {
         const response = await api.get(`/api/customer/${customerId}`);
         setPoint(response.data);
-        console.log("Po",response.data)
-      } catch (error){
-        console.log(error)
+        console.log("Po", response.data);
+      } catch (error) {
+        console.log(error);
       }
-    }; 
+    };
     fetchCustomerPoint();
-  }, [customerId])
+  }, [customerId]);
 
   return (
     <div className="header" ref={topRef}>
@@ -90,7 +91,7 @@ function Header() {
           </Link>
           <Link onClick={() => setShowLinks(false)} to="/contact" className="nav-link">
             Liên hệ
-          </Link>
+          </Link> 
 
           {user ? (
             <> {customerId && (
@@ -133,8 +134,7 @@ function Header() {
                   <FaUser className="profile-icon" />
                 </Link>
                 <div className="dropdown-menu">
-                  <Link to="/profile" className="dropdown-item">
-                  </Link>
+                  <Link to="/profile" className="dropdown-item"></Link>
                 </div>
               </div>
             </>
