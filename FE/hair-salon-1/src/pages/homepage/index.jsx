@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Banner from "../../components/banner";
 import { Badge, Button } from "antd";
 import api from "./../../config/axios";
@@ -20,11 +20,39 @@ function HomePage() {
     fetchServices();
   }, []);
 
+  const categorizedServices = useMemo(() => {
+    const getTop3Expensive = (services) => {
+      return services.sort((a, b) => b.price - a.price).slice(0, 3);
+    };
+
+    return {
+      women: getTop3Expensive(services.filter((service) => service.type === "Nữ")),
+      men: getTop3Expensive(services.filter((service) => service.type === "Nam")),
+      spa: getTop3Expensive(services.filter((service) => service.type === "Thư giãn")),
+    };
+  }, [services]);
+
+  const renderServiceSection = (title, services) => (
+    <div className="max-w-container mx-auto px-4">
+      <div className="text-2xl font-semibold pb-6 mt-10 text-[#1A4D2E] pl-5">
+        {title}
+      </div>
+      <div className="flex items-center justify-between h-full flex-wrap gap-3 w-full pb-16">
+        {services.map((service, index) => (
+          <div key={index} className="px-2">
+            <Service service={service} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+
   return (
     <div className="w-full mx-auto">
       <Banner />
       {/* Women's services */}
-      <div className="max-w-container mx-auto px-4">
+      {/* <div className="max-w-container mx-auto px-4">
         <div className="text-2xl font-semibold pb-6 mt-10 text-[#1A4D2E] pl-5">
           Dịch vụ cho nữ
         </div>
@@ -39,7 +67,7 @@ function HomePage() {
         </div>
       </div>
       {/* Men's services */}
-      <div className="max-w-container mx-auto px-4">
+      {/* <div className="max-w-container mx-auto px-4">
         <div className="text-2xl font-semibold pb-6 mt-10 text-[#1A4D2E] pl-5">
           Dịch vụ cho nam
         </div>
@@ -52,9 +80,9 @@ function HomePage() {
               </div>
             ))}
         </div>
-      </div>
+      </div> */}
       {/* Spa services */}
-      <div className="max-w-container mx-auto px-4">
+      {/* <div className="max-w-container mx-auto px-4">
         <div className="text-2xl font-semibold pb-6 mt-10 text-[#1A4D2E] pl-5">
           Spa & Thư giãn
         </div>
@@ -67,10 +95,14 @@ function HomePage() {
               </div>
             ))}
         </div>
-      </div>
+      </div>  */}
+      {renderServiceSection("Dịch vụ cho nữ", categorizedServices.women)}
+      {renderServiceSection("Dịch vụ cho nam", categorizedServices.men)}
+      {renderServiceSection("Spa & Thư giãn", categorizedServices.spa)}
     </div>
   );
 }
+
 
 const Service = ({ service }) => {
   return (

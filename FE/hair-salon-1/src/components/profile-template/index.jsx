@@ -69,26 +69,6 @@ export default function ProfileTemplate({ path, pathapi }) {
 
   const handleUpdate = async () => {
     setLoading(true);
-    let avatarUrl = user.image; // Default to current avatar
-
-    // Check if an avatar has been uploaded
-    if (fileList.length > 0) {
-      const file = fileList[0].originFileObj;
-      try {
-        avatarUrl = await uploadFile(file); // Upload the file and get the new URL
-      } catch (error) {
-        console.error("Error uploading avatar:", error);
-        toast.error("Lỗi tải ảnh đại diện.");
-        setLoading(false);
-        return;
-      }
-    }
-
-    // Update formData with new image URL
-    const updatedFormData = {
-      ...formData,
-     image: avatarUrl,
-    };
 
     try {
       console.log("Updated Form Data:", updatedFormData);
@@ -281,6 +261,8 @@ export default function ProfileTemplate({ path, pathapi }) {
                       {isEditing ? "Hủy" : "Thay đổi thông tin"}
                     </MDBBtn>
                   </div>
+                  {/* <hr className="my-4" />
+                  {renderField("image", "Ảnh")} */}
                   <hr className="my-4" />
                   {renderField("fullName", "Họ và Tên")}
                   <hr className="my-4" />

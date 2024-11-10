@@ -86,7 +86,7 @@ function ManageAppointment() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold text-[#163020] mb-6">Manage Appointments</h1>
+      <h1 className="text-2xl font-bold text-[#163020] mb-6">Quản lý Cuộc hẹn</h1>
 
       {/* Status Filter */}
       <Radio.Group
@@ -94,7 +94,7 @@ function ManageAppointment() {
         value={statusFilter}
         className="mb-4"
       >
-        <Radio.Button value="">All</Radio.Button>
+        <Radio.Button value="">Tất cả</Radio.Button>
         <Radio.Button value="APPROVED">Chấp nhận</Radio.Button>\
         <Radio.Button value="DONE">Hoàn thành</Radio.Button>
         <Radio.Button value="CANCELLED">Huỷ bỏ</Radio.Button>

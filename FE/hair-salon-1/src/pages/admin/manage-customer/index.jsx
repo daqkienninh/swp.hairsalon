@@ -114,13 +114,13 @@ function ManageCustomer() {
         name="phone"
         hidden
       >
-        <Input />
+         <Input />
       </FormItem>
       <Form.Item name="password" label="Password">
         <Input />
       </Form.Item>
     </>
-  );
+  ); 
 
   return (
     <div>
