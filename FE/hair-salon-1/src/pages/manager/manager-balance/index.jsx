@@ -42,18 +42,18 @@ function ManagerPage() {
       dataIndex: "id",
     },
     {
-      title: "Total Price",
+      title: "Tổng giá tiền",
       dataIndex: "totalPrice",
     },
     {
-      title: "Status",
+      title: "Trạng thái",
       dataIndex: "status",
     },
   ];
 
   return (
     <div>
-      <Typography.Title level={2}>Manager Dashboard</Typography.Title>
+      <Typography.Title level={2}>Quản lý cuộc hẹn</Typography.Title>
       <Divider />
       <Table
         columns={columns}
