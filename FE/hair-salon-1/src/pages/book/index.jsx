@@ -95,7 +95,8 @@ function Booking() {
       try {
         const response = await api.post("/api/appointment", appointmentData);
         console.log(response.data)
-        const appointmentId = response.data.id; // Assuming the response includes the appointment ID/-strong/-heart:>:o:-((:-h navigate(`/confirm-booking/${appointmentId}`);
+        const appointmentId = response.data.id; 
+        navigate(`/confirm-booking/${appointmentId}`);// Assuming the response includes the appointment ID/-strong/-heart:>:o:-((:-h navigate(`/confirm-booking/${appointmentId}`);
       } catch (error) {
         console.error("Error:", error.response?.data || error.message);
         toast.error(error.response?.data);
